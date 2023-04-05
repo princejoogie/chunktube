@@ -2,18 +2,25 @@
   "name": "api",
   "version": "0.0.0",
   "private": true,
-  "main": "dist/index.js",
-  "module": "dist/index.mjs",
-  "types": "dist/index.d.ts",
+  "main": "index.ts",
+  "types": "index.ts",
   "scripts": {
     "build": "tsup",
-    "dev": "pnpm dotenv tsup --watch",
+    "dev": "tsup --watch",
     "clean": "rimraf .turbo/ dist/"
   },
   "devDependencies": {
     "@types/node": "^18.15.11",
+    "eslint-config-custom": "workspace:*",
     "tsconfig": "workspace:*",
     "tsup": "^6.7.0",
     "typescript": "*"
+  },
+  "dependencies": {
+    "@trpc/client": "^10.18.0",
+    "@trpc/server": "^10.18.0",
+    "db": "workspace:*",
+    "superjson": "^1.12.2",
+    "zod": "^3.21.4"
   }
 }

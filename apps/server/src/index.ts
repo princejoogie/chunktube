@@ -1,16 +1,25 @@
-import { prisma } from "db";
+import fastify from "fastify";
+import { appRouter, createTRPCContext, fastifyTRPCPlugin } from "api";
+
+const port = process.env.PORT ? parseInt(process.env.PORT) : 4000;
 
 const main = async () => {
-  console.log("Hello from api!");
+  const server = fastify({ logger: true });
 
-  const user = await prisma.user.findUnique({
-    where: { username: "pricejoogie" },
+  server.get("/", (_, res) => {
+    res.send({ hello: "world" });
   });
-  if (user) {
-    console.log("User found: ", user);
-  } else {
-    console.log("User not found");
-  }
+
+  await server.register(fastifyTRPCPlugin, {
+    prefix: "/trpc",
+    trpcOptions: {
+      router: appRouter,
+      createContext: createTRPCContext,
+    },
+  });
+
+  await server.listen({ port });
+  console.log(`Server started on at http://localhost:${port}/`);
 };
 
 main().catch(console.error);

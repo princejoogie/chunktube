@@ -13,7 +13,9 @@
     "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {
-    "db": "workspace:*"
+    "api": "workspace:*",
+    "db": "workspace:*",
+    "fastify": "^4.15.0"
   },
   "devDependencies": {
     "@types/node": "^18.15.11",

@@ -16,6 +16,7 @@
   },
   "devDependencies": {
     "@types/node": "^18.15.11",
+    "eslint-config-custom": "workspace:*",
     "prisma": "^4.12.0",
     "tsconfig": "workspace:*",
     "tsup": "^6.7.0",
