@@ -20,6 +20,8 @@
     "@trpc/client": "^10.18.0",
     "@trpc/server": "^10.18.0",
     "db": "workspace:*",
+    "nanoid": "^4.0.2",
+    "openai": "^3.2.1",
     "superjson": "^1.12.2",
     "zod": "^3.21.4"
   }

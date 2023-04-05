@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 
-const fileExistsSync = (filePath: string) => {
+export const fileExists = (filePath: string) => {
   try {
     return fs.statSync(filePath).isFile();
   } catch (error) {
@@ -9,7 +9,7 @@ const fileExistsSync = (filePath: string) => {
   }
 };
 
-const getPaths = (bin: string) => {
+export const getPaths = (bin: string) => {
   const envPath = process.env.PATH || "";
   const envExt = process.env.PATHEXT || "";
 
@@ -27,5 +27,5 @@ const getPaths = (bin: string) => {
 };
 
 export const hasBin = (bin: string) => {
-  return getPaths(bin).map(fileExistsSync).some(Boolean);
+  return getPaths(bin).map(fileExists).some(Boolean);
 };

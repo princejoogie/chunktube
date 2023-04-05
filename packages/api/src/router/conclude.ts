@@ -1,6 +1,6 @@
 import { z } from "zod";
 /* import { prisma } from "db"; */
-import { hasBin } from "../utils";
+import { hasBin } from "../utils/has-bin";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 
 export const concludeRouter = createTRPCRouter({
