@@ -1,6 +1,7 @@
 import { z } from "zod";
+/* import { prisma } from "db"; */
+import { hasBin } from "../utils";
 import { createTRPCRouter, publicProcedure } from "../trpc";
-import { prisma } from "db";
 
 export const concludeRouter = createTRPCRouter({
   create: publicProcedure
@@ -10,19 +11,11 @@ export const concludeRouter = createTRPCRouter({
       })
     )
     .mutation(({ input }) => {
-      return {
-        message: `Concluded ${input.url}`,
-      };
+      return { message: `Concluding ${input.url}...` };
     }),
   test: publicProcedure.query(async () => {
-    const user = await prisma.user.findUnique({
-      where: { username: "joogie" },
-    });
-
-    if (!user) {
-      return { message: "user not found" };
-    }
-
-    return { message: user.id };
+    const hasYtdl = hasBin("yt-dlp");
+    const hasFFmpeg = hasBin("ffmpeg");
+    return { message: { hasYtdl, hasFFmpeg } };
   }),
 });
