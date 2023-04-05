@@ -1,0 +1,37 @@
+{
+  "name": "conclusion.tech",
+  "version": "0.0.0",
+  "private": true,
+  "author": "princejoogie",
+  "description": "cron job scheduler",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/princejoogie/conclusion.tech.git"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "clean": "turbo run clean && rm -rf node_modules/.cache/turbo",
+    "lint": "turbo run lint",
+    "db:generate": "turbo run db:generate",
+    "db:push": "turbo run db:push",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "postinstall": "pnpm db:generate"
+  },
+  "devDependencies": {
+    "dotenv-cli": "^7.1.0",
+    "eslint-config-custom": "workspace:*",
+    "prettier": "latest",
+    "rimraf": "^4.4.1",
+    "tsconfig": "workspace:*",
+    "turbo": "latest"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "packageManager": "pnpm@8.1.0"
+}
