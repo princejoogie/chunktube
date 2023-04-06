@@ -19,22 +19,25 @@ const ConclusionPage = () => {
       <h1 className="my-4 font-mono text-center">Conclusion.tech</h1>
 
       <div className="flex flex-col">
-        {conclusion.data?.segments.map((segment, idx) => (
-          <div key={segment.id} className="mt-6">
-            <div className="flex">
-              <Timestamp
-                time={
-                  idx === 0
-                    ? "00:00:00"
-                    : conclusion.data.segments[idx - 1].time
-                }
-              />
-              <span className="text-xs p-1">{">"}</span>
-              <Timestamp time={segment.time} />
-            </div>
-            <p>{segment.content}</p>
-          </div>
-        ))}
+        {conclusion.data ? (
+          conclusion.data.segments.map((segment, idx) => {
+            const before = conclusion.data.segments[idx - 1];
+            const start = before ? before.time : "00:00:00";
+            const end = segment.time;
+            return (
+              <div key={segment.id} className="mt-6">
+                <div className="flex">
+                  <Timestamp time={start} />
+                  <span className="text-xs p-1">{">"}</span>
+                  <Timestamp time={end} />
+                </div>
+                <p>{segment.content}</p>
+              </div>
+            );
+          })
+        ) : (
+          <p>Loading...</p>
+        )}
       </div>
     </Container>
   );
