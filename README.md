@@ -1,4 +1,4 @@
-# conslusion.tech
+# conclusion.tech
 
 under 🚧
 
