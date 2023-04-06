@@ -5,15 +5,7 @@ import type EventEmitter from "events";
 
 type GetConclusionParam = Awaited<ReturnType<typeof transcribe>>[number];
 
-const getConclusion = async (
-  param: GetConclusionParam,
-  index: number,
-  ee: EventEmitter
-) => {
-  ee.emit("progress", {
-    message: `Concluding chunk ${index + 1}`,
-    percentage: 95,
-  });
+const getConclusion = async (param: GetConclusionParam, index: number) => {
   const content = fs.readFileSync(param.filePath, "utf-8");
   const response = await openai.createChatCompletion({
     model: "gpt-3.5-turbo",
@@ -42,13 +34,28 @@ const getConclusion = async (
   };
 };
 
+const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
 export const conclude = async (url: string, ee: EventEmitter) => {
-  ee.emit("progress", { message: "Transcribing", percentage: 0 });
+  ee.emit("progress", { message: "Initializing", percentage: 0 });
+  await sleep(2000);
   const transcriptions = await transcribe(url, ee);
 
-  ee.emit("progress", { message: "Getting conclusion", percentage: 80 });
+  let percentage = 70;
+  ee.emit("progress", { message: "Concluding segments", percentage });
+
+  const percentagePerSegment = 30 / transcriptions.length;
   const conclusions = await Promise.all(
-    transcriptions.map((e, i) => getConclusion(e, i, ee))
+    transcriptions.map((e, i) =>
+      getConclusion(e, i).then((data) => {
+        percentage += percentagePerSegment;
+        ee.emit("progress", {
+          message: `Done segment ${i + 1}`,
+          percentage,
+        });
+        return data;
+      })
+    )
   );
 
   ee.emit("progress", { message: "Done", percentage: 100 });

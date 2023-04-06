@@ -16,9 +16,9 @@ export const getPaths = (bin: string) => {
   return envPath
     .replace(/["]+/g, "")
     .split(path.delimiter)
-    .map(function (chunk) {
+    .map(function (segment) {
       return envExt.split(path.delimiter).map(function (ext) {
-        return path.join(chunk, bin + ext);
+        return path.join(segment, bin + ext);
       });
     })
     .reduce(function (a, b) {

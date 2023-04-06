@@ -99,31 +99,32 @@ const getTranscriptions = async (
   const txPath = path.join(tmpDir, "transcriptions");
   execSync(`mkdir ${txPath}`);
 
-  let progress = 35;
+  let percentage = 30;
+  const percentagePerChop = 50 / chops.length;
 
   const promises = chops.map((chop, offset) => {
     return new Promise<{ filePath: string; time: string }>(async (res, rej) => {
       try {
+        percentage += percentagePerChop / 2;
+        ee.emit("progress", {
+          message: `Transcribing segment ${offset + 1}`,
+          percentage,
+        });
+
         const filePath = path.join(
           txPath,
           chop.fileName.replace(".mp3", ".txt")
         );
-
-        progress += 1;
-        ee.emit("progress", {
-          message: `Transcribing chunk ${offset + 1}`,
-          percentage: progress,
-        });
         const txt = await getText(chop.path);
         const length = getAudioLength(chop.path);
         const time = getTimeOffset(length, offset);
-
-        progress += 1;
-        ee.emit("progress", {
-          message: `Saving chunk ${offset + 1}`,
-          percentage: progress,
-        });
         fs.writeFileSync(filePath, txt);
+
+        percentage += percentagePerChop / 2;
+        ee.emit("progress", {
+          message: `Saving segment ${offset + 1}`,
+          percentage,
+        });
 
         res({ filePath, time });
       } catch (e) {
@@ -141,10 +142,9 @@ export const transcribe = async (url: string, ee: EventEmitter) => {
   ee.emit("progress", { message: "Downloading audio", percentage: 10 });
   const audioPath = downloadAudio(url, tmpDir);
 
-  ee.emit("progress", { message: "Chopping audio", percentage: 20 });
+  ee.emit("progress", { message: "Chopping audio", percentage: 15 });
   const chops = chopAudio(audioPath, tmpDir);
 
-  ee.emit("progress", { message: "Transcribing audio", percentage: 30 });
   const transcriptions = await getTranscriptions(chops, tmpDir, ee);
 
   return transcriptions;

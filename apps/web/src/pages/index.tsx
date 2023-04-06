@@ -41,18 +41,29 @@ const Home = () => {
           disabled={conclude.isLoading}
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          className="bg-transparent px-2 py-1 rounded border border-gray-500"
+          className="bg-transparent px-2 py-1 rounded border border-gray-500 disabled:opacity-50 disabled:cursor-not-allowed"
           placeholder="youtube url"
         />
-        <button disabled={conclude.isLoading} type="submit">
+        <button
+          disabled={conclude.isLoading}
+          type="submit"
+          className="bg-green-600 px-2 py-1 rounded ml-2 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
           Submit
         </button>
       </form>
 
-      {conclude.isLoading && <div>Loading...</div>}
       {status && (
-        <div>
-          {status.message}... {status.percentage}%
+        <div className="w-1/2 mx-auto mt-6">
+          <div className="bg-gray-700 h-6 rounded-full overflow-hidden">
+            <div
+              className="h-full bg-white animate-pulse transition-all duration-500"
+              style={{ width: `${status.percentage}%` }}
+            />
+          </div>
+          <p className="w-full text-center mt-2">
+            {status.message}... {status.percentage.toFixed(2)}%
+          </p>
         </div>
       )}
     </Container>
