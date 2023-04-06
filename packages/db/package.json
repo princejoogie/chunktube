@@ -9,16 +9,16 @@
     "build": "tsup",
     "dev": "tsup --watch",
     "db:generate": "prisma generate",
-    "db:studio": "pnpm with-env prisma studio",
-    "db:push": "pnpm with-env prisma db push --skip-generate",
+    "db:studio": "yarn with-env prisma studio",
+    "db:push": "yarn with-env prisma db push --skip-generate",
     "clean": "rimraf .turbo/ dist/",
     "with-env": "dotenv -e ../../.env --"
   },
   "devDependencies": {
     "@types/node": "^18.15.11",
-    "eslint-config-custom": "workspace:*",
+    "eslint-config-custom": "*",
     "prisma": "^4.12.0",
-    "tsconfig": "workspace:*",
+    "tsconfig": "*",
     "tsup": "^6.7.0",
     "typescript": "*"
   },

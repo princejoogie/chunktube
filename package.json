@@ -4,10 +4,15 @@
   "private": true,
   "author": "princejoogie",
   "description": "cron job scheduler",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/princejoogie/conclusion.tech.git"
   },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
@@ -17,18 +22,18 @@
     "db:push": "turbo run db:push",
     "db:studio": "turbo run db:studio",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "postinstall": "pnpm db:generate"
+    "postinstall": "yarn db:generate"
   },
   "devDependencies": {
     "dotenv-cli": "^7.1.0",
-    "eslint-config-custom": "workspace:*",
+    "eslint-config-custom": "*",
     "prettier": "latest",
     "rimraf": "^4.4.1",
-    "tsconfig": "workspace:*",
+    "tsconfig": "*",
     "turbo": "latest"
   },
   "engines": {
     "node": ">=14.0.0"
   },
-  "packageManager": "pnpm@8.1.0"
+  "packageManager": "yarn@1.22.19"
 }

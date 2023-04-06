@@ -5,24 +5,25 @@
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "scripts": {
-    "dev": "pnpm with-env tsx watch src/index.ts",
-    "start": "pnpm with-env node ./dist/index.js",
+    "dev": "yarn with-env tsx watch src/index.ts",
+    "start": "yarn with-env node ./dist/index.js",
     "build": "tsup",
     "lint": "eslint ./src --ext .ts",
     "clean": "rimraf .turbo/ dist/",
     "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {
+    "@fastify/cors": "^8.2.1",
     "@trpc/server": "^10.18.0",
-    "api": "workspace:*",
-    "db": "workspace:*",
+    "api": "*",
+    "db": "*",
     "fastify": "^4.15.0"
   },
   "devDependencies": {
     "@types/node": "^18.15.11",
     "eslint": "^8.37.0",
-    "eslint-config-custom": "workspace:*",
-    "tsconfig": "workspace:*",
+    "eslint-config-custom": "*",
+    "tsconfig": "*",
     "tsup": "^6.7.0",
     "tsx": "^3.12.6",
     "typescript": "^5.0.3"

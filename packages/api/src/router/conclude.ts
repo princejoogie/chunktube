@@ -45,4 +45,9 @@ export const concludeRouter = createTRPCRouter({
       });
       return data;
     }),
+  test: publicProcedure
+    .input(z.object({ name: z.string() }).optional())
+    .query(({ input }) => {
+      return `Hello ${input ? input.name : "World"}!`;
+    }),
 });

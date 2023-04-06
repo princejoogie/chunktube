@@ -1,7 +1,7 @@
 import superjson from "superjson";
 import { QueryClient } from "@tanstack/react-query";
 import { createTRPCReact, httpBatchLink } from "@trpc/react-query";
-import { appRouter } from "api";
+import type { AppRouter } from "api";
 
 const getBaseUrl = () => {
   if (process.env.NEXT_PUBLIC_API_URL) {
@@ -11,11 +11,11 @@ const getBaseUrl = () => {
   return `http://localhost:${process.env.PORT ?? 3000}`;
 };
 
-export const trpc = createTRPCReact<typeof appRouter>();
+export const api = createTRPCReact<AppRouter>();
 
 export const queryClient = new QueryClient();
 
-export const client = trpc.createClient({
+export const client = api.createClient({
   links: [
     httpBatchLink({
       url: `${getBaseUrl()}/trpc`,

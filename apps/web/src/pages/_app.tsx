@@ -1,14 +1,14 @@
-import { AppProps } from "next/app";
-import { trpc, client, queryClient } from "../utils/trpc";
+import type { AppProps } from "next/app";
+import { api, client, queryClient } from "../utils/api";
 import { QueryClientProvider } from "@tanstack/react-query";
 
 const App = ({ Component, pageProps }: AppProps) => {
   return (
-    <trpc.Provider client={client} queryClient={queryClient}>
+    <api.Provider client={client} queryClient={queryClient}>
       <QueryClientProvider client={queryClient}>
         <Component {...pageProps} />
       </QueryClientProvider>
-    </trpc.Provider>
+    </api.Provider>
   );
 };
 
