@@ -4,6 +4,7 @@ import { customAlphabet } from "nanoid";
 import { execSync } from "child_process";
 import { openai } from "./config";
 import { hasBin, fileExists } from "../utils/has-bin";
+import type EventEmitter from "events";
 
 const generateId = customAlphabet("1234567890abcdefghijklmnopqrstuvwxyz", 10);
 
@@ -92,10 +93,13 @@ const chopAudio = (audioPath: string, tmpDir: string) => {
 
 const getTranscriptions = async (
   chops: ReturnType<typeof chopAudio>,
-  tmpDir: string
+  tmpDir: string,
+  ee: EventEmitter
 ) => {
   const txPath = path.join(tmpDir, "transcriptions");
   execSync(`mkdir ${txPath}`);
+
+  let progress = 35;
 
   const promises = chops.map((chop, offset) => {
     return new Promise<{ filePath: string; time: string }>(async (res, rej) => {
@@ -105,15 +109,21 @@ const getTranscriptions = async (
           chop.fileName.replace(".mp3", ".txt")
         );
 
-        console.log("Transcribing", chop.fileName, "...");
+        progress += 1;
+        ee.emit("progress", {
+          message: `Transcribing chunk ${offset + 1}`,
+          percentage: progress,
+        });
         const txt = await getText(chop.path);
         const length = getAudioLength(chop.path);
         const time = getTimeOffset(length, offset);
-        console.log("Transcribing", chop.fileName, "... done");
 
-        console.log("Writing transcription to", filePath, "...");
+        progress += 1;
+        ee.emit("progress", {
+          message: `Saving chunk ${offset + 1}`,
+          percentage: progress,
+        });
         fs.writeFileSync(filePath, txt);
-        console.log("Writing transcription to", filePath, "... done");
 
         res({ filePath, time });
       } catch (e) {
@@ -125,23 +135,17 @@ const getTranscriptions = async (
   return await Promise.all(promises);
 };
 
-export const transcribe = async (url: string) => {
+export const transcribe = async (url: string, ee: EventEmitter) => {
   const tmpDir = path.join(__dirname, "tmp", generateId());
 
-  console.log("Downloading audio...");
+  ee.emit("progress", { message: "Downloading audio", percentage: 10 });
   const audioPath = downloadAudio(url, tmpDir);
-  console.log("Downloading audio... done");
-  console.log("Audio path:", audioPath, "\n");
 
-  console.log("Chopping audio...");
+  ee.emit("progress", { message: "Chopping audio", percentage: 20 });
   const chops = chopAudio(audioPath, tmpDir);
-  console.log("Chopping audio... done");
-  console.log("Chops:", chops, "\n");
 
-  console.log("Transcribing audio...");
-  const transcriptions = await getTranscriptions(chops, tmpDir);
-  console.log("Transcribing audio... done");
-  console.log("Transcriptions:", transcriptions, "\n");
+  ee.emit("progress", { message: "Transcribing audio", percentage: 30 });
+  const transcriptions = await getTranscriptions(chops, tmpDir, ee);
 
   return transcriptions;
 };

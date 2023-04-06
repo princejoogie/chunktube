@@ -6,9 +6,20 @@ import Container from "../components/container";
 const Home = () => {
   const router = useRouter();
   const [input, setInput] = useState("");
+  const [status, setStatus] = useState<{
+    message: string;
+    percentage: number;
+  } | null>(null);
+
   const conclude = api.conclusion.create.useMutation({
     onSuccess: (data) => {
       router.push(`/c/${encodeURIComponent(data.url)}`);
+    },
+  });
+
+  const rand = api.conclusion.sub.useSubscription(undefined, {
+    onData: (data) => {
+      setStatus(data);
     },
   });
 
@@ -34,6 +45,11 @@ const Home = () => {
       </form>
 
       {conclude.isLoading && <div>Loading...</div>}
+      {status && (
+        <div>
+          {status.message}... {status.percentage}%
+        </div>
+      )}
     </Container>
   );
 };

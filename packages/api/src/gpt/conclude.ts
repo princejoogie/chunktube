@@ -1,10 +1,19 @@
 import fs from "fs";
 import { transcribe } from "./transcribe";
 import { openai } from "./config";
+import type EventEmitter from "events";
 
 type GetConclusionParam = Awaited<ReturnType<typeof transcribe>>[number];
 
-const getConclusion = async (param: GetConclusionParam, index: number) => {
+const getConclusion = async (
+  param: GetConclusionParam,
+  index: number,
+  ee: EventEmitter
+) => {
+  ee.emit("progress", {
+    message: `Concluding chunk ${index + 1}`,
+    percentage: 95,
+  });
   const content = fs.readFileSync(param.filePath, "utf-8");
   const response = await openai.createChatCompletion({
     model: "gpt-3.5-turbo",
@@ -33,11 +42,15 @@ const getConclusion = async (param: GetConclusionParam, index: number) => {
   };
 };
 
-export const conclude = async (url: string) => {
-  const transcriptions = await transcribe(url);
+export const conclude = async (url: string, ee: EventEmitter) => {
+  ee.emit("progress", { message: "Transcribing", percentage: 0 });
+  const transcriptions = await transcribe(url, ee);
+
+  ee.emit("progress", { message: "Getting conclusion", percentage: 80 });
   const conclusions = await Promise.all(
-    transcriptions.map((e, i) => getConclusion(e, i))
+    transcriptions.map((e, i) => getConclusion(e, i, ee))
   );
-  console.log({ conclusions });
+
+  ee.emit("progress", { message: "Done", percentage: 100 });
   return conclusions;
 };
