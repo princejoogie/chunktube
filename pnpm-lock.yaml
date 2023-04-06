@@ -25,6 +25,9 @@ importers:
 
   apps/server:
     dependencies:
+      '@trpc/server':
+        specifier: ^10.18.0
+        version: 10.18.0
       api:
         specifier: workspace:*
         version: link:../../packages/api
@@ -44,6 +47,9 @@ importers:
       eslint-config-custom:
         specifier: workspace:*
         version: link:../../packages/eslint-config-custom
+      tsconfig:
+        specifier: workspace:*
+        version: link:../../packages/tsconfig
       tsup:
         specifier: ^6.7.0
         version: 6.7.0(typescript@5.0.3)

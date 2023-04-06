@@ -118,4 +118,6 @@ export const transcribe = async (url: string) => {
   const transcriptions = await getTranscriptions(chops, tmpDir);
   console.log("Transcribing audio... done");
   console.log("Transcriptions:", transcriptions, "\n");
+
+  return transcriptions;
 };

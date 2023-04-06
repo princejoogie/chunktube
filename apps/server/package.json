@@ -13,6 +13,7 @@
     "with-env": "dotenv -e ../../.env --"
   },
   "dependencies": {
+    "@trpc/server": "^10.18.0",
     "api": "workspace:*",
     "db": "workspace:*",
     "fastify": "^4.15.0"
@@ -21,6 +22,7 @@
     "@types/node": "^18.15.11",
     "eslint": "^8.37.0",
     "eslint-config-custom": "workspace:*",
+    "tsconfig": "workspace:*",
     "tsup": "^6.7.0",
     "tsx": "^3.12.6",
     "typescript": "^5.0.3"

@@ -1,5 +1,6 @@
 import fastify from "fastify";
-import { appRouter, createTRPCContext, fastifyTRPCPlugin } from "api";
+import { fastifyTRPCPlugin } from "@trpc/server/adapters/fastify";
+import { appRouter, createContext } from "api";
 
 const port = process.env.PORT ? parseInt(process.env.PORT) : 4000;
 
@@ -14,7 +15,7 @@ const main = async () => {
     prefix: "/trpc",
     trpcOptions: {
       router: appRouter,
-      createContext: createTRPCContext,
+      createContext,
     },
   });
 

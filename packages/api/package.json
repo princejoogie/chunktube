@@ -5,8 +5,6 @@
   "main": "index.ts",
   "types": "index.ts",
   "scripts": {
-    "build": "tsup",
-    "dev": "tsup --watch",
     "clean": "rimraf .turbo/ dist/"
   },
   "devDependencies": {
