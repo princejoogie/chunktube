@@ -17,11 +17,16 @@ const Home = () => {
     },
   });
 
-  const rand = api.conclusion.sub.useSubscription(undefined, {
-    onData: (data) => {
-      setStatus(data);
-    },
-  });
+  api.conclusion.sub.useSubscription(
+    { url: input },
+    {
+      onData: (data) => {
+        if (data.url === input) {
+          setStatus(data);
+        }
+      },
+    }
+  );
 
   return (
     <Container>

@@ -61,17 +61,24 @@ export const conclusionRouter = createTRPCRouter({
       if (!existing) throw new TRPCError({ code: "NOT_FOUND" });
       return existing;
     }),
-  sub: publicProcedure.subscription(() => {
-    return observable<{ message: string; percentage: number }>((emit) => {
-      const onProgress = (data: { message: string; percentage: number }) => {
-        emit.next(data);
-      };
+  sub: publicProcedure
+    .input(z.object({ url: z.string().url() }))
+    .subscription(({ input }) => {
+      return observable<{ message: string; percentage: number; url: string }>(
+        (emit) => {
+          const onProgress = (data: {
+            message: string;
+            percentage: number;
+          }) => {
+            emit.next({ ...data, url: input.url });
+          };
 
-      ee.on("progress", onProgress);
+          ee.on("progress", onProgress);
 
-      return () => {
-        ee.off("progress", onProgress);
-      };
-    });
-  }),
+          return () => {
+            ee.off("progress", onProgress);
+          };
+        }
+      );
+    }),
 });
