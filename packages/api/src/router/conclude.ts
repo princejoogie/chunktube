@@ -45,11 +45,4 @@ export const concludeRouter = createTRPCRouter({
       });
       return data;
     }),
-  test: publicProcedure
-    .input(z.object({ url: z.string() }).optional())
-    .mutation(({ input, ctx }) => {
-      const data = { input, ctx: { body: ctx.req.body } };
-      console.log({ data });
-      return data;
-    }),
 });
