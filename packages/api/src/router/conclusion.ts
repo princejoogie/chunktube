@@ -36,19 +36,24 @@ export const conclusionRouter = createTRPCRouter({
         return existing;
       }
 
-      const conclusions = await conclude(input.url, ee);
-      const data = await ctx.prisma.conclusion.create({
-        data: {
-          url: input.url,
-          segments: {
-            createMany: {
-              data: conclusions.map((e) => e),
+      try {
+        const conclusions = await conclude(input.url, ee);
+        const data = await ctx.prisma.conclusion.create({
+          data: {
+            url: input.url,
+            segments: {
+              createMany: {
+                data: conclusions.map((e) => e),
+              },
             },
           },
-        },
-        select: conclusionSelect,
-      });
-      return data;
+          select: conclusionSelect,
+        });
+        return data;
+      } catch (e) {
+        console.error(e);
+        throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" });
+      }
     }),
   get: publicProcedure
     .input(z.object({ url: z.string().url() }))
