@@ -2,8 +2,10 @@ import fs from "fs";
 import { transcribe } from "./transcribe";
 import { openai } from "./config";
 
-const getConclusion = async (file: string) => {
-  const content = fs.readFileSync(file, "utf-8");
+type GetConclusionParam = Awaited<ReturnType<typeof transcribe>>[number];
+
+const getConclusion = async (param: GetConclusionParam, index: number) => {
+  const content = fs.readFileSync(param.filePath, "utf-8");
   const response = await openai.createChatCompletion({
     model: "gpt-3.5-turbo",
     messages: [
@@ -24,12 +26,18 @@ const getConclusion = async (file: string) => {
     throw new Error("ERROR: No output returned");
   }
 
-  return response.data.choices[0].message.content;
+  return {
+    content: response.data.choices[0].message.content,
+    time: param.time,
+    order: index,
+  };
 };
 
 export const conclude = async (url: string) => {
   const transcriptions = await transcribe(url);
-  const conclusions = await Promise.all(transcriptions.map(getConclusion));
+  const conclusions = await Promise.all(
+    transcriptions.map((e, i) => getConclusion(e, i))
+  );
   console.log({ conclusions });
   return conclusions;
 };

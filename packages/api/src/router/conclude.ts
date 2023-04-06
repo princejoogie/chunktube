@@ -4,23 +4,23 @@ import { conclude } from "../gpt/conclude";
 
 export const concludeRouter = createTRPCRouter({
   create: publicProcedure
-    .input(z.string().optional())
-    .mutation(async ({ ctx }) => {
-      const input = {
-        url: "https://www.youtube.com/watch?v=iO1mwxPNP5A",
-      };
-
-      console.log("concludeRouter hit", input);
+    .input(z.object({ url: z.string() }))
+    .mutation(async ({ ctx, input }) => {
       const select = {
         url: true,
         segments: {
+          orderBy: {
+            order: "asc",
+          },
           select: {
             id: true,
             content: true,
+            time: true,
+            order: true,
           },
         },
         createdAt: true,
-      };
+      } as const;
 
       const existing = await ctx.prisma.conclusion.findUnique({
         where: { url: input.url },
@@ -37,12 +37,19 @@ export const concludeRouter = createTRPCRouter({
           url: input.url,
           segments: {
             createMany: {
-              data: conclusions.map((content) => ({ content })),
+              data: conclusions.map((e) => e),
             },
           },
         },
         select,
       });
+      return data;
+    }),
+  test: publicProcedure
+    .input(z.object({ url: z.string() }).optional())
+    .mutation(({ input, ctx }) => {
+      const data = { input, ctx: { body: ctx.req.body } };
+      console.log({ data });
       return data;
     }),
 });

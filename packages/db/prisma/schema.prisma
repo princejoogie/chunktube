@@ -18,6 +18,8 @@ model User {
 model Segment {
   id           String      @id @default(cuid())
   content      String
+  time         String
+  order        Int
   conclusion   Conclusion? @relation(fields: [conclusionId], references: [id], onDelete: Cascade)
   conclusionId String?
 }

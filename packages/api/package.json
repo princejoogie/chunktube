@@ -2,9 +2,12 @@
   "name": "api",
   "version": "0.0.0",
   "private": true,
-  "main": "index.ts",
-  "types": "index.ts",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
   "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
     "clean": "rimraf .turbo/ dist/"
   },
   "devDependencies": {

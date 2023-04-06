@@ -8,10 +8,6 @@
     "type": "git",
     "url": "https://github.com/princejoogie/conclusion.tech.git"
   },
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ],
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
@@ -19,6 +15,7 @@
     "lint": "turbo run lint",
     "db:generate": "turbo run db:generate",
     "db:push": "turbo run db:push",
+    "db:studio": "turbo run db:studio",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "postinstall": "pnpm db:generate"
   },

@@ -7,6 +7,27 @@ import { hasBin, fileExists } from "../utils/has-bin";
 
 const generateId = customAlphabet("1234567890abcdefghijklmnopqrstuvwxyz", 10);
 
+const getAudioLength = (audioPath: string) => {
+  if (!hasBin("ffprobe")) throw new Error("ERROR: ffprobe not found");
+
+  try {
+    const duration = execSync(
+      `ffprobe -i ${audioPath} -show_entries format=duration -v quiet -of csv="p=0"`
+    )
+      .toString()
+      .trim();
+    return parseFloat(duration);
+  } catch {
+    throw new Error("ERROR: Failed to get audio length");
+  }
+};
+
+const getTimeOffset = (length: number, offset: number) => {
+  const len = length + offset * (5 * 60);
+  const d = new Date(len * 1000);
+  return d.toISOString().slice(11, 19);
+};
+
 const getText = async (audioPath: string) => {
   const response = await openai.createTranscription(
     fs.createReadStream(audioPath),
@@ -76,8 +97,8 @@ const getTranscriptions = async (
   const txPath = path.join(tmpDir, "transcriptions");
   execSync(`mkdir ${txPath}`);
 
-  const promises = chops.map((chop) => {
-    return new Promise<string>(async (res, rej) => {
+  const promises = chops.map((chop, offset) => {
+    return new Promise<{ filePath: string; time: string }>(async (res, rej) => {
       try {
         const filePath = path.join(
           txPath,
@@ -86,12 +107,15 @@ const getTranscriptions = async (
 
         console.log("Transcribing", chop.fileName, "...");
         const txt = await getText(chop.path);
+        const length = getAudioLength(chop.path);
+        const time = getTimeOffset(length, offset);
         console.log("Transcribing", chop.fileName, "... done");
 
         console.log("Writing transcription to", filePath, "...");
         fs.writeFileSync(filePath, txt);
         console.log("Writing transcription to", filePath, "... done");
-        res(filePath);
+
+        res({ filePath, time });
       } catch (e) {
         rej(e);
       }

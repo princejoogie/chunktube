@@ -9,7 +9,7 @@
     "build": "tsup",
     "dev": "tsup --watch",
     "db:generate": "prisma generate",
-    "db:studio": "prisma studio",
+    "db:studio": "pnpm with-env prisma studio",
     "db:push": "pnpm with-env prisma db push --skip-generate",
     "clean": "rimraf .turbo/ dist/",
     "with-env": "dotenv -e ../../.env --"
