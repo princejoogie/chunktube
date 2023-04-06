@@ -13,7 +13,7 @@ const getConclusion = async (param: GetConclusionParam, index: number) => {
       {
         role: "system",
         content:
-          "Summarize the following text as best you can, keep it short and straight to the point. Begin your summary with the following sentence: For this segment, ...",
+          "Summarize the following text as best you can, keep it short and straight to the point. Maximum of 5 sentences. Begin your summary with 'For this segment, ...' or 'This segment talks about' or something similar that fits the current context.",
       },
       { role: "user", content },
     ],

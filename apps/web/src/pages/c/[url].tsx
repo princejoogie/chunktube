@@ -2,6 +2,12 @@ import { useRouter } from "next/router";
 import { api } from "../../utils/api";
 import Container from "../../components/container";
 
+const Timestamp = ({ time }: { time: string }) => {
+  return (
+    <div className="bg-gray-800 p-1 text-gray-300 text-xs rounded">{time}</div>
+  );
+};
+
 const ConclusionPage = () => {
   const router = useRouter();
   const { url } = router.query as { url: string };
@@ -10,12 +16,22 @@ const ConclusionPage = () => {
 
   return (
     <Container>
-      <h1>Conclusion.tech</h1>
+      <h1 className="my-4 font-mono text-center">Conclusion.tech</h1>
 
-      <div>
-        {conclusion.data?.segments.map((segment) => (
-          <div key={segment.id} className="mt-4">
-            <span>{segment.time}</span>
+      <div className="flex flex-col">
+        {conclusion.data?.segments.map((segment, idx) => (
+          <div key={segment.id} className="mt-6">
+            <div className="flex">
+              <Timestamp
+                time={
+                  idx === 0
+                    ? "00:00:00"
+                    : conclusion.data.segments[idx - 1].time
+                }
+              />
+              <span className="text-xs p-1">{">"}</span>
+              <Timestamp time={segment.time} />
+            </div>
             <p>{segment.content}</p>
           </div>
         ))}

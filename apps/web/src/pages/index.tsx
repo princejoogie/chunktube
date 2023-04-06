@@ -30,8 +30,9 @@ const Home = () => {
 
   return (
     <Container>
-      <h1>Conclusion.tech</h1>
+      <h1 className="my-4 font-mono text-center">Conclusion.tech</h1>
       <form
+        className="w-1/2 mx-auto flex"
         onSubmit={(e) => {
           e.preventDefault();
           conclude.mutate({ url: input });
@@ -41,11 +42,11 @@ const Home = () => {
           disabled={conclude.isLoading}
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          className="bg-transparent px-2 py-1 rounded border border-gray-500 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="flex-1 bg-transparent px-2 py-1 rounded border border-gray-500 disabled:opacity-50 disabled:cursor-not-allowed"
           placeholder="youtube url"
         />
         <button
-          disabled={conclude.isLoading}
+          disabled={conclude.isLoading || !input}
           type="submit"
           className="bg-green-600 px-2 py-1 rounded ml-2 disabled:opacity-50 disabled:cursor-not-allowed"
         >
