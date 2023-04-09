@@ -2,13 +2,14 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
   binaryTargets = ["native"]
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
 }
 
 model User {
@@ -18,11 +19,13 @@ model User {
 
 model Segment {
   id           String      @id @default(cuid())
-  content      String
+  content      String      @db.Text
   time         String
   order        Int
   conclusion   Conclusion? @relation(fields: [conclusionId], references: [id], onDelete: Cascade)
   conclusionId String?
+
+  @@index([conclusionId])
 }
 
 model Conclusion {
