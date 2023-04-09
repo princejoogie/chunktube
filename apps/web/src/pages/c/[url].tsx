@@ -26,18 +26,18 @@ const ConclusionPage = () => {
   const vidUrl = decodeURIComponent(url);
   const conclusion = api.conclusion.get.useQuery(
     { url: vidUrl },
-    { enabled: !!url }
+    { enabled: !!url, retry: false }
   );
 
   return (
     <Container>
       <Link href="/">
-        <h1 className="my-4 text-center font-mono">Conclusion.tech</h1>
+        <h1 className="my-4 text-center font-mono text-2xl">Conclusion.tech</h1>
       </Link>
 
       <div className="flex flex-col">
         {conclusion.isLoading ? (
-          <p>Loading...</p>
+          <p className="w-full text-center">Loading...</p>
         ) : conclusion.data ? (
           conclusion.data.segments.map((segment, idx) => {
             const before = conclusion.data.segments[idx - 1];
@@ -73,7 +73,12 @@ const ConclusionPage = () => {
             );
           })
         ) : (
-          <p>No data found for ${vidUrl}</p>
+          <p className="w-full text-center">
+            No data found for{" "}
+            <Link target="_blank" rel="noopener noreferrer" href={vidUrl}>
+              <span className="text-blue-600">{vidUrl}</span>
+            </Link>
+          </p>
         )}
       </div>
     </Container>
