@@ -1,10 +1,13 @@
-import Link from "next/link";
+import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/router";
 import { useState } from "react";
+
 import { api } from "../utils/api";
 import Container from "../components/container";
+import Layout from "../components/layout";
 
 const Home = () => {
+  const { user, isLoaded, isSignedIn } = useUser();
   const router = useRouter();
   const [input, setInput] = useState("");
   const [status, setStatus] = useState<{
@@ -38,47 +41,54 @@ const Home = () => {
   );
 
   return (
-    <Container>
-      <Link href="/">
-        <h1 className="my-4 text-center font-mono text-2xl">Conclusion.tech</h1>
-      </Link>
-      <fieldset disabled={conclude.isLoading}>
-        <form
-          className="mx-auto flex w-1/2"
-          onSubmit={(e) => {
-            e.preventDefault();
-            conclude.mutate({ url: input });
-          }}
-        >
-          <input
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            className="flex-1 rounded border border-gray-500 bg-transparent px-2 py-1 disabled:cursor-not-allowed disabled:opacity-50"
-            placeholder="youtube url"
-          />
-          <button
-            type="submit"
-            className="ml-2 rounded bg-green-600 px-2 py-1 disabled:cursor-not-allowed disabled:opacity-50"
-          >
-            Submit
-          </button>
-        </form>
-      </fieldset>
+    <Layout>
+      <Container>
+        {!isLoaded ? (
+          <p className="w-full text-center">Loading...</p>
+        ) : !isSignedIn ? (
+          <p className="w-full text-center">Please sign in to continue</p>
+        ) : (
+          <>
+            <fieldset disabled={conclude.isLoading}>
+              <form
+                className="mx-auto flex w-1/2"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  conclude.mutate({ url: input });
+                }}
+              >
+                <input
+                  value={input}
+                  onChange={(e) => setInput(e.target.value)}
+                  className="flex-1 rounded border border-gray-500 bg-transparent px-2 py-1 disabled:cursor-not-allowed disabled:opacity-50"
+                  placeholder="youtube url"
+                />
+                <button
+                  type="submit"
+                  className="ml-2 rounded bg-green-600 px-2 py-1 disabled:cursor-not-allowed disabled:opacity-50"
+                >
+                  Submit
+                </button>
+              </form>
+            </fieldset>
 
-      {status && (
-        <div className="mx-auto mt-6 w-1/2">
-          <div className="h-4 overflow-hidden rounded-full bg-gray-700">
-            <div
-              className="h-full animate-pulse bg-white transition-all duration-500"
-              style={{ width: `${status.percentage}%` }}
-            />
-          </div>
-          <p className="mt-2 w-full text-center text-sm text-gray-300">
-            {status.message}... {status.percentage.toFixed(2)}%
-          </p>
-        </div>
-      )}
-    </Container>
+            {status && (
+              <div className="mx-auto mt-6 w-1/2">
+                <div className="h-4 overflow-hidden rounded-full bg-gray-700">
+                  <div
+                    className="h-full animate-pulse bg-white transition-all duration-500"
+                    style={{ width: `${status.percentage}%` }}
+                  />
+                </div>
+                <p className="mt-2 w-full text-center text-sm text-gray-300">
+                  {status.message}... {status.percentage.toFixed(2)}%
+                </p>
+              </div>
+            )}
+          </>
+        )}
+      </Container>
+    </Layout>
   );
 };
 

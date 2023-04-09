@@ -2,6 +2,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { api } from "../../utils/api";
 import Container from "../../components/container";
+import Layout from "../../components/layout";
 
 const Timestamp = ({ time }: { time: string }) => {
   return (
@@ -30,58 +31,56 @@ const ConclusionPage = () => {
   );
 
   return (
-    <Container>
-      <Link href="/">
-        <h1 className="my-4 text-center font-mono text-2xl">Conclusion.tech</h1>
-      </Link>
+    <Layout>
+      <Container>
+        <div className="flex flex-col">
+          {conclusion.isLoading ? (
+            <p className="w-full text-center">Loading...</p>
+          ) : conclusion.data ? (
+            conclusion.data.segments.map((segment, idx) => {
+              const before = conclusion.data.segments[idx - 1];
+              const start = before ? before.time : "00:00:00";
+              const end = segment.time;
 
-      <div className="flex flex-col">
-        {conclusion.isLoading ? (
-          <p className="w-full text-center">Loading...</p>
-        ) : conclusion.data ? (
-          conclusion.data.segments.map((segment, idx) => {
-            const before = conclusion.data.segments[idx - 1];
-            const start = before ? before.time : "00:00:00";
-            const end = segment.time;
+              const secStart = hmsToSec(start);
+              const secEnd = hmsToSec(end);
 
-            const secStart = hmsToSec(start);
-            const secEnd = hmsToSec(end);
+              return (
+                <div key={segment.id} className="mt-6">
+                  <div className="flex">
+                    <Link
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      href={`${conclusion.data.url}&t=${secStart}s`}
+                    >
+                      <Timestamp time={start} />
+                    </Link>
 
-            return (
-              <div key={segment.id} className="mt-6">
-                <div className="flex">
-                  <Link
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    href={`${conclusion.data.url}&t=${secStart}s`}
-                  >
-                    <Timestamp time={start} />
-                  </Link>
+                    <span className="p-1 text-xs">{">"}</span>
 
-                  <span className="p-1 text-xs">{">"}</span>
-
-                  <Link
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    href={`${conclusion.data.url}&t=${secEnd}s`}
-                  >
-                    <Timestamp time={end} />
-                  </Link>
+                    <Link
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      href={`${conclusion.data.url}&t=${secEnd}s`}
+                    >
+                      <Timestamp time={end} />
+                    </Link>
+                  </div>
+                  <p>{segment.content}</p>
                 </div>
-                <p>{segment.content}</p>
-              </div>
-            );
-          })
-        ) : (
-          <p className="w-full text-center">
-            No data found for{" "}
-            <Link target="_blank" rel="noopener noreferrer" href={vidUrl}>
-              <span className="text-blue-600">{vidUrl}</span>
-            </Link>
-          </p>
-        )}
-      </div>
-    </Container>
+              );
+            })
+          ) : (
+            <p className="w-full text-center">
+              No data found for{" "}
+              <Link target="_blank" rel="noopener noreferrer" href={vidUrl}>
+                <span className="text-blue-600">{vidUrl}</span>
+              </Link>
+            </p>
+          )}
+        </div>
+      </Container>
+    </Layout>
   );
 };
 

@@ -1,15 +1,17 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import superjson from "superjson";
-import { api, getWsUrl, getBaseUrl } from "../utils/api";
+import { useMemo } from "react";
+import { ClerkProvider } from "@clerk/nextjs";
+import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import {
   createWSClient,
   splitLink,
   httpBatchLink,
   wsLink,
 } from "@trpc/react-query";
-import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
-import { useMemo } from "react";
+
+import { api, getWsUrl, getBaseUrl } from "../utils/api";
 
 export const queryClient = new QueryClient();
 const isBrowser = typeof window !== "undefined";
@@ -47,11 +49,27 @@ const App = ({ Component, pageProps }: AppProps) => {
   }, []);
 
   return (
-    <api.Provider client={client} queryClient={queryClient}>
-      <QueryClientProvider client={queryClient}>
-        <Component {...pageProps} />
-      </QueryClientProvider>
-    </api.Provider>
+    <ClerkProvider
+      {...pageProps}
+      appearance={{
+        baseTheme: "dark",
+        variables: {
+          colorText: "#f3f4f6",
+          colorBackground: "#1f2937",
+          colorPrimary: "#16a34a",
+        },
+        elements: {
+          userButtonPopoverFooter: "!text-gray-400 !fill-gray-400",
+          userButtonPopoverActionButtonIcon: "text-gray-400 fill-gray-400",
+        },
+      }}
+    >
+      <api.Provider client={client} queryClient={queryClient}>
+        <QueryClientProvider client={queryClient}>
+          <Component {...pageProps} />
+        </QueryClientProvider>
+      </api.Provider>
+    </ClerkProvider>
   );
 };
 
