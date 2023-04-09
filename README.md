@@ -17,6 +17,12 @@ yt-dlp -x --audio-quality 10 --audio-format mp3 --output extracted_audio
 ffmpeg -i extracted_audio.mp3 -c copy -map 0 -segment_time 00:05:00 -f segment -reset_timestamps 1 output%03d.mp3
 ```
 
+```bash
+# building the server docker image
+docker build -t conclusion-server -f ./Dockerfile.server .
+docker run -p 4000:4000 -e DATABASE_URL=your_database_url -e OPENAI_API_KEY=your_api_key conclusion-server
+```
+
 ---
 
 Made with ☕ by Prince Carlo Juguilon

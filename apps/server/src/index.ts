@@ -24,7 +24,7 @@ const main = async () => {
     res.send({ hello: "world" });
   });
 
-  await server.listen({ port });
+  await server.listen({ port, host: "0.0.0.0" });
   console.log(`Server started on at http://localhost:${port}/`);
 };
 

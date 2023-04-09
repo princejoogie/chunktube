@@ -22,8 +22,7 @@
     "db:generate": "turbo run db:generate",
     "db:push": "turbo run db:push",
     "db:studio": "turbo run db:studio",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "postinstall": "yarn db:generate"
+    "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "devDependencies": {
     "dotenv-cli": "^7.1.0",
