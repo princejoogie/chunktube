@@ -5,7 +5,7 @@ import Container from "../../components/container";
 
 const Timestamp = ({ time }: { time: string }) => {
   return (
-    <div className="bg-gray-800 hover:bg-gray-700 active:opacity-70 p-1 text-gray-300 text-xs rounded transition-all">
+    <div className="rounded bg-gray-800 p-1 text-xs text-gray-300 transition-all hover:bg-gray-700 active:opacity-70">
       {time}
     </div>
   );
@@ -32,7 +32,7 @@ const ConclusionPage = () => {
   return (
     <Container>
       <Link href="/">
-        <h1 className="my-4 font-mono text-center">Conclusion.tech</h1>
+        <h1 className="my-4 text-center font-mono">Conclusion.tech</h1>
       </Link>
 
       <div className="flex flex-col">
@@ -58,7 +58,7 @@ const ConclusionPage = () => {
                     <Timestamp time={start} />
                   </Link>
 
-                  <span className="text-xs p-1">{">"}</span>
+                  <span className="p-1 text-xs">{">"}</span>
 
                   <Link
                     target="_blank"

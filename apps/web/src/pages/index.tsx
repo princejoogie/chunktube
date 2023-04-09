@@ -34,10 +34,10 @@ const Home = () => {
   return (
     <Container>
       <Link href="/">
-        <h1 className="my-4 font-mono text-center">Conclusion.tech</h1>
+        <h1 className="my-4 text-center font-mono">Conclusion.tech</h1>
       </Link>
       <form
-        className="w-1/2 mx-auto flex"
+        className="mx-auto flex w-1/2"
         onSubmit={(e) => {
           e.preventDefault();
           conclude.mutate({ url: input });
@@ -47,27 +47,27 @@ const Home = () => {
           disabled={conclude.isLoading}
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          className="flex-1 bg-transparent px-2 py-1 rounded border border-gray-500 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="flex-1 rounded border border-gray-500 bg-transparent px-2 py-1 disabled:cursor-not-allowed disabled:opacity-50"
           placeholder="youtube url"
         />
         <button
           disabled={conclude.isLoading || !input}
           type="submit"
-          className="bg-green-600 px-2 py-1 rounded ml-2 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="ml-2 rounded bg-green-600 px-2 py-1 disabled:cursor-not-allowed disabled:opacity-50"
         >
           Submit
         </button>
       </form>
 
       {status && (
-        <div className="w-1/2 mx-auto mt-6">
-          <div className="bg-gray-700 h-6 rounded-full overflow-hidden">
+        <div className="mx-auto mt-6 w-1/2">
+          <div className="h-6 overflow-hidden rounded-full bg-gray-700">
             <div
-              className="h-full bg-white animate-pulse transition-all duration-500"
+              className="h-full animate-pulse bg-white transition-all duration-500"
               style={{ width: `${status.percentage}%` }}
             />
           </div>
-          <p className="w-full text-center mt-2">
+          <p className="mt-2 w-full text-center">
             {status.message}... {status.percentage.toFixed(2)}%
           </p>
         </div>
