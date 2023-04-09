@@ -3,6 +3,7 @@ import type { AppProps } from "next/app";
 import superjson from "superjson";
 import { useMemo } from "react";
 import { ClerkProvider } from "@clerk/nextjs";
+import { dark } from "@clerk/themes";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import {
   createWSClient,
@@ -52,16 +53,9 @@ const App = ({ Component, pageProps }: AppProps) => {
     <ClerkProvider
       {...pageProps}
       appearance={{
-        baseTheme: "dark",
-        variables: {
-          colorText: "#f3f4f6",
-          colorBackground: "#1f2937",
-          colorPrimary: "#16a34a",
-        },
-        elements: {
-          userButtonPopoverFooter: "!text-gray-400 !fill-gray-400",
-          userButtonPopoverActionButtonIcon: "text-gray-400 fill-gray-400",
-        },
+        baseTheme: dark,
+        variables: { colorPrimary: "#16a34a" },
+        elements: { userButtonPopoverCard: "border-2 border-gray-600" },
       }}
     >
       <api.Provider client={client} queryClient={queryClient}>
