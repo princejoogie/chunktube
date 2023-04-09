@@ -18,7 +18,7 @@ RUN yarn install
 
 COPY . .
 
-RUN yarn run turbo run build --filter server
+RUN npx turbo run build --filter server
 
 EXPOSE 4000
 

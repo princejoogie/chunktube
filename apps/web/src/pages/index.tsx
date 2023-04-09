@@ -7,7 +7,7 @@ import Container from "../components/container";
 import Layout from "../components/layout";
 
 const Home = () => {
-  const { user, isLoaded, isSignedIn } = useUser();
+  const { isLoaded, isSignedIn } = useUser();
   const router = useRouter();
   const [input, setInput] = useState("");
   const [status, setStatus] = useState<{
