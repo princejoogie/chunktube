@@ -3,9 +3,9 @@
   "display": "Node.js",
   "extends": "./base.json",
   "compilerOptions": {
-    "target": "es2021",
+    "target": "es2022",
     "module": "commonjs",
-    "lib": ["es2021"],
+    "lib": ["es2022"],
     "moduleResolution": "node",
     "skipLibCheck": true,
     "strict": true,

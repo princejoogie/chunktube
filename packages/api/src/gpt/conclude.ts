@@ -37,19 +37,19 @@ const getConclusion = async (param: GetConclusionParam, index: number) => {
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export const conclude = async (url: string, ee: EventEmitter) => {
-  ee.emit("progress", { message: "Initializing", percentage: 0 });
+  ee.emit(`progress/${url}`, { message: "Initializing", percentage: 0 });
   await sleep(2000);
   const transcriptions = await transcribe(url, ee);
 
   let percentage = 70;
-  ee.emit("progress", { message: "Concluding segments", percentage });
+  ee.emit(`progress/${url}`, { message: "Concluding segments", percentage });
 
   const percentagePerSegment = 30 / transcriptions.length;
   const conclusions = await Promise.all(
     transcriptions.map((e, i) =>
       getConclusion(e, i).then((data) => {
         percentage += percentagePerSegment;
-        ee.emit("progress", {
+        ee.emit(`progress/${url}`, {
           message: `Done segment ${i + 1}`,
           percentage,
         });
@@ -58,6 +58,6 @@ export const conclude = async (url: string, ee: EventEmitter) => {
     )
   );
 
-  ee.emit("progress", { message: "Done", percentage: 100 });
+  ee.emit(`progress/${url}`, { message: "Done", percentage: 100 });
   return conclusions;
 };

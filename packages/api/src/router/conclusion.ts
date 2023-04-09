@@ -71,6 +71,7 @@ export const conclusionRouter = createTRPCRouter({
     .subscription(({ input }) => {
       return observable<{ message: string; percentage: number; url: string }>(
         (emit) => {
+          console.log({ input: input.url });
           const onProgress = (data: {
             message: string;
             percentage: number;
@@ -78,10 +79,10 @@ export const conclusionRouter = createTRPCRouter({
             emit.next({ ...data, url: input.url });
           };
 
-          ee.on("progress", onProgress);
+          ee.on(`progress/${input.url}`, onProgress);
 
           return () => {
-            ee.off("progress", onProgress);
+            ee.off(`progress/${input.url}`, onProgress);
           };
         }
       );

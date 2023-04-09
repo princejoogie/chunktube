@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { api } from "../utils/api";
@@ -20,7 +21,9 @@ const Home = () => {
   api.conclusion.sub.useSubscription(
     { url: input },
     {
+      enabled: conclude.isLoading,
       onData: (data) => {
+        console.log(data.url, input);
         if (data.url === input) {
           setStatus(data);
         }
@@ -30,7 +33,9 @@ const Home = () => {
 
   return (
     <Container>
-      <h1 className="my-4 font-mono text-center">Conclusion.tech</h1>
+      <Link href="/">
+        <h1 className="my-4 font-mono text-center">Conclusion.tech</h1>
+      </Link>
       <form
         className="w-1/2 mx-auto flex"
         onSubmit={(e) => {

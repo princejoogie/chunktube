@@ -1,8 +1,7 @@
 {
   "extends": "tsconfig/nodejs.json",
-  "include": ["src", "index.ts", "transformer.ts"],
+  "include": ["src", "index.ts"],
   "compilerOptions": {
-    "isolatedModules": false,
-    "declaration": true
+    "isolatedModules": false
   }
 }
