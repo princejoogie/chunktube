@@ -20,7 +20,13 @@ export const TrendingPage = () => {
                 href={`/c/${encodeURIComponent(e.url)}`}
                 className="transition-opacity active:opacity-50"
               >
-                {e.thumbnail ? (
+                {!e.thumbnail ? (
+                  <div className="relative aspect-video w-full animate-pulse rounded-md bg-gray-800">
+                    <p className="absolute bottom-1 right-1 rounded-md bg-black/80 p-1 text-xs">
+                      {e.segments[e.segments.length - 1]?.time}
+                    </p>
+                  </div>
+                ) : (
                   <div className="relative aspect-video w-full">
                     <Image
                       width={e.thumbnail.width}
@@ -33,7 +39,8 @@ export const TrendingPage = () => {
                       {e.segments[e.segments.length - 1]?.time}
                     </p>
                   </div>
-                ) : null}
+                )}
+
                 <p className="mt-2 line-clamp-2 font-semibold">{e.title}</p>
                 <span className="text-sm text-gray-400">
                   {e.timesConcluded} concludes •{" "}

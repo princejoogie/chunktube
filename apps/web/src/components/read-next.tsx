@@ -34,7 +34,13 @@ export const ReadNextPage = ({ currentId }: ReadNextPageProps) => {
                 href={`/c/${encodeURIComponent(e.url)}`}
                 className="flex space-x-2 transition-opacity active:opacity-50"
               >
-                {e.thumbnail ? (
+                {!e.thumbnail ? (
+                  <div className="relative aspect-video flex-1 flex-shrink-0 animate-pulse rounded-md bg-gray-800">
+                    <p className="absolute bottom-1 right-1 rounded-md bg-black/80 p-1 text-xs">
+                      {e.segments[e.segments.length - 1]?.time}
+                    </p>
+                  </div>
+                ) : (
                   <div className="relative aspect-video flex-1 flex-shrink-0">
                     <Image
                       width={e.thumbnail.width}
@@ -47,7 +53,7 @@ export const ReadNextPage = ({ currentId }: ReadNextPageProps) => {
                       {e.segments[e.segments.length - 1]?.time}
                     </p>
                   </div>
-                ) : null}
+                )}
 
                 <div className="flex-1">
                   <p className="mt-2 line-clamp-2 text-sm font-semibold">

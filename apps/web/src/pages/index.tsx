@@ -2,10 +2,12 @@ import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
-import { api } from "../utils/api";
 import Container from "../components/container";
 import Layout from "../components/layout";
+import ExpandingLoader from "../components/icons/loading/expand";
 import { TrendingPage } from "../components/trending";
+
+import { api } from "../utils/api";
 
 const Home = () => {
   const { isLoaded, isSignedIn } = useUser();
@@ -39,7 +41,9 @@ const Home = () => {
     <Layout>
       <Container>
         {!isLoaded ? (
-          <p className="w-full text-center">Loading...</p>
+          <div className="w-full text-center">
+            <ExpandingLoader />
+          </div>
         ) : (
           <>
             <fieldset disabled={conclude.isLoading || !isSignedIn}>
