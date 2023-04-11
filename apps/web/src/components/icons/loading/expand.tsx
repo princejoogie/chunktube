@@ -20,7 +20,7 @@ const ExpandingLoader = () => {
         r="0"
         fill="none"
         stroke="#16a34a"
-        stroke-width="2"
+        strokeWidth="2"
       >
         <animate
           attributeName="r"
@@ -50,7 +50,7 @@ const ExpandingLoader = () => {
         r="0"
         fill="none"
         stroke="#46dff0"
-        stroke-width="2"
+        strokeWidth="2"
       >
         <animate
           attributeName="r"

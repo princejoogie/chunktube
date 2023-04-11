@@ -20,14 +20,15 @@ export const createOrUpdateSchema = z.object({
   last_name: z.string(),
 });
 
+export type CreatedOrUpdatedSchema = {
+  object: string;
+  type: string;
+  data: z.infer<typeof createOrUpdateSchema>;
+};
+
 export type EventData =
-  | {
-      object: string;
-      type: string;
-      data:
-        | z.infer<typeof createOrUpdateSchema>
-        | z.infer<typeof eventSchema>["data"];
-    }
+  | z.infer<typeof eventSchema>
+  | z.infer<typeof createOrUpdateSchema>
   | {
       code: number;
       message: string;
