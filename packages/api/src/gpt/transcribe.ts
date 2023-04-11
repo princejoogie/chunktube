@@ -10,20 +10,20 @@ import { hasBin, fileExists } from "../utils/has-bin";
 /* const generateId = customAlphabet("1234567890abcdefghijklmnopqrstuvwxyz", 10); */
 const generateId = () => crypto.randomBytes(16).toString("hex");
 
-/* const getAudioLength = (audioPath: string) => { */
-/*   if (!hasBin("ffprobe")) throw new Error("ERROR: ffprobe not found"); */
-/**/
-/*   try { */
-/*     const duration = execSync( */
-/*       `ffprobe -i ${audioPath} -show_entries format=duration -v quiet -of csv="p=0"` */
-/*     ) */
-/*       .toString() */
-/*       .trim(); */
-/*     return parseFloat(duration); */
-/*   } catch { */
-/*     throw new Error("ERROR: Failed to get audio length"); */
-/*   } */
-/* }; */
+const getAudioLength = (audioPath: string) => {
+  if (!hasBin("ffprobe")) throw new Error("ERROR: ffprobe not found");
+
+  try {
+    const duration = execSync(
+      `ffprobe -i ${audioPath} -show_entries format=duration -v quiet -of csv="p=0"`
+    )
+      .toString()
+      .trim();
+    return parseFloat(duration);
+  } catch {
+    throw new Error("ERROR: Failed to get audio length");
+  }
+};
 
 const getTimeOffset = (length: number, offset: number) => {
   const len = length + offset * (5 * 60);
@@ -97,7 +97,6 @@ const getTranscriptions = async (
   chops: ReturnType<typeof chopAudio>,
   tmpDir: string,
   url: string,
-  totalSeconds: number,
   ee: EventEmitter
 ) => {
   const txPath = path.join(tmpDir, "transcriptions");
@@ -107,10 +106,7 @@ const getTranscriptions = async (
   const percentagePerChop = 50 / chops.length;
 
   const promises = chops.map((chop, offset) => {
-    return new Promise<{
-      filePath: string;
-      time: string;
-    }>(async (res, rej) => {
+    return new Promise<{ filePath: string; time: string }>(async (res, rej) => {
       try {
         percentage += percentagePerChop / 2;
         ee.emit(`progress/${url}`, {
@@ -123,9 +119,10 @@ const getTranscriptions = async (
           chop.fileName.replace(".mp3", ".txt")
         );
         const txt = await getText(chop.path);
-        const time = getTimeOffset(totalSeconds, offset);
-
+        const length = getAudioLength(chop.path);
+        const time = getTimeOffset(length, offset);
         fs.writeFileSync(filePath, txt);
+
         percentage += percentagePerChop / 2;
         ee.emit(`progress/${url}`, {
           message: `Saving segment ${offset + 1}`,
@@ -142,11 +139,7 @@ const getTranscriptions = async (
   return await Promise.all(promises);
 };
 
-export const transcribe = async (
-  url: string,
-  totalSeconds: number,
-  ee: EventEmitter
-) => {
+export const transcribe = async (url: string, ee: EventEmitter) => {
   const tmpDir = path.join(__dirname, "tmp", generateId());
 
   ee.emit(`progress/${url}`, { message: "Downloading audio", percentage: 10 });
@@ -155,13 +148,7 @@ export const transcribe = async (
   ee.emit(`progress/${url}`, { message: "Chopping audio", percentage: 15 });
   const chops = chopAudio(audioPath, tmpDir);
 
-  const transcriptions = await getTranscriptions(
-    chops,
-    tmpDir,
-    url,
-    totalSeconds,
-    ee
-  );
+  const transcriptions = await getTranscriptions(chops, tmpDir, url, ee);
 
   return transcriptions;
 };

@@ -48,7 +48,10 @@ export const getVideoDetails = async (videoId: string, opts?: Opts) => {
     });
   }
 
-  opts?.ee.emit(`progress/${opts.url}`, "Fetching video details");
+  opts?.ee.emit(`progress/${opts.url}`, {
+    message: "Fetching video details",
+    percentage: 5,
+  });
   const details = await youtube("v3").videos.list({
     auth: apiKey,
     id: [videoId],

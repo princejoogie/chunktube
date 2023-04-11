@@ -44,11 +44,7 @@ export const conclude = async (url: string, ee: EventEmitter) => {
 
   ee.emit(`progress/${url}`, { message: "Initializing", percentage: 0 });
   await sleep(2000);
-  const transcriptions = await transcribe(
-    url,
-    details.duration.totalSeconds,
-    ee
-  );
+  const transcriptions = await transcribe(url, ee);
 
   let percentage = 70;
   ee.emit(`progress/${url}`, { message: "Concluding segments", percentage });
