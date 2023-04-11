@@ -9,7 +9,7 @@ const Navbar = () => {
         <div className="my-4 flex items-center justify-between gap-4">
           <div>
             <Link href="/">
-              <h1 className="font-mono text-2xl">Conclusion.tech</h1>
+              <h3 className="font-mono text-2xl">Conclusion.tech</h3>
             </Link>
           </div>
 

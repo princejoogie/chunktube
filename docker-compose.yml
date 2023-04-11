@@ -15,7 +15,7 @@ services:
       - mysql:/var/lib/mysql
 
   server:
-    build: ./Dockerfile.server
+    build: ./Dockerfile
     image: conclusion-server
     ports:
       - "4000:4000"

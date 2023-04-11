@@ -7,6 +7,8 @@ import { observable } from "@trpc/server/observable";
 
 const conclusionSelect = {
   url: true,
+  title: true,
+  thumbnail: true,
   segments: {
     orderBy: {
       order: "asc",
@@ -23,12 +25,18 @@ const conclusionSelect = {
 
 const ee = new EventEmitter();
 
+const cleanUrl = (url: string) => {
+  // TODO: remove some query params
+  return url;
+};
+
 export const conclusionRouter = createTRPCRouter({
   create: publicProcedure
     .input(z.object({ url: z.string().url() }))
     .mutation(async ({ ctx, input }) => {
+      const url = cleanUrl(input.url);
       const existing = await ctx.prisma.conclusion.findUnique({
-        where: { url: input.url },
+        where: { url },
         select: conclusionSelect,
       });
 
@@ -37,10 +45,12 @@ export const conclusionRouter = createTRPCRouter({
       }
 
       try {
-        const conclusions = await conclude(input.url, ee);
+        const { conclusions, details } = await conclude(url, ee);
         const data = await ctx.prisma.conclusion.create({
           data: {
-            url: input.url,
+            url,
+            title: details.title,
+            thumbnail: details.thumbnail,
             segments: {
               createMany: {
                 data: conclusions.map((e) => e),
@@ -58,8 +68,9 @@ export const conclusionRouter = createTRPCRouter({
   get: publicProcedure
     .input(z.object({ url: z.string().url() }))
     .query(async ({ ctx, input }) => {
+      const url = cleanUrl(input.url);
       const existing = await ctx.prisma.conclusion.findUnique({
-        where: { url: input.url },
+        where: { url },
         select: conclusionSelect,
       });
 

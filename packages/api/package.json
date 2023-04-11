@@ -18,6 +18,7 @@
     "typescript": "*"
   },
   "dependencies": {
+    "@googleapis/youtube": "^9.0.0",
     "@trpc/client": "^10.18.0",
     "@trpc/server": "^10.18.0",
     "db": "*",

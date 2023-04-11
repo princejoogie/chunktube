@@ -33,5 +33,7 @@ model Conclusion {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   url       String    @unique
+  title     String
+  thumbnail String
   segments  Segment[]
 }

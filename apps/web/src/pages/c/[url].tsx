@@ -33,43 +33,56 @@ const ConclusionPage = () => {
   return (
     <Layout>
       <Container>
-        <div className="flex flex-col">
+        <div className="mb-20 flex flex-col">
           {conclusion.isLoading ? (
             <p className="w-full text-center">Loading...</p>
           ) : conclusion.data ? (
-            conclusion.data.segments.map((segment, idx) => {
-              const before = conclusion.data.segments[idx - 1];
-              const start = before ? before.time : "00:00:00";
-              const end = segment.time;
+            <>
+              <h1 className="w-full text-center text-xl font-semibold">
+                {conclusion.data.title}
+              </h1>
 
-              const secStart = hmsToSec(start);
-              const secEnd = hmsToSec(end);
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              {/* <img */}
+              {/*   src={conclusion.data.thumbnail} */}
+              {/*   className="mx-auto aspect-video w-1/2 object-contain" */}
+              {/*   alt={`thumbnail for ${vidUrl}`} */}
+              {/* /> */}
 
-              return (
-                <div key={segment.id} className="mt-6">
-                  <div className="flex">
-                    <Link
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      href={`${conclusion.data.url}&t=${secStart}s`}
-                    >
-                      <Timestamp time={start} />
-                    </Link>
+              {conclusion.data.segments.map((segment, idx) => {
+                const before = conclusion.data.segments[idx - 1];
+                const start = before ? before.time : "00:00:00";
+                const end = segment.time;
 
-                    <span className="p-1 text-xs">{">"}</span>
+                const secStart = hmsToSec(start);
+                const secEnd = hmsToSec(end);
 
-                    <Link
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      href={`${conclusion.data.url}&t=${secEnd}s`}
-                    >
-                      <Timestamp time={end} />
-                    </Link>
+                return (
+                  <div key={segment.id} className="mt-6">
+                    <div className="flex">
+                      <Link
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        href={`${conclusion.data.url}&t=${secStart}s`}
+                      >
+                        <Timestamp time={start} />
+                      </Link>
+
+                      <span className="p-1 text-xs">{">"}</span>
+
+                      <Link
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        href={`${conclusion.data.url}&t=${secEnd}s`}
+                      >
+                        <Timestamp time={end} />
+                      </Link>
+                    </div>
+                    <p className="text-gray-200">{segment.content}</p>
                   </div>
-                  <p>{segment.content}</p>
-                </div>
-              );
-            })
+                );
+              })}
+            </>
           ) : (
             <p className="w-full text-center">
               No data found for{" "}
