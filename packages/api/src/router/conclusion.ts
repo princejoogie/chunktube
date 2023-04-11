@@ -37,7 +37,7 @@ export const conclusionRouter = createTRPCRouter({
           data: {
             url,
             title: details.title,
-            thumbnail: details.thumbnail,
+            thumbnail: { create: details.thumbnail },
             timesConcluded: 1,
             segments: {
               createMany: {

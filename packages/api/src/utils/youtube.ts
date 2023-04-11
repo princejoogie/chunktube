@@ -80,34 +80,55 @@ export const getVideoDetails = async (videoId: string, opts?: Opts) => {
   }
 
   const title = details.data.items[0].snippet.title;
-  const thumbnail = details.data.items[0].snippet.thumbnails?.high?.url;
+  const thumbnail = details.data.items[0].snippet.thumbnails?.high;
   const duration = details.data.items[0].contentDetails.duration;
 
-  if (!title || !duration || !thumbnail) {
+  if (
+    !title ||
+    !duration ||
+    !thumbnail?.url ||
+    !thumbnail.width ||
+    !thumbnail.height
+  ) {
     return {
-      title: "No video title",
-      thumbnail: "https://i.imgur.com/removed.png",
-      duration: parseDuration("PT0H0M0S"),
+      title: title ?? "No video title",
+      thumbnail: {
+        url: "https://i.imgur.com/removed.png",
+        width: 640,
+        height: 480,
+      },
+      duration: duration ?? parseDuration("PT0H0M0S"),
     };
   }
 
-  return { title, thumbnail, duration: parseDuration(duration) };
+  return {
+    title,
+    thumbnail: {
+      url: thumbnail.url,
+      width: thumbnail.width,
+      height: thumbnail.height,
+    },
+    duration: parseDuration(duration),
+  };
 };
 
-export const searchVideo = async (query: string) => {
+export const searchVideo = async (query: string, pageToken?: string) => {
   const apiKey = process.env.YOUTUBE_API_KEY;
   if (!apiKey || typeof apiKey !== "string") {
     throw new TRPCError({
       code: "INTERNAL_SERVER_ERROR",
       message: "No Youtube API key provided",
+      cause: "searchVideo",
     });
   }
 
   const data = await youtube("v3").search.list({
+    pageToken,
     auth: apiKey,
-    q: query,
     part: ["snippet"],
+    maxResults: 5,
+    q: query,
   });
 
-  return data.data.items;
+  return data.data.items?.filter((e) => e.id?.kind === "youtube#video");
 };

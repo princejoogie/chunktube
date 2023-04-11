@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { api } from "../../utils/api";
 import Container from "../../components/container";
 import Layout from "../../components/layout";
+import { ReadNextPage } from "../../components/read-next";
 
 const Timestamp = ({ time }: { time: string }) => {
   return (
@@ -35,58 +36,68 @@ const ConclusionPage = () => {
       seo={conclusion.data ? { title: conclusion.data?.title } : undefined}
     >
       <Container>
-        <div className="mb-20 flex flex-col">
-          {conclusion.isLoading ? (
-            <p className="w-full text-center">Loading...</p>
-          ) : conclusion.data ? (
-            <>
-              <h1 className="w-full text-center text-xl font-semibold">
-                {conclusion.data.title}
-              </h1>
+        <div className="flex flex-col gap-6 xl:flex-row">
+          <div className="mb-10 flex w-full flex-col xl:w-9/12">
+            {conclusion.isLoading ? (
+              <p className="w-full text-center">Loading...</p>
+            ) : conclusion.data ? (
+              <>
+                <h1 className="w-full text-xl font-semibold">
+                  {conclusion.data.title}
+                </h1>
 
-              {conclusion.data.segments.map((segment, idx) => {
-                const before = conclusion.data.segments[idx - 1];
-                const start = before ? before.time : "00:00:00";
-                const end = segment.time;
+                {conclusion.data.segments.map((segment, idx) => {
+                  const before = conclusion.data.segments[idx - 1];
+                  const start = before ? before.time : "00:00:00";
+                  const end = segment.time;
 
-                const secStart = hmsToSec(start);
-                const secEnd = hmsToSec(end);
+                  const secStart = hmsToSec(start);
+                  const secEnd = hmsToSec(end);
 
-                return (
-                  <div key={segment.id} className="mt-6">
-                    <div className="flex">
-                      <Link
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        href={`${conclusion.data.url}&t=${secStart}s`}
-                      >
-                        <Timestamp time={start} />
-                      </Link>
+                  return (
+                    <div key={segment.id} className="mt-6">
+                      <div className="flex">
+                        <Link
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          href={`${conclusion.data.url}&t=${secStart}s`}
+                        >
+                          <Timestamp time={start} />
+                        </Link>
 
-                      <span className="p-1 text-xs">{">"}</span>
+                        <span className="p-1 text-xs">{">"}</span>
 
-                      <Link
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        href={`${conclusion.data.url}&t=${secEnd}s`}
-                      >
-                        <Timestamp time={end} />
-                      </Link>
+                        <Link
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          href={`${conclusion.data.url}&t=${secEnd}s`}
+                        >
+                          <Timestamp time={end} />
+                        </Link>
+                      </div>
+                      <p className="text-gray-200">{segment.content}</p>
                     </div>
-                    <p className="text-gray-200">{segment.content}</p>
-                  </div>
-                );
-              })}
-            </>
-          ) : (
-            <p className="w-full text-center">
-              No data found for{" "}
-              <Link target="_blank" rel="noopener noreferrer" href={vidUrl}>
-                <span className="text-blue-600">{vidUrl}</span>
-              </Link>
-            </p>
-          )}
+                  );
+                })}
+              </>
+            ) : (
+              <p className="w-full text-center">
+                No data found for{" "}
+                <Link target="_blank" rel="noopener noreferrer" href={vidUrl}>
+                  <span className="text-blue-600">{vidUrl}</span>
+                </Link>
+              </p>
+            )}
+          </div>
+
+          <hr className="border-gray-800" />
+
+          <div className="w-full xl:w-3/12">
+            <ReadNextPage currentId={conclusion.data?.id} />
+          </div>
         </div>
+
+        <div className="h-20 w-full" />
       </Container>
     </Layout>
   );

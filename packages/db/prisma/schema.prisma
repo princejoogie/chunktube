@@ -17,6 +17,15 @@ model User {
   username String @unique
 }
 
+model Thumbnail {
+  id           String     @id @default(cuid())
+  url          String
+  width        Int
+  height       Int
+  conclusion   Conclusion @relation(fields: [conclusionId], references: [id], onDelete: Cascade)
+  conclusionId String     @unique
+}
+
 model Segment {
   id           String      @id @default(cuid())
   content      String      @db.Text
@@ -29,12 +38,12 @@ model Segment {
 }
 
 model Conclusion {
-  id             String    @id @default(cuid())
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
-  url            String    @unique
+  id             String     @id @default(cuid())
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+  url            String     @unique
   title          String
-  thumbnail      String
-  timesConcluded Int       @default(0)
+  timesConcluded Int        @default(0)
   segments       Segment[]
+  thumbnail      Thumbnail?
 }
