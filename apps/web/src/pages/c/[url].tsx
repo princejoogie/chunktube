@@ -1,9 +1,12 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { api } from "../../utils/api";
+
 import Container from "../../components/container";
+import ExpandingLoader from "../../components/icons/loading/expand";
 import Layout from "../../components/layout";
+
 import { ReadNextPage } from "../../components/read-next";
+import { api } from "../../utils/api";
 
 const Timestamp = ({ time }: { time: string }) => {
   return (
@@ -39,7 +42,9 @@ const ConclusionPage = () => {
         <div className="flex flex-col gap-6 xl:flex-row">
           <div className="mb-10 flex w-full flex-col xl:w-9/12">
             {conclusion.isLoading ? (
-              <p className="w-full text-center">Loading...</p>
+              <div className="w-full text-center">
+                <ExpandingLoader />
+              </div>
             ) : conclusion.data ? (
               <>
                 <h1 className="w-full text-xl font-semibold">
