@@ -31,7 +31,9 @@ const ConclusionPage = () => {
   );
 
   return (
-    <Layout>
+    <Layout
+      seo={conclusion.data ? { title: conclusion.data?.title } : undefined}
+    >
       <Container>
         <div className="mb-20 flex flex-col">
           {conclusion.isLoading ? (
@@ -41,13 +43,6 @@ const ConclusionPage = () => {
               <h1 className="w-full text-center text-xl font-semibold">
                 {conclusion.data.title}
               </h1>
-
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              {/* <img */}
-              {/*   src={conclusion.data.thumbnail} */}
-              {/*   className="mx-auto aspect-video w-1/2 object-contain" */}
-              {/*   alt={`thumbnail for ${vidUrl}`} */}
-              {/* /> */}
 
               {conclusion.data.segments.map((segment, idx) => {
                 const before = conclusion.data.segments[idx - 1];

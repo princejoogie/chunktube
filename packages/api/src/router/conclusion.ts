@@ -4,24 +4,7 @@ import { createTRPCRouter, publicProcedure } from "../trpc";
 import { conclude } from "../gpt/conclude";
 import { TRPCError } from "@trpc/server";
 import { observable } from "@trpc/server/observable";
-
-const conclusionSelect = {
-  url: true,
-  title: true,
-  thumbnail: true,
-  segments: {
-    orderBy: {
-      order: "asc",
-    },
-    select: {
-      id: true,
-      content: true,
-      time: true,
-      order: true,
-    },
-  },
-  createdAt: true,
-} as const;
+import { conclusionSelect } from "./common";
 
 const ee = new EventEmitter();
 
@@ -41,6 +24,10 @@ export const conclusionRouter = createTRPCRouter({
       });
 
       if (existing) {
+        await ctx.prisma.conclusion.update({
+          where: { url },
+          data: { timesConcluded: { increment: 1 } },
+        });
         return existing;
       }
 
@@ -51,6 +38,7 @@ export const conclusionRouter = createTRPCRouter({
             url,
             title: details.title,
             thumbnail: details.thumbnail,
+            timesConcluded: 1,
             segments: {
               createMany: {
                 data: conclusions.map((e) => e),

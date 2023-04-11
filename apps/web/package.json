@@ -19,6 +19,7 @@
     "@trpc/react-query": "^10.18.0",
     "@trpc/server": "^10.18.0",
     "api": "*",
+    "date-fns": "^2.29.3",
     "db": "*",
     "next": "^13.2.4",
     "react": "18.2.0",

@@ -5,6 +5,7 @@ import { useState } from "react";
 import { api } from "../utils/api";
 import Container from "../components/container";
 import Layout from "../components/layout";
+import { TrendingPage } from "../components/trending";
 
 const Home = () => {
   const { isLoaded, isSignedIn } = useUser();
@@ -18,12 +19,6 @@ const Home = () => {
   const conclude = api.conclusion.create.useMutation({
     onSuccess: (data) => {
       router.push(`/c/${encodeURIComponent(data.url)}`);
-    },
-    onError: () => {
-      setStatus({
-        message: "Something went wrong",
-        percentage: 0,
-      });
     },
   });
 
@@ -45,30 +40,32 @@ const Home = () => {
       <Container>
         {!isLoaded ? (
           <p className="w-full text-center">Loading...</p>
-        ) : !isSignedIn ? (
-          <p className="w-full text-center">Please sign in to continue</p>
         ) : (
           <>
-            <fieldset disabled={conclude.isLoading}>
+            <fieldset disabled={conclude.isLoading || !isSignedIn}>
               <form
-                className="mx-auto flex w-1/2"
+                className="mx-auto w-3/4"
                 onSubmit={(e) => {
                   e.preventDefault();
                   conclude.mutate({ url: input });
                 }}
               >
-                <input
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  className="flex-1 rounded border border-gray-500 bg-transparent px-2 py-1 disabled:cursor-not-allowed disabled:opacity-50"
-                  placeholder="youtube url"
-                />
-                <button
-                  type="submit"
-                  className="ml-2 rounded bg-green-600 px-2 py-1 disabled:cursor-not-allowed disabled:opacity-50"
-                >
-                  Submit
-                </button>
+                <div className="flex w-full overflow-hidden rounded-full border border-gray-600">
+                  <input
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    className="flex-1 rounded bg-transparent p-2 px-4 outline-none disabled:cursor-not-allowed disabled:opacity-50"
+                    placeholder={
+                      isSignedIn ? "YouTube url" : "Sign in to continue"
+                    }
+                  />
+                  <button
+                    type="submit"
+                    className="ml-2 border-l border-gray-500 bg-green-600 px-4 font-semibold disabled:cursor-not-allowed disabled:opacity-50"
+                  >
+                    Conclude
+                  </button>
+                </div>
               </form>
             </fieldset>
 
@@ -87,6 +84,8 @@ const Home = () => {
             )}
           </>
         )}
+
+        <TrendingPage />
       </Container>
     </Layout>
   );

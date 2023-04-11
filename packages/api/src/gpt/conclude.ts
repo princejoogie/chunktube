@@ -39,11 +39,11 @@ const getConclusion = async (param: GetConclusionParam, index: number) => {
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export const conclude = async (url: string, ee: EventEmitter) => {
-  const videoId = getVideoId(url);
-  const details = await getVideoDetails(videoId, { url, ee });
-
   ee.emit(`progress/${url}`, { message: "Initializing", percentage: 0 });
   await sleep(2000);
+
+  const videoId = getVideoId(url);
+  const details = await getVideoDetails(videoId, { url, ee });
   const transcriptions = await transcribe(url, ee);
 
   let percentage = 70;

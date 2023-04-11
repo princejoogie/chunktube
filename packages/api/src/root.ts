@@ -1,12 +1,10 @@
-import { z } from "zod";
+import { createTRPCRouter } from "./trpc";
+import { listRouter } from "./router/list";
 import { conclusionRouter } from "./router/conclusion";
-import { createTRPCRouter, publicProcedure } from "./trpc";
 
 export const appRouter = createTRPCRouter({
   conclusion: conclusionRouter,
-  test: publicProcedure.input(z.string()).mutation(({ input }) => {
-    return `Hello ${input}`;
-  }),
+  list: listRouter,
 });
 
 export type AppRouter = typeof appRouter;

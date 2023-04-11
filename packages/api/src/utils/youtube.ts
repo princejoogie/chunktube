@@ -93,3 +93,21 @@ export const getVideoDetails = async (videoId: string, opts?: Opts) => {
 
   return { title, thumbnail, duration: parseDuration(duration) };
 };
+
+export const searchVideo = async (query: string) => {
+  const apiKey = process.env.YOUTUBE_API_KEY;
+  if (!apiKey || typeof apiKey !== "string") {
+    throw new TRPCError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "No Youtube API key provided",
+    });
+  }
+
+  const data = await youtube("v3").search.list({
+    auth: apiKey,
+    q: query,
+    part: ["snippet"],
+  });
+
+  return data.data.items;
+};

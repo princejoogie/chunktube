@@ -5,8 +5,8 @@ import Navbar from "./navbar";
 interface LayoutProps {
   children: ReactNode;
   seo?: {
-    title: string;
-    description: string;
+    title?: string;
+    description?: string;
   };
 }
 
