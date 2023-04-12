@@ -1,34 +1,47 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   AlertDialog,
-  AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
-  AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
 } from "~/components/ui/alert-dialog";
 import ExpandingLoader from "./icons/loading/expand";
 
-export const LoadingScreen = () => {
-  const [isOpen, setIsOpen] = useState(true);
+const texts = [
+  "Please wait while we conclude your video, this may take a while.",
+  "This usually takes a few seconds, but can take up to 2 minutes.",
+  "We're working hard to conclude your video, please wait.",
+  "You will automatically be redirected to your video when it's done.",
+  "We're almost done, just a few more seconds.",
+];
+
+export const LoadingScreen = ({ isOpen }: { isOpen: boolean }) => {
+  const [idx, setIdx] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIdx(idx + 1 >= texts.length ? 0 : idx + 1);
+    }, 8000);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, [idx]);
 
   return (
-    <AlertDialog defaultOpen open={isOpen} onOpenChange={setIsOpen}>
+    <AlertDialog open={isOpen}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Are you sure absolutely sure?</AlertDialogTitle>
+          <AlertDialogTitle>Concluding video...</AlertDialogTitle>
 
           <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete your
-            account and remove your data from our servers.
+            <p>{texts[idx]}</p>
+            <div className="mt-4">
+              <ExpandingLoader />
+            </div>
           </AlertDialogDescription>
-          <ExpandingLoader />
         </AlertDialogHeader>
-
-        <AlertDialogFooter>
-          <AlertDialogCancel>Close</AlertDialogCancel>
-        </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
   );

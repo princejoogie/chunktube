@@ -1,5 +1,4 @@
 import type { Config } from "tailwindcss";
-import { fontFamily } from "tailwindcss/defaultTheme";
 import colors from "tailwindcss/colors";
 
 import baseConfig from "tw-config";
@@ -10,9 +9,6 @@ const config: Config = {
     extend: {
       colors: {
         gray: colors.neutral,
-      },
-      fontFamily: {
-        sans: ["var(--font-sans)", ...fontFamily.sans],
       },
       keyframes: {
         "accordion-down": {

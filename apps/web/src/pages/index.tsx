@@ -23,7 +23,7 @@ const Home = () => {
   return (
     <Layout>
       <Container>
-        {!conclude.isLoading ? <LoadingScreen /> : null}
+        <LoadingScreen isOpen={conclude.isLoading} />
 
         {!isLoaded ? (
           <div className="w-full text-center">
