@@ -22,21 +22,18 @@ const Home = ({ token }: { token: string }) => {
       router.push(`/c/${encodeURIComponent(data.url)}`);
     },
     onError: (err) => {
-      const error = JSON.parse(err.message) as any[];
-      if (error?.[0].message) {
-        toast({
-          title: "Error",
-          description: error[0].message,
-          variant: "destructive",
-        });
-      }
+      toast({
+        title: "Error",
+        description: err.message,
+        variant: "destructive",
+      });
     },
   });
 
   return (
     <Layout token={token}>
       <Container>
-        <LoadingScreen isOpen={conclude.isLoading} />
+        {conclude.isLoading ? <LoadingScreen /> : null}
 
         {!isLoaded ? (
           <div className="w-full text-center">
@@ -48,7 +45,7 @@ const Home = ({ token }: { token: string }) => {
               className="mx-auto w-3/4"
               onSubmit={(e) => {
                 e.preventDefault();
-                conclude.mutate({ url: input });
+                conclude.mutate({ url: input, token });
               }}
             >
               <div className="flex w-full overflow-hidden rounded-full border border-gray-600">

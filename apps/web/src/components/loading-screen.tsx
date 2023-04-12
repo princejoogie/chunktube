@@ -16,7 +16,8 @@ const texts = [
   "We're almost done, just a few more seconds.",
 ];
 
-export const LoadingScreen = ({ isOpen }: { isOpen: boolean }) => {
+export const LoadingScreen = () => {
+  const [isOpen, setIsOpen] = useState(false);
   const [idx, setIdx] = useState(0);
 
   useEffect(() => {
@@ -28,6 +29,10 @@ export const LoadingScreen = ({ isOpen }: { isOpen: boolean }) => {
       clearInterval(interval);
     };
   }, [idx]);
+
+  useEffect(() => {
+    setIsOpen(true);
+  }, []);
 
   return (
     <AlertDialog open={isOpen}>

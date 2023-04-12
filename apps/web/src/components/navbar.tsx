@@ -32,7 +32,8 @@ const Navbar = ({ token }: { token: string }) => {
                       disabled={!me.data}
                       className="rounded-xl bg-gray-700 px-4 py-1 transition-all hover:bg-gray-800 active:opacity-70 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-gray-700"
                     >
-                      {me.data?.credits ?? "0"} Credits
+                      {me.data?.credits ?? "0"}{" "}
+                      {me.data?.credits === 1 ? "Credit" : "Credits"}
                     </button>
 
                     <UserButton
