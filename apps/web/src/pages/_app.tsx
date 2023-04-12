@@ -2,12 +2,12 @@ import "~/styles/globals.css";
 import type { AppProps } from "next/app";
 import { ClerkProvider } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
-import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
+/* import { QueryClientProvider, QueryClient } from "@tanstack/react-query"; */
 
-import { api, client } from "~/utils/api";
+import { trpc } from "~/utils/api";
 import { Toaster } from "~/components/toaster";
 
-export const queryClient = new QueryClient();
+/* export const queryClient = new QueryClient(); */
 
 const App = ({ Component, pageProps }: AppProps) => {
   return (
@@ -19,14 +19,12 @@ const App = ({ Component, pageProps }: AppProps) => {
         elements: { userButtonPopoverCard: "border-2 border-gray-600" },
       }}
     >
-      <api.Provider client={client} queryClient={queryClient}>
-        <QueryClientProvider client={queryClient}>
-          <Component {...pageProps} />
-          <Toaster />
-        </QueryClientProvider>
-      </api.Provider>
+      {/* <QueryClientProvider client={queryClient}> */}
+      <Component {...pageProps} />
+      <Toaster />
+      {/* </QueryClientProvider> */}
     </ClerkProvider>
   );
 };
 
-export default App;
+export default trpc.withTRPC(App);

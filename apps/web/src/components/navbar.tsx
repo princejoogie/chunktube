@@ -1,9 +1,15 @@
 import Link from "next/link";
 import { useUser, UserButton, SignedIn, SignedOut } from "@clerk/nextjs";
 import Container from "./container";
+import { trpc } from "~/utils/api";
 
-const Navbar = () => {
-  const { isLoaded } = useUser();
+const Navbar = ({ token }: { token: string }) => {
+  const { isLoaded, isSignedIn } = useUser();
+
+  const me = trpc.user.me.useQuery(
+    { token },
+    { enabled: isSignedIn && !!token }
+  );
 
   return (
     <nav className="">
@@ -22,8 +28,11 @@ const Navbar = () => {
               <>
                 <SignedIn>
                   <div className="flex gap-2">
-                    <button className="rounded-xl bg-gray-700 px-4 py-1 transition-all hover:bg-gray-800 active:opacity-70">
-                      5 Credits
+                    <button
+                      disabled={!me.data}
+                      className="rounded-xl bg-gray-700 px-4 py-1 transition-all hover:bg-gray-800 active:opacity-70 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-gray-700"
+                    >
+                      {me.data?.credits ?? "0"} Credits
                     </button>
 
                     <UserButton

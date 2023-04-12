@@ -1,11 +1,12 @@
 import superjson from "superjson";
-import { type inferAsyncReturnType, initTRPC } from "@trpc/server";
+import { type JwtPayload } from "./router/common";
+import { type inferAsyncReturnType, initTRPC, TRPCError } from "@trpc/server";
 import { type CreateExpressContextOptions } from "@trpc/server/adapters/express";
 import { ZodError } from "zod";
 import { prisma } from "db";
 
 type CreateContextOptions = {
-  payload: null;
+  payload: null | JwtPayload;
 };
 
 const createInnerTRPCContext = (opts: CreateContextOptions) => {
@@ -16,14 +17,14 @@ const createInnerTRPCContext = (opts: CreateContextOptions) => {
 };
 
 export const createTRPCContext = async (_: CreateExpressContextOptions) => {
-  /* const sessionId = req.query._clerk_session_id; */
-  /* const cookies = new Cookies(req, res); */
-  /* const clientToken = cookies.get("__session"); */
-  /* console.log({ sessionId, clientToken }); */
-  /* const session = await sessions.verifySession(sessionId, clientToken); */
-
-  const payload = null;
-  return createInnerTRPCContext({ payload });
+  /* const cookies = new Cookie(req, res); */
+  /* const session = cookies.get("__session"); */
+  /**/
+  /* if (!session) return createInnerTRPCContext({ payload: null }); */
+  /**/
+  /* const raw = jwtDecode(session); */
+  /* const payload = sessionSchema.parse(raw); */
+  return createInnerTRPCContext({ payload: null });
 };
 
 export type Context = inferAsyncReturnType<typeof createTRPCContext>;
@@ -46,18 +47,11 @@ export const createTRPCRouter = t.router;
 
 export const publicProcedure = t.procedure;
 
-const enforceUserIsAuthed = t.middleware(({ next }) => {
-  return next({
-    ctx: {
-      clerkId: "test",
-    },
-  });
-
-  /* return next({ */
-  /*   ctx: { */
-  /*     clerkId: null, */
-  /*   }, */
-  /* }); */
+const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
+  if (!ctx.payload) {
+    throw new TRPCError({ code: "UNAUTHORIZED" });
+  }
+  return next({ ctx: { payload: ctx.payload } });
 });
 
 export const protectedProcedure = t.procedure.use(enforceUserIsAuthed);

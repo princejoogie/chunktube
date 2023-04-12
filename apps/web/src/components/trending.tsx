@@ -1,10 +1,10 @@
 import Link from "next/link";
 import Image from "next/image";
 import toNow from "date-fns/formatDistanceToNow";
-import { api } from "~/utils/api";
+import { trpc } from "~/utils/api";
 
 export const TrendingPage = () => {
-  const trending = api.list.getTopConclusions.useQuery();
+  const trending = trpc.list.getTopConclusions.useQuery();
 
   return (
     <div className="mt-10">
@@ -28,6 +28,7 @@ export const TrendingPage = () => {
                 ) : (
                   <div className="relative aspect-video w-full">
                     <Image
+                      priority
                       width={e.thumbnail.width}
                       height={e.thumbnail.height}
                       src={e.thumbnail.url}

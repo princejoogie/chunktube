@@ -3,14 +3,14 @@ import Image from "next/image";
 import toNow from "date-fns/formatDistanceToNow";
 import { useMemo } from "react";
 
-import { api } from "~/utils/api";
+import { trpc } from "~/utils/api";
 
 interface ReadNextPageProps {
   currentId: string | undefined;
 }
 
 export const ReadNextPage = ({ currentId }: ReadNextPageProps) => {
-  const trending = api.list.getTopConclusions.useQuery();
+  const trending = trpc.list.getTopConclusions.useQuery();
 
   const filtered = useMemo(() => {
     return trending.data?.filter((a) => a.id !== currentId) ?? [];
@@ -43,6 +43,7 @@ export const ReadNextPage = ({ currentId }: ReadNextPageProps) => {
                 ) : (
                   <div className="relative aspect-video flex-1 flex-shrink-0">
                     <Image
+                      priority
                       width={e.thumbnail.width}
                       height={e.thumbnail.height}
                       src={e.thumbnail.url}

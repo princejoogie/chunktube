@@ -1,6 +1,6 @@
 import superjson from "superjson";
 import { createTRPCProxyClient, httpBatchLink } from "@trpc/client";
-import { createTRPCReact } from "@trpc/react-query";
+import { createTRPCNext } from "@trpc/next";
 import type { AppRouter } from "api";
 
 export const getBaseUrl = () => {
@@ -19,17 +19,22 @@ export const getWsUrl = () => {
   return `ws://localhost:${process.env.PORT ?? 3000}`;
 };
 
-export const api = createTRPCReact<AppRouter>();
-export const httpApi = createTRPCProxyClient<AppRouter>({
-  links: [
-    httpBatchLink({
-      url: `${getBaseUrl()}/trpc`,
-    }),
-  ],
-  transformer: superjson,
+export const trpc = createTRPCNext<AppRouter>({
+  config: ({ ctx }) => {
+    return {
+      links: [
+        httpBatchLink({
+          url: `${getBaseUrl()}/trpc`,
+          headers: { ...ctx?.req?.headers },
+        }),
+      ],
+      transformer: superjson,
+    };
+  },
+  ssr: false,
 });
 
-export const client = api.createClient({
+export const httpApi = createTRPCProxyClient<AppRouter>({
   links: [
     httpBatchLink({
       url: `${getBaseUrl()}/trpc`,

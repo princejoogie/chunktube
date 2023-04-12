@@ -26,7 +26,11 @@ export default withClerkMiddleware((request: NextRequest) => {
     return NextResponse.redirect(signInUrl);
   }
 
-  return NextResponse.next();
+  return NextResponse.next({
+    headers: {
+      HERE_IS_A_HEADER: userId,
+    },
+  });
 });
 
 export const config = {
