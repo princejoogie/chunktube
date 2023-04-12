@@ -24,12 +24,6 @@ const Home = () => {
     },
   });
 
-  api.user.get.useQuery(undefined, {
-    onSuccess: (data) => {
-      console.log(data);
-    },
-  });
-
   api.conclusion.sub.useSubscription(
     { url: input },
     {
