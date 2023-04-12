@@ -9,11 +9,10 @@ export const TrendingPage = () => {
   return (
     <div className="mt-10">
       {trending.isLoading ? <p>Loading...</p> : null}
-
       {trending.data ? (
         <>
           <h2 className="text-xl font-semibold">Trending</h2>
-          <div className="mt-4 grid grid-cols-2 gap-4 md:grid-cols-3 xl:grid-cols-4">
+          <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
             {trending.data?.map((e) => (
               <Link
                 key={e.id}
