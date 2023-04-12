@@ -1,12 +1,8 @@
 import { z } from "zod";
-import { EventEmitter } from "events";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 import { conclude } from "../gpt/conclude";
 import { TRPCError } from "@trpc/server";
-import { observable } from "@trpc/server/observable";
 import { conclusionSelect } from "./common";
-
-const ee = new EventEmitter();
 
 const cleanUrl = (url: string) => {
   // TODO: remove some query params
@@ -32,7 +28,7 @@ export const conclusionRouter = createTRPCRouter({
       }
 
       try {
-        const { conclusions, details } = await conclude(url, ee);
+        const { conclusions, details } = await conclude(url);
         const data = await ctx.prisma.conclusion.create({
           data: {
             url,
@@ -64,26 +60,5 @@ export const conclusionRouter = createTRPCRouter({
 
       if (!existing) throw new TRPCError({ code: "NOT_FOUND" });
       return existing;
-    }),
-  sub: publicProcedure
-    .input(z.object({ url: z.string().url() }))
-    .subscription(({ input }) => {
-      return observable<{ message: string; percentage: number; url: string }>(
-        (emit) => {
-          console.log({ input: input.url });
-          const onProgress = (data: {
-            message: string;
-            percentage: number;
-          }) => {
-            emit.next({ ...data, url: input.url });
-          };
-
-          ee.on(`progress/${input.url}`, onProgress);
-
-          return () => {
-            ee.off(`progress/${input.url}`, onProgress);
-          };
-        }
-      );
     }),
 });

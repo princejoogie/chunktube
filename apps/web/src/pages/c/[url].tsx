@@ -1,12 +1,11 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 
-import Container from "../../components/container";
-import ExpandingLoader from "../../components/icons/loading/expand";
-import Layout from "../../components/layout";
-
-import { ReadNextPage } from "../../components/read-next";
-import { api } from "../../utils/api";
+import Container from "~/components/container";
+import ExpandingLoader from "~/components/icons/loading/expand";
+import Layout from "~/components/layout";
+import { ReadNextPage } from "~/components/read-next";
+import { api } from "~/utils/api";
 
 const Timestamp = ({ time }: { time: string }) => {
   return (

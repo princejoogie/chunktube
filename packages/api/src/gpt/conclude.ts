@@ -1,5 +1,4 @@
 import fs from "fs";
-import type EventEmitter from "events";
 
 import { transcribe } from "./transcribe";
 import { openai } from "./config";
@@ -36,33 +35,12 @@ const getConclusion = async (param: GetConclusionParam, index: number) => {
   };
 };
 
-const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
-
-export const conclude = async (url: string, ee: EventEmitter) => {
-  ee.emit(`progress/${url}`, { message: "Initializing", percentage: 0 });
-  await sleep(2000);
-
+export const conclude = async (url: string) => {
   const videoId = getVideoId(url);
-  const details = await getVideoDetails(videoId, { url, ee });
-  const transcriptions = await transcribe(url, ee);
-
-  let percentage = 70;
-  ee.emit(`progress/${url}`, { message: "Concluding segments", percentage });
-
-  const percentagePerSegment = 30 / transcriptions.length;
+  const details = await getVideoDetails(videoId);
+  const transcriptions = await transcribe(url);
   const conclusions = await Promise.all(
-    transcriptions.map((e, i) =>
-      getConclusion(e, i).then((data) => {
-        percentage += percentagePerSegment;
-        ee.emit(`progress/${url}`, {
-          message: `Done segment ${i + 1}`,
-          percentage,
-        });
-        return data;
-      })
-    )
+    transcriptions.map((e, i) => getConclusion(e, i))
   );
-
-  ee.emit(`progress/${url}`, { message: "Done", percentage: 100 });
   return { conclusions, details };
 };

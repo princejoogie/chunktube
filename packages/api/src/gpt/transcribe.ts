@@ -1,4 +1,3 @@
-import type EventEmitter from "events";
 import fs from "fs";
 import path from "path";
 import crypto from "crypto";
@@ -7,7 +6,6 @@ import { execSync } from "child_process";
 import { openai } from "./config";
 import { hasBin, fileExists } from "../utils/has-bin";
 
-/* const generateId = customAlphabet("1234567890abcdefghijklmnopqrstuvwxyz", 10); */
 const generateId = () => crypto.randomBytes(16).toString("hex");
 
 const getAudioLength = (audioPath: string) => {
@@ -95,25 +93,14 @@ const chopAudio = (audioPath: string, tmpDir: string) => {
 
 const getTranscriptions = async (
   chops: ReturnType<typeof chopAudio>,
-  tmpDir: string,
-  url: string,
-  ee: EventEmitter
+  tmpDir: string
 ) => {
   const txPath = path.join(tmpDir, "transcriptions");
   execSync(`mkdir ${txPath}`);
 
-  let percentage = 30;
-  const percentagePerChop = 50 / chops.length;
-
   const promises = chops.map((chop, offset) => {
     return new Promise<{ filePath: string; time: string }>(async (res, rej) => {
       try {
-        percentage += percentagePerChop / 2;
-        ee.emit(`progress/${url}`, {
-          message: `Transcribing segment ${offset + 1}`,
-          percentage,
-        });
-
         const filePath = path.join(
           txPath,
           chop.fileName.replace(".mp3", ".txt")
@@ -122,12 +109,6 @@ const getTranscriptions = async (
         const length = getAudioLength(chop.path);
         const time = getTimeOffset(length, offset);
         fs.writeFileSync(filePath, txt);
-
-        percentage += percentagePerChop / 2;
-        ee.emit(`progress/${url}`, {
-          message: `Saving segment ${offset + 1}`,
-          percentage,
-        });
 
         res({ filePath, time });
       } catch (e) {
@@ -139,16 +120,10 @@ const getTranscriptions = async (
   return await Promise.all(promises);
 };
 
-export const transcribe = async (url: string, ee: EventEmitter) => {
+export const transcribe = async (url: string) => {
   const tmpDir = path.join(__dirname, "tmp", generateId());
-
-  ee.emit(`progress/${url}`, { message: "Downloading audio", percentage: 10 });
   const audioPath = downloadAudio(url, tmpDir);
-
-  ee.emit(`progress/${url}`, { message: "Chopping audio", percentage: 15 });
   const chops = chopAudio(audioPath, tmpDir);
-
-  const transcriptions = await getTranscriptions(chops, tmpDir, url, ee);
-
+  const transcriptions = await getTranscriptions(chops, tmpDir);
   return transcriptions;
 };

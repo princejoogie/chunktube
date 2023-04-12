@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import toNow from "date-fns/formatDistanceToNow";
-import { api } from "../utils/api";
+import { api } from "~/utils/api";
 
 export const TrendingPage = () => {
   const trending = api.list.getTopConclusions.useQuery();

@@ -1,4 +1,3 @@
-import type EventEmitter from "events";
 import { youtube } from "@googleapis/youtube";
 import { TRPCError } from "@trpc/server";
 
@@ -34,12 +33,7 @@ export const getVideoId = (url: string) => {
   });
 };
 
-interface Opts {
-  ee: EventEmitter;
-  url: string;
-}
-
-export const getVideoDetails = async (videoId: string, opts?: Opts) => {
+export const getVideoDetails = async (videoId: string) => {
   const apiKey = process.env.YOUTUBE_API_KEY;
   if (!apiKey || typeof apiKey !== "string") {
     throw new TRPCError({
@@ -48,10 +42,6 @@ export const getVideoDetails = async (videoId: string, opts?: Opts) => {
     });
   }
 
-  opts?.ee.emit(`progress/${opts.url}`, {
-    message: "Fetching video details",
-    percentage: 5,
-  });
   const details = await youtube("v3").videos.list({
     auth: apiKey,
     id: [videoId],

@@ -2,7 +2,6 @@ import cors from "cors";
 import express from "express";
 import cookieParser from "cookie-parser";
 import http from "http";
-import { Server } from "ws";
 import { createExpressMiddleware } from "@trpc/server/adapters/express";
 import {
   type AppRouter,
@@ -13,8 +12,6 @@ import {
 const main = async () => {
   const app = express();
   const server = http.createServer(app);
-
-  const wss = new Server({ server });
 
   app.use(cors({ credentials: true, origin: "*" }));
   app.use(cookieParser());
@@ -38,7 +35,6 @@ const main = async () => {
   server.on("error", console.error);
 
   process.on("SIGTERM", () => {
-    wss.close();
     server.close();
   });
 };

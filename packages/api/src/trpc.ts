@@ -1,5 +1,4 @@
 import superjson from "superjson";
-import Cookies from "cookies";
 import { type inferAsyncReturnType, initTRPC } from "@trpc/server";
 import { type CreateExpressContextOptions } from "@trpc/server/adapters/express";
 import { ZodError } from "zod";
@@ -16,10 +15,7 @@ const createInnerTRPCContext = (opts: CreateContextOptions) => {
   };
 };
 
-export const createTRPCContext = async ({
-  req,
-  res,
-}: CreateExpressContextOptions) => {
+export const createTRPCContext = async (_: CreateExpressContextOptions) => {
   /* const sessionId = req.query._clerk_session_id; */
   /* const cookies = new Cookies(req, res); */
   /* const clientToken = cookies.get("__session"); */

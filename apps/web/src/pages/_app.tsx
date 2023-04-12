@@ -1,10 +1,10 @@
-import "../styles/globals.css";
+import "~/styles/globals.css";
 import type { AppProps } from "next/app";
 import { ClerkProvider } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 
-import { api, client } from "../utils/api";
+import { api, client } from "~/utils/api";
 
 export const queryClient = new QueryClient();
 

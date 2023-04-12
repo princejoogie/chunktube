@@ -3,7 +3,7 @@ import Image from "next/image";
 import toNow from "date-fns/formatDistanceToNow";
 import { useMemo } from "react";
 
-import { api } from "../utils/api";
+import { api } from "~/utils/api";
 
 interface ReadNextPageProps {
   currentId: string | undefined;

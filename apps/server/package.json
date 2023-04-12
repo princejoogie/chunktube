@@ -19,6 +19,7 @@
     "cors": "^2.8.5",
     "db": "*",
     "express": "^4.18.2",
+    "socket.io": "^4.6.1",
     "ws": "^8.13.0"
   },
   "devDependencies": {
