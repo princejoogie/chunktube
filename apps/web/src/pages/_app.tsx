@@ -42,7 +42,12 @@ const App = ({ Component, pageProps }: AppProps) => {
       links: [
         httpBatchLink({
           url: `${getBaseUrl()}/trpc`,
-          headers: {},
+          fetch: (url, options) => {
+            return fetch(url, {
+              ...options,
+              credentials: "include",
+            });
+          },
         }),
       ],
       transformer: superjson,

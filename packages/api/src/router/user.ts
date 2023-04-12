@@ -1,4 +1,4 @@
-import { createTRPCRouter, publicProcedure } from "../trpc";
+import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 import { createOrUpdateSchema, eventSchema } from "../types";
 
 const DEFAULT_CREDITS = 5;
@@ -14,6 +14,11 @@ const userBaseSelect = {
 } as const;
 
 export const userRouter = createTRPCRouter({
+  get: protectedProcedure.query(({ ctx }) => {
+    const clerkId = ctx.clerkId;
+    console.log({ clerkId });
+    return { clerkId };
+  }),
   create: publicProcedure
     .input(createOrUpdateSchema)
     .mutation(async ({ ctx, input }) => {
@@ -26,7 +31,7 @@ export const userRouter = createTRPCRouter({
           lastName: input.last_name,
           credits: DEFAULT_CREDITS,
         },
-        select: userBaseSelect,
+        select: { id: true },
       });
 
       return user;
@@ -45,7 +50,7 @@ export const userRouter = createTRPCRouter({
           firstName: input.first_name,
           lastName: input.last_name,
         },
-        select: userBaseSelect,
+        select: { id: true },
       });
 
       return updatedUser;

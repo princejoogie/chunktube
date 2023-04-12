@@ -24,7 +24,12 @@ export const httpApi = createTRPCProxyClient<AppRouter>({
   links: [
     httpBatchLink({
       url: `${getBaseUrl()}/trpc`,
-      headers: {},
+      fetch: (url, options) => {
+        return fetch(url, {
+          ...options,
+          credentials: "include",
+        });
+      },
     }),
   ],
   transformer: superjson,

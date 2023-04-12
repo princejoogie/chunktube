@@ -1,6 +1,7 @@
 import fastify from "fastify";
 import cors from "@fastify/cors";
 import ws from "@fastify/websocket";
+import cookie from "@fastify/cookie";
 import { fastifyTRPCPlugin } from "@trpc/server/adapters/fastify";
 import { appRouter, createContext } from "api";
 
@@ -9,9 +10,10 @@ const port = process.env.PORT ? parseInt(process.env.PORT) : 4000;
 const main = async () => {
   const server = fastify({ logger: true });
 
-  await server.register(ws);
-  await server.register(cors, { origin: "*" });
-  await server.register(fastifyTRPCPlugin, {
+  void server.register(cors, { origin: "*" });
+  void server.register(cookie, { hook: "onRequest" });
+  void server.register(ws);
+  void server.register(fastifyTRPCPlugin, {
     prefix: "/trpc",
     useWSS: true,
     trpcOptions: {
