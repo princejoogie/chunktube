@@ -5,6 +5,7 @@ import { dark } from "@clerk/themes";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 
 import { api, client } from "~/utils/api";
+import { Toaster } from "~/components/toaster";
 
 export const queryClient = new QueryClient();
 
@@ -21,6 +22,7 @@ const App = ({ Component, pageProps }: AppProps) => {
       <api.Provider client={client} queryClient={queryClient}>
         <QueryClientProvider client={queryClient}>
           <Component {...pageProps} />
+          <Toaster />
         </QueryClientProvider>
       </api.Provider>
     </ClerkProvider>

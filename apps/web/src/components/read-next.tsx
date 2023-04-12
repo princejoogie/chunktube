@@ -27,7 +27,7 @@ export const ReadNextPage = ({ currentId }: ReadNextPageProps) => {
             <p className="mt-2 text-sm text-gray-400">Nothing to see here</p>
           ) : null}
 
-          <div className="mt-4 flex flex-col gap-4">
+          <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-1">
             {filtered.map((e) => (
               <Link
                 key={e.id}

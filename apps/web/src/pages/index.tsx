@@ -8,8 +8,10 @@ import ExpandingLoader from "~/components/icons/loading/expand";
 import { TrendingPage } from "~/components/trending";
 import { LoadingScreen } from "~/components/loading-screen";
 import { api } from "~/utils/api";
+import { useToast } from "~/hooks/use-toast";
 
 const Home = () => {
+  const { toast } = useToast();
   const router = useRouter();
   const { isLoaded, isSignedIn } = useUser();
   const [input, setInput] = useState("");
@@ -17,6 +19,16 @@ const Home = () => {
   const conclude = api.conclusion.create.useMutation({
     onSuccess: (data) => {
       router.push(`/c/${encodeURIComponent(data.url)}`);
+    },
+    onError: (err) => {
+      const error = JSON.parse(err.message) as any[];
+      if (error?.[0].message) {
+        toast({
+          title: "Error",
+          description: error[0].message,
+          variant: "destructive",
+        });
+      }
     },
   });
 
@@ -50,6 +62,7 @@ const Home = () => {
                 <button
                   type="submit"
                   className="ml-2 border-l border-gray-500 bg-green-600 px-4 font-semibold disabled:cursor-not-allowed disabled:opacity-50"
+                  disabled={!input}
                 >
                   Conclude
                 </button>
