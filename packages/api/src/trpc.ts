@@ -1,13 +1,13 @@
 import superjson from "superjson";
 import { initTRPC } from "@trpc/server";
-import { type CreateFastifyContextOptions } from "@trpc/server/adapters/fastify";
+import { type CreateExpressContextOptions } from "@trpc/server/adapters/express";
 import { ZodError } from "zod";
 import { prisma } from "db";
 
 export const createContext = async ({
   req,
   res,
-}: CreateFastifyContextOptions) => {
+}: CreateExpressContextOptions) => {
   return { req, res, prisma };
 };
 

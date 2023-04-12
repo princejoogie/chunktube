@@ -1,33 +1,51 @@
-import fastify from "fastify";
-import cors from "@fastify/cors";
-import ws from "@fastify/websocket";
-import cookie from "@fastify/cookie";
-import { fastifyTRPCPlugin } from "@trpc/server/adapters/fastify";
-import { appRouter, createContext } from "api";
+import cors from "cors";
+import express from "express";
+import cookieParser from "cookie-parser";
+import http from "http";
+import { Server } from "ws";
+import { createExpressMiddleware } from "@trpc/server/adapters/express";
+import { applyWSSHandler } from "@trpc/server/adapters/ws";
+import { appRouter, createContext, type AppRouter } from "api";
 
 const port = process.env.PORT ? parseInt(process.env.PORT) : 4000;
 
 const main = async () => {
-  const server = fastify({ logger: true });
+  const app = express();
+  const server = http.createServer(app);
 
-  void server.register(cors, { origin: "*" });
-  void server.register(cookie, { hook: "onRequest" });
-  void server.register(ws);
-  void server.register(fastifyTRPCPlugin, {
-    prefix: "/trpc",
-    useWSS: true,
-    trpcOptions: {
+  const wss = new Server({ server });
+  const wsHandler = applyWSSHandler<AppRouter>({
+    wss,
+    router: appRouter,
+    createContext,
+  });
+
+  app.use(cors());
+  app.use(cookieParser());
+  app.use(express.json());
+  app.use(
+    "/trpc",
+    createExpressMiddleware({
       router: appRouter,
       createContext,
-    },
+    })
+  );
+
+  app.get("/", (_, res) => {
+    res.send({ message: "Hello World!" });
   });
 
-  server.get("/", (_, res) => {
-    res.send({ hello: "world" });
+  server.listen(port, () => {
+    console.log(`Server listening on http://localhost:${port}`);
   });
 
-  await server.listen({ port, host: "0.0.0.0" });
-  console.log(`Server started on at http://localhost:${port}/`);
+  server.on("error", console.error);
+
+  process.on("SIGTERM", () => {
+    wsHandler.broadcastReconnectNotification();
+    wss.close();
+    server.close();
+  });
 };
 
 main().catch(console.error);
