@@ -14,7 +14,7 @@ COPY packages/db/package.json ./packages/db/package.json
 COPY yarn.lock ./
 
 RUN apk add --no-cache ffmpeg yt-dlp curl
-RUN npm install -g turbo
+RUN npm install -g turbo yarn
 RUN yarn
 
 COPY . .
