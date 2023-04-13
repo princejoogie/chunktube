@@ -1,11 +1,8 @@
 import fs from "fs";
-import path from "path";
-import crypto from "crypto";
 
 import { transcribe } from "./transcribe";
 import { openai } from "./config";
 import { getVideoDetails, getVideoId } from "../utils/youtube";
-import { execAsync } from "../utils/helpers";
 
 type GetConclusionParam = Awaited<ReturnType<typeof transcribe>>[number];
 
@@ -38,16 +35,12 @@ const getConclusion = async (param: GetConclusionParam, index: number) => {
   };
 };
 
-const generateId = () => crypto.randomBytes(16).toString("hex");
-
-export const conclude = async (url: string) => {
-  const tmpDir = path.join(__dirname, "tmp", generateId());
+export const conclude = async (url: string, tmpDir: string) => {
   const videoId = getVideoId(url);
   const details = await getVideoDetails(videoId);
   const transcriptions = await transcribe(url, tmpDir);
   const conclusions = await Promise.all(
     transcriptions.map((e, i) => getConclusion(e, i))
   );
-  await execAsync(`rm -rf ${tmpDir}`);
   return { conclusions, details };
 };

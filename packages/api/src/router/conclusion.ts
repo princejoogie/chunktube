@@ -1,9 +1,14 @@
+import path from "path";
+import crypto from "crypto";
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 import { getVideoId } from "../utils/youtube";
 import { conclude } from "../gpt/conclude";
 import { conclusionSelect, getPayload } from "./common";
+import { execAsync } from "../utils/helpers";
+
+const generateId = () => crypto.randomBytes(16).toString("hex");
 
 const cleanUrl = (_url: string) => {
   const url = new URL(_url);
@@ -68,7 +73,8 @@ export const conclusionRouter = createTRPCRouter({
       }
 
       // Create the conclusion
-      const { conclusions, details } = await conclude(url);
+      const tmpDir = path.join(__dirname, "tmp", generateId());
+      const { conclusions, details } = await conclude(url, tmpDir);
       const data = await ctx.prisma.conclusion.create({
         data: {
           url,
@@ -89,6 +95,7 @@ export const conclusionRouter = createTRPCRouter({
         where: { clerkId: payload.sub },
         data: { credits: { decrement: 1 } },
       });
+      await execAsync(`rm -rf ${tmpDir}`);
       return data;
     }),
   get: publicProcedure
