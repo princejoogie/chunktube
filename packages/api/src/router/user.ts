@@ -31,36 +31,27 @@ export const userRouter = createTRPCRouter({
         throw new TRPCError({ code: "BAD_REQUEST", message: "Invalid token" });
       }
     }),
-  create: publicProcedure
+  upsert: publicProcedure
     .input(createOrUpdateSchema)
     .mutation(async ({ ctx, input }) => {
-      const user = await ctx.prisma.user.create({
-        data: {
+      const updatedUser = await ctx.prisma.user.upsert({
+        where: {
+          clerkId: input.id,
+        },
+        update: {
+          clerkId: input.id,
+          banned: input.banned,
+          imageUrl: input.image_url,
+          firstName: input.first_name,
+          lastName: input.last_name,
+        },
+        create: {
           clerkId: input.id,
           banned: input.banned,
           imageUrl: input.image_url,
           firstName: input.first_name,
           lastName: input.last_name,
           credits: DEFAULT_CREDITS,
-        },
-        select: { id: true },
-      });
-
-      return user;
-    }),
-  update: publicProcedure
-    .input(createOrUpdateSchema)
-    .mutation(async ({ ctx, input }) => {
-      const updatedUser = await ctx.prisma.user.update({
-        where: {
-          clerkId: input.id,
-        },
-        data: {
-          clerkId: input.id,
-          banned: input.banned,
-          imageUrl: input.image_url,
-          firstName: input.first_name,
-          lastName: input.last_name,
         },
         select: { id: true },
       });

@@ -13,13 +13,7 @@ const handler = async (
   const base = eventSchema.parse(req.body);
   if (base.type === "user.created" || base.type === "user.updated") {
     const data = createOrUpdateSchema.parse(base.data);
-
-    if (base.type === "user.created") {
-      await httpApi.user.create.mutate(data);
-      return res.status(200).json(data);
-    }
-
-    await httpApi.user.update.mutate(data);
+    await httpApi.user.upsert.mutate(data);
     return res.status(200).json(data);
   }
 
