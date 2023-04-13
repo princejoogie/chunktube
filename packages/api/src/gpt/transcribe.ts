@@ -1,26 +1,22 @@
 import fs from "fs";
 import path from "path";
 import crypto from "crypto";
-import { execSync } from "child_process";
 
 import { openai } from "./config";
 import { hasBin, fileExists } from "../utils/has-bin";
+import { execAsync } from "../utils/helpers";
 
 const generateId = () => crypto.randomBytes(16).toString("hex");
 
-const getAudioLength = (audioPath: string) => {
+const getAudioLength = async (audioPath: string) => {
   if (!hasBin("ffprobe")) throw new Error("ERROR: ffprobe not found");
 
-  try {
-    const duration = execSync(
-      `ffprobe -i ${audioPath} -show_entries format=duration -v quiet -of csv="p=0"`
-    )
-      .toString()
-      .trim();
-    return parseFloat(duration);
-  } catch {
-    throw new Error("ERROR: Failed to get audio length");
-  }
+  const raw = await execAsync(
+    `ffprobe -i ${audioPath} -show_entries format=duration -v quiet -of csv="p=0"`,
+    "Failed to get audio length"
+  );
+  const duration = parseFloat(raw);
+  return duration;
 };
 
 const getTimeOffset = (length: number, offset: number) => {
@@ -49,14 +45,14 @@ const getText = async (audioPath: string) => {
   }
 };
 
-const downloadAudio = (url: string, tmpDir: string) => {
+const downloadAudio = async (url: string, tmpDir: string) => {
   if (!hasBin("yt-dlp")) throw new Error("ERROR: yt-dlp not found");
 
   const audioFileName = "extracted_audio.mp3";
   const audioPath = path.join(tmpDir, audioFileName);
 
   try {
-    execSync(
+    await execAsync(
       `yt-dlp -x --audio-quality 6 --audio-format mp3 --output ${audioPath} ${url}`
     );
 
@@ -70,15 +66,15 @@ const downloadAudio = (url: string, tmpDir: string) => {
   }
 };
 
-const chopAudio = (audioPath: string, tmpDir: string) => {
+const chopAudio = async (audioPath: string, tmpDir: string) => {
   if (!hasBin("ffmpeg")) throw new Error("ERROR: ffmpeg not found");
 
   try {
     const chopDir = path.join(tmpDir, "chops");
     const outputTemplate = path.join(chopDir, "%03d.mp3");
 
-    execSync(`mkdir ${chopDir}`);
-    execSync(
+    await execAsync(`mkdir ${chopDir}`);
+    await execAsync(
       `ffmpeg -i ${audioPath} -c copy -map 0 -segment_time 00:05:00 -f segment -reset_timestamps 1 ${outputTemplate}`
     );
 
@@ -92,11 +88,11 @@ const chopAudio = (audioPath: string, tmpDir: string) => {
 };
 
 const getTranscriptions = async (
-  chops: ReturnType<typeof chopAudio>,
+  chops: Awaited<ReturnType<typeof chopAudio>>,
   tmpDir: string
 ) => {
   const txPath = path.join(tmpDir, "transcriptions");
-  execSync(`mkdir ${txPath}`);
+  await execAsync(`mkdir ${txPath}`);
 
   const promises = chops.map((chop, offset) => {
     return new Promise<{ filePath: string; time: string }>(async (res, rej) => {
@@ -106,7 +102,7 @@ const getTranscriptions = async (
           chop.fileName.replace(".mp3", ".txt")
         );
         const txt = await getText(chop.path);
-        const length = getAudioLength(chop.path);
+        const length = await getAudioLength(chop.path);
         const time = getTimeOffset(length, offset);
         fs.writeFileSync(filePath, txt);
 
@@ -122,8 +118,11 @@ const getTranscriptions = async (
 
 export const transcribe = async (url: string) => {
   const tmpDir = path.join(__dirname, "tmp", generateId());
-  const audioPath = downloadAudio(url, tmpDir);
-  const chops = chopAudio(audioPath, tmpDir);
+  const audioPath = await downloadAudio(url, tmpDir);
+  const chops = await chopAudio(audioPath, tmpDir);
   const transcriptions = await getTranscriptions(chops, tmpDir);
+
+  await execAsync(`rm -rf ${tmpDir}`);
+
   return transcriptions;
 };
