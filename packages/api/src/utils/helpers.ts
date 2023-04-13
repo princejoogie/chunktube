@@ -8,3 +8,16 @@ export const execAsync = async (command: string, errMessage?: string) => {
     });
   });
 };
+
+export const secToHMS = (sec: number) => {
+  const hours = Math.floor(sec / 3600);
+  const minutes = Math.floor((sec - hours * 3600) / 60);
+  const seconds = Math.floor(sec - hours * 3600 - minutes * 60);
+
+  const h = `${hours.toString().padStart(2, "0")}`;
+  const m = `${minutes.toString().padStart(2, "0")}`;
+  const s = `${seconds.toString().padStart(2, "0")}`;
+  const hms = `${h}:${m}:${s}`;
+
+  return hms;
+};
