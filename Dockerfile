@@ -38,8 +38,12 @@ WORKDIR /app
 RUN addgroup --system --gid 1001 app
 RUN adduser --system --uid 1001 app
 
+USER root
+RUN mkdir -p /app/packages/api/dist/tmp
+RUN chown app /app/packages/api/dist/tmp
 USER app
 COPY --from=installer /app .
+
 
 EXPOSE 4000
 ENV NODE_ENV=production
