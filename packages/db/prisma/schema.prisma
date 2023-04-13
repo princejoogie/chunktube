@@ -16,8 +16,6 @@ model User {
   id        String  @id @default(cuid())
   clerkId   String  @unique
   imageUrl  String  @db.Text
-  firstName String
-  lastName  String
   banned    Boolean @default(false)
   credits   Int     @default(0)
 

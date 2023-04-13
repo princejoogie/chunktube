@@ -16,8 +16,6 @@ export const createOrUpdateSchema = z.object({
   id: z.string(),
   banned: z.boolean(),
   image_url: z.string(),
-  first_name: z.string(),
-  last_name: z.string(),
 });
 
 export type CreatedOrUpdatedSchema = {

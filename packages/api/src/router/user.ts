@@ -8,8 +8,6 @@ const DEFAULT_CREDITS = 5;
 
 const userBaseSelect = {
   banned: true,
-  lastName: true,
-  firstName: true,
   id: true,
   clerkId: true,
   imageUrl: true,
@@ -42,15 +40,11 @@ export const userRouter = createTRPCRouter({
           clerkId: input.id,
           banned: input.banned,
           imageUrl: input.image_url,
-          firstName: input.first_name,
-          lastName: input.last_name,
         },
         create: {
           clerkId: input.id,
           banned: input.banned,
           imageUrl: input.image_url,
-          firstName: input.first_name,
-          lastName: input.last_name,
           credits: DEFAULT_CREDITS,
         },
         select: { id: true },

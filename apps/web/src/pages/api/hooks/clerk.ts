@@ -6,7 +6,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     return res.status(405).json({ code: 405, message: "Method not allowed" });
   }
 
-  /* const base = eventSchema.parse(req.body); */
   if (req.body.type && typeof req.body.type === "string") {
     if (req.body.type === "user.created" || req.body.type === "user.updated") {
       const data = await httpApi.user.upsert.mutate(req.body.data);
