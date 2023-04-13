@@ -48,10 +48,10 @@ model Segment {
 }
 
 model Likes {
-  conclusion   Conclusion @relation(fields: [conclusionId], references: [id])
+  conclusion   Conclusion @relation(fields: [conclusionId], references: [id], onDelete: Cascade)
   conclusionId String
 
-  user   User   @relation(fields: [userId], references: [id])
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String
 
   @@id([conclusionId, userId])

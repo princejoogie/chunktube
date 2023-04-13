@@ -13,7 +13,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     if (req.body.type === "user.deleted") {
-      const data = await httpApi.user.delete.mutate(req.body.data);
+      const data = await httpApi.user.delete.mutate(req.body);
       return res.status(200).json(data);
     }
   }
