@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { useUser, UserButton, SignedIn, SignedOut } from "@clerk/nextjs";
 import Container from "./container";
@@ -15,11 +16,19 @@ const Navbar = ({ token }: { token: string }) => {
     <nav className="">
       <Container>
         <div className="my-4 flex items-center justify-between gap-4">
-          <div>
-            <Link href="/">
-              <h3 className="font-mono text-2xl">Conclusion.tech</h3>
-            </Link>
-          </div>
+          <Link href="/">
+            <div className="flex items-center space-x-2">
+              <div className="h-14 w-14">
+                <Image
+                  src="/assets/logo.svg"
+                  width={1024}
+                  height={1024}
+                  alt="ChunkTube logo"
+                />
+              </div>
+              <h3 className="font-mono text-2xl font-bold">ChunkTube</h3>
+            </div>
+          </Link>
 
           <div className="flex items-center gap-2">
             {!isLoaded ? (

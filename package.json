@@ -1,5 +1,5 @@
 {
-  "name": "conclusion.tech",
+  "name": "chunktube",
   "version": "0.0.0",
   "private": true,
   "author": "princejoogie",
@@ -7,7 +7,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/princejoogie/conclusion.tech.git"
+    "url": "https://github.com/princejoogie/chunktube.git"
   },
   "workspaces": [
     "apps/*",
