@@ -1,10 +1,19 @@
 import { z } from "zod";
 import { createTRPCRouter, publicProcedure } from "../trpc";
-import { createOrUpdateSchema, eventSchema } from "../types";
 import { getPayload } from "./common";
 import { TRPCError } from "@trpc/server";
 
 const DEFAULT_CREDITS = 5;
+
+export const deleteSchema = z.object({
+  id: z.string(),
+});
+
+export const createOrUpdateSchema = z.object({
+  id: z.string(),
+  banned: z.boolean(),
+  image_url: z.string(),
+});
 
 const userBaseSelect = {
   banned: true,
@@ -29,19 +38,26 @@ export const userRouter = createTRPCRouter({
         throw new TRPCError({ code: "BAD_REQUEST", message: "Invalid token" });
       }
     }),
-  upsert: publicProcedure
+  update: publicProcedure
     .input(createOrUpdateSchema)
     .mutation(async ({ ctx, input }) => {
-      const updatedUser = await ctx.prisma.user.upsert({
-        where: {
-          clerkId: input.id,
-        },
-        update: {
+      const updatedUser = await ctx.prisma.user.update({
+        where: { clerkId: input.id },
+        data: {
           clerkId: input.id,
           banned: input.banned,
           imageUrl: input.image_url,
         },
-        create: {
+        select: { id: true },
+      });
+
+      return updatedUser;
+    }),
+  create: publicProcedure
+    .input(createOrUpdateSchema)
+    .mutation(async ({ ctx, input }) => {
+      const updatedUser = await ctx.prisma.user.create({
+        data: {
           clerkId: input.id,
           banned: input.banned,
           imageUrl: input.image_url,
@@ -53,15 +69,15 @@ export const userRouter = createTRPCRouter({
       return updatedUser;
     }),
   delete: publicProcedure
-    .input(eventSchema)
+    .input(deleteSchema)
     .mutation(async ({ ctx, input }) => {
       const user = await ctx.prisma.user.findUnique({
-        where: { clerkId: input.data.id },
+        where: { clerkId: input.id },
       });
 
       if (user) {
         await ctx.prisma.user.delete({
-          where: { clerkId: input.data.id },
+          where: { clerkId: input.id },
         });
         return true;
       }
