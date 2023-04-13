@@ -1,12 +1,9 @@
 import fs from "fs";
 import path from "path";
-import crypto from "crypto";
 
 import { openai } from "./config";
 import { hasBin, fileExists } from "../utils/has-bin";
 import { execAsync } from "../utils/helpers";
-
-const generateId = () => crypto.randomBytes(16).toString("hex");
 
 const getAudioLength = async (audioPath: string) => {
   if (!hasBin("ffprobe")) throw new Error("ERROR: ffprobe not found");
@@ -116,13 +113,9 @@ const getTranscriptions = async (
   return await Promise.all(promises);
 };
 
-export const transcribe = async (url: string) => {
-  const tmpDir = path.join(__dirname, "tmp", generateId());
+export const transcribe = async (url: string, tmpDir: string) => {
   const audioPath = await downloadAudio(url, tmpDir);
   const chops = await chopAudio(audioPath, tmpDir);
   const transcriptions = await getTranscriptions(chops, tmpDir);
-
-  await execAsync(`rm -rf ${tmpDir}`);
-
   return transcriptions;
 };
