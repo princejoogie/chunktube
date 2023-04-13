@@ -1,7 +1,6 @@
 FROM node:16-alpine AS builder
 
 RUN apk add --no-cache libc6-compat
-RUN apk add --no-cache ffmpeg yt-dlp
 RUN apk update
 
 WORKDIR /app
@@ -30,6 +29,9 @@ COPY turbo.json turbo.json
 RUN turbo run build --filter=server
 
 FROM node:16-alpine AS runner
+
+RUN apk add --no-cache libc6-compat
+RUN apk add --no-cache ffmpeg yt-dlp
 
 WORKDIR /app
 
