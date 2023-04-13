@@ -40,7 +40,7 @@ RUN adduser --system --uid 1001 app
 
 USER root
 RUN mkdir -p /app/packages/api/dist/tmp
-RUN chown app /app/packages/api/dist/tmp
+RUN chown -R app /app/packages/api/dist/tmp
 USER app
 COPY --from=installer /app .
 
