@@ -23,7 +23,7 @@ export const LoadingScreen = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setIdx(idx + 1 >= texts.length ? 0 : idx + 1);
-    }, 10000);
+    }, 8000);
 
     return () => {
       clearInterval(interval);

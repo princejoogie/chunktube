@@ -1,5 +1,7 @@
-import { youtube } from "@googleapis/youtube";
+import { google } from "googleapis";
 import { TRPCError } from "@trpc/server";
+
+const youtube = google.youtube("v3");
 
 const parseDuration = (e: string) => {
   const hours = e.match(/(\d+)H/);
@@ -44,7 +46,7 @@ export const getVideoDetails = async (videoId: string) => {
     });
   }
 
-  const details = await youtube("v3").videos.list({
+  const details = await youtube.videos.list({
     auth: apiKey,
     id: [videoId],
     part: ["snippet", "contentDetails"],
@@ -89,7 +91,7 @@ export const getVideoDetails = async (videoId: string) => {
         width: 640,
         height: 480,
       },
-      duration: duration ?? parseDuration("PT0H0M0S"),
+      duration: parseDuration("PT0H0M0S"),
     };
   }
 
@@ -114,7 +116,7 @@ export const searchVideo = async (query: string, pageToken?: string) => {
     });
   }
 
-  const data = await youtube("v3").search.list({
+  const data = await youtube.search.list({
     pageToken,
     auth: apiKey,
     part: ["snippet"],
