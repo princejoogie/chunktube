@@ -2,26 +2,28 @@ version: "3.9"
 
 services:
   database:
-    image: mysql
     container_name: conclusion-mysql
-    hostname: mysql
-    ports:
-      - "6033:3306"
     environment:
       MYSQL_DATABASE: "conclusion-db"
       MYSQL_ROOT_PASSWORD: "mysql"
+    hostname: mysql
+    image: mysql
+    ports:
+      - "6033:3306"
     restart: unless-stopped
     volumes:
       - mysql:/var/lib/mysql
 
   server:
-    build: ./Dockerfile
-    image: conclusion-server
-    ports:
-      - "4000:4000"
+    build:
+      dockerfile: ./Dockerfile
     environment:
+      CLERK_SECRET_KEY: ${CLERK_SECRET_KEY}
       DATABASE_URL: ${DATABASE_URL}
       OPENAI_API_KEY: ${OPENAI_API_KEY}
+      YOUTUBE_API_KEY: ${YOUTUBE_API_KEY}
+    ports:
+      - "4000:4000"
 
 volumes:
   mysql:
