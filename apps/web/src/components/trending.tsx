@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import toNow from "date-fns/formatDistanceToNow";
-import { trpc } from "~/utils/api";
+import { api } from "~/utils/api";
 
 const delays = ["delay-100", "delay-200", "delay-300", "delay-500"];
 
@@ -30,7 +30,7 @@ export const TrendingPageLoader = () => {
 };
 
 export const TrendingPage = () => {
-  const trending = trpc.list.getTopConclusions.useQuery();
+  const trending = api.list.getTopConclusions.useQuery();
 
   return (
     <div className="mt-10">

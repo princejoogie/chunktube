@@ -3,14 +3,14 @@ import Image from "next/image";
 import toNow from "date-fns/formatDistanceToNow";
 import { useMemo } from "react";
 
-import { trpc } from "~/utils/api";
+import { api } from "~/utils/api";
 
 interface ReadNextPageProps {
   currentId: string | undefined;
 }
 
 export const ReadNextPage = ({ currentId }: ReadNextPageProps) => {
-  const trending = trpc.list.getTopConclusions.useQuery();
+  const trending = api.list.getTopConclusions.useQuery();
 
   const filtered = useMemo(() => {
     return trending.data?.filter((a) => a.id !== currentId) ?? [];

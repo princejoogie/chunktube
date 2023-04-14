@@ -1,7 +1,7 @@
 import superjson from "superjson";
 import { type JwtPayload } from "./router/common";
 import { type inferAsyncReturnType, initTRPC, TRPCError } from "@trpc/server";
-import { type CreateExpressContextOptions } from "@trpc/server/adapters/express";
+import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
 import { ZodError } from "zod";
 import { prisma } from "db";
 
@@ -16,7 +16,7 @@ const createInnerTRPCContext = (opts: CreateContextOptions) => {
   };
 };
 
-export const createTRPCContext = async (_: CreateExpressContextOptions) => {
+export const createTRPCContext = async (_: CreateNextContextOptions) => {
   /* const cookies = new Cookie(req, res); */
   /* const session = cookies.get("__session"); */
   /**/

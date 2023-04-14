@@ -4,7 +4,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
 /* import { QueryClientProvider, QueryClient } from "@tanstack/react-query"; */
 
-import { trpc } from "~/utils/api";
+import { api } from "~/utils/api";
 import { Toaster } from "~/components/toaster";
 
 /* export const queryClient = new QueryClient(); */
@@ -27,4 +27,4 @@ const App = ({ Component, pageProps }: AppProps) => {
   );
 };
 
-export default trpc.withTRPC(App);
+export default api.withTRPC(App);

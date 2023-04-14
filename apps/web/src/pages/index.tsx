@@ -6,7 +6,7 @@ import Container from "~/components/container";
 import Layout from "~/components/layout";
 import { TrendingPage } from "~/components/trending";
 import { LoadingScreen } from "~/components/loading-screen";
-import { trpc } from "~/utils/api";
+import { api } from "~/utils/api";
 import { useToast } from "~/hooks/use-toast";
 import { getAuth } from "@clerk/nextjs/server";
 
@@ -16,7 +16,7 @@ const Home = ({ token }: { token: string }) => {
   const { isLoaded, isSignedIn } = useUser();
   const [input, setInput] = useState("");
 
-  const conclude = trpc.conclusion.create.useMutation({
+  const conclude = api.conclusion.create.useMutation({
     onSuccess: (data) => {
       router.push(`/c/${encodeURIComponent(data.url)}`);
     },

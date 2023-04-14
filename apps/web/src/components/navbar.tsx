@@ -2,11 +2,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { useUser, UserButton, SignedIn, SignedOut } from "@clerk/nextjs";
 import Container from "./container";
-import { trpc } from "~/utils/api";
+import { api } from "~/utils/api";
 
 const Navbar = ({ token }: { token: string }) => {
   const { isLoaded, isSignedIn } = useUser();
-  const me = trpc.user.me.useQuery(
+  const me = api.user.me.useQuery(
     { token },
     { enabled: Boolean(isSignedIn && token) }
   );
