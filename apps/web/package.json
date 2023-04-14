@@ -4,12 +4,11 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "dev": "yarn with-env next dev",
-    "build": "yarn with-env next build",
-    "start": "yarn with-env next start",
+    "dev": "yarn next dev",
+    "build": "yarn next build",
+    "start": "yarn next start",
     "lint": "next lint",
-    "clean": "rimraf .next/ .turbo/",
-    "with-env": "dotenv -e ../../.env --"
+    "clean": "rimraf .next/ .turbo/"
   },
   "dependencies": {
     "@clerk/nextjs": "^4.16.2",
