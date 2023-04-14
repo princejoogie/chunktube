@@ -1,6 +1,5 @@
 import { z } from "zod";
-import { createTRPCRouter, publicProcedure } from "../trpc";
-import { getPayload } from "./common";
+import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 import { TRPCError } from "@trpc/server";
 
 const DEFAULT_CREDITS = 5;
@@ -24,20 +23,17 @@ const userBaseSelect = {
 } as const;
 
 export const userRouter = createTRPCRouter({
-  me: publicProcedure
-    .input(z.object({ token: z.string() }))
-    .query(async ({ ctx, input }) => {
-      try {
-        const payload = getPayload(input.token);
-        const user = await ctx.prisma.user.findUnique({
-          where: { clerkId: payload.sub },
-          select: userBaseSelect,
-        });
-        return user;
-      } catch {
-        throw new TRPCError({ code: "BAD_REQUEST", message: "Invalid token" });
-      }
-    }),
+  me: protectedProcedure.query(async ({ ctx }) => {
+    try {
+      const user = await ctx.prisma.user.findUnique({
+        where: { clerkId: ctx.payload.sub },
+        select: userBaseSelect,
+      });
+      return user;
+    } catch {
+      throw new TRPCError({ code: "BAD_REQUEST", message: "Invalid token" });
+    }
+  }),
   update: publicProcedure
     .input(createOrUpdateSchema)
     .mutation(async ({ ctx, input }) => {

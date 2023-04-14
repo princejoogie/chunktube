@@ -1,9 +1,9 @@
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
-import { createTRPCRouter, publicProcedure } from "../trpc";
+import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
 import { getVideoId } from "../utils/youtube/details";
 import { conclude } from "../gpt/conclude";
-import { conclusionSelect, getPayload } from "./common";
+import { conclusionSelect } from "./common";
 
 const cleanUrl = (_url: string) => {
   const url = new URL(_url);
@@ -24,8 +24,8 @@ const cleanUrl = (_url: string) => {
 };
 
 export const conclusionRouter = createTRPCRouter({
-  create: publicProcedure
-    .input(z.object({ url: z.string().url(), token: z.string() }))
+  create: protectedProcedure
+    .input(z.object({ url: z.string().url() }))
     .mutation(async ({ ctx, input }) => {
       // Return the existing conclusion if it exists
       const { url, videoId } = cleanUrl(input.url);
@@ -43,9 +43,8 @@ export const conclusionRouter = createTRPCRouter({
       }
 
       // Check if the user has credits
-      const payload = getPayload(input.token);
       const user = await ctx.prisma.user.findUnique({
-        where: { clerkId: payload.sub },
+        where: { clerkId: ctx.payload.sub },
         select: { banned: true, credits: true, id: true },
       });
 
@@ -86,7 +85,7 @@ export const conclusionRouter = createTRPCRouter({
         select: conclusionSelect,
       });
       await ctx.prisma.user.update({
-        where: { clerkId: payload.sub },
+        where: { clerkId: ctx.payload.sub },
         data: { credits: { decrement: 1 } },
       });
       return data;

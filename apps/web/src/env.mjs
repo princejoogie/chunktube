@@ -10,6 +10,7 @@ const server = z.object({
   OPENAI_API_KEY: z.string().min(1),
   YOUTUBE_API_KEY: z.string().min(1),
   CLERK_SECRET_KEY: z.string().min(1),
+  CLERK_JWT_VERIFICATION_KEY: z.string().min(1),
 });
 
 /**
@@ -32,6 +33,7 @@ const processEnv = {
   OPENAI_API_KEY: process.env.OPENAI_API_KEY,
   YOUTUBE_API_KEY: process.env.YOUTUBE_API_KEY,
   CLERK_SECRET_KEY: process.env.CLERK_SECRET_KEY,
+  CLERK_JWT_VERIFICATION_KEY: process.env.CLERK_JWT_VERIFICATION_KEY,
   NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY:
     process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,
 };

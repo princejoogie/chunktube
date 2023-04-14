@@ -13,6 +13,7 @@
   },
   "devDependencies": {
     "@types/he": "^1.2.0",
+    "@types/jsonwebtoken": "^9.0.1",
     "@types/lodash": "^4.14.194",
     "@types/node": "^18.15.11",
     "eslint-config-custom": "*",
@@ -29,7 +30,7 @@
     "db": "*",
     "googleapis": "^117.0.0",
     "he": "^1.2.0",
-    "jwt-decode": "^3.1.2",
+    "jsonwebtoken": "^9.0.0",
     "lodash": "^4.17.21",
     "openai": "^3.2.1",
     "striptags": "^3.2.0",

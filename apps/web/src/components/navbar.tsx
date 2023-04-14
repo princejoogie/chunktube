@@ -4,12 +4,11 @@ import { useUser, UserButton, SignedIn, SignedOut } from "@clerk/nextjs";
 import Container from "./container";
 import { api } from "~/utils/api";
 
-const Navbar = ({ token }: { token: string }) => {
+const Navbar = () => {
   const { isLoaded, isSignedIn } = useUser();
-  const me = api.user.me.useQuery(
-    { token },
-    { enabled: Boolean(isSignedIn && token) }
-  );
+  const me = api.user.me.useQuery(undefined, {
+    enabled: Boolean(isSignedIn && isLoaded),
+  });
 
   return (
     <nav className="">

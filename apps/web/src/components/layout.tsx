@@ -4,14 +4,13 @@ import Navbar from "./navbar";
 
 interface LayoutProps {
   children: ReactNode;
-  token: string;
   seo?: {
     title?: string;
     description?: string;
   };
 }
 
-const Layout = ({ children, token, seo }: LayoutProps) => {
+const Layout = ({ children, seo }: LayoutProps) => {
   return (
     <>
       <Head>
@@ -22,7 +21,7 @@ const Layout = ({ children, token, seo }: LayoutProps) => {
       </Head>
 
       <div>
-        <Navbar token={token} />
+        <Navbar />
         <main>{children}</main>
       </div>
     </>

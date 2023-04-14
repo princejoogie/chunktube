@@ -8,9 +8,8 @@ import { TrendingPage } from "~/components/trending";
 import { LoadingScreen } from "~/components/loading-screen";
 import { api } from "~/utils/api";
 import { useToast } from "~/hooks/use-toast";
-import { getAuth } from "@clerk/nextjs/server";
 
-const Home = ({ token }: { token: string }) => {
+const Home = () => {
   const { toast } = useToast();
   const router = useRouter();
   const { isLoaded, isSignedIn } = useUser();
@@ -30,7 +29,7 @@ const Home = ({ token }: { token: string }) => {
   });
 
   return (
-    <Layout token={token}>
+    <Layout>
       <Container>
         {conclude.isLoading ? <LoadingScreen /> : null}
 
@@ -39,7 +38,7 @@ const Home = ({ token }: { token: string }) => {
             className="mx-auto mt-4 w-full xl:w-3/4"
             onSubmit={(e) => {
               e.preventDefault();
-              conclude.mutate({ url: input, token });
+              conclude.mutate({ url: input });
             }}
           >
             <div className="flex w-full overflow-hidden rounded-full border border-gray-600">
@@ -78,15 +77,6 @@ const Home = ({ token }: { token: string }) => {
       </Container>
     </Layout>
   );
-};
-
-export const getServerSideProps = async (ctx: any) => {
-  const token = await getAuth(ctx.req).getToken();
-  return {
-    props: {
-      token,
-    },
-  };
 };
 
 export default Home;
