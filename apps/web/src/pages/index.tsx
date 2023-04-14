@@ -4,7 +4,6 @@ import { useState } from "react";
 
 import Container from "~/components/container";
 import Layout from "~/components/layout";
-import ExpandingLoader from "~/components/icons/loading/expand";
 import { TrendingPage } from "~/components/trending";
 import { LoadingScreen } from "~/components/loading-screen";
 import { trpc } from "~/utils/api";
