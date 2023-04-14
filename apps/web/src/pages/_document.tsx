@@ -13,7 +13,7 @@ export default function Document() {
         <meta property="og:title" content="ChunkTube" />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://chunktube.tech" />
-        <meta property="og:image" content="/api/og" />
+        <meta property="og:image" content="https://chunktube.tech/api/og" />
         <meta
           property="og:description"
           content="It's just YouTube.. but text!"

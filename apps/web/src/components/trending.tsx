@@ -3,12 +3,52 @@ import Image from "next/image";
 import toNow from "date-fns/formatDistanceToNow";
 import { trpc } from "~/utils/api";
 
+const delays = ["delay-100", "delay-200", "delay-300", "delay-500"];
+
+export const TrendingPageLoader = () => {
+  return (
+    <>
+      <h2 className="text-xl font-semibold">Trending</h2>
+      <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+        {Array(8)
+          .fill(null)
+          .map((_, i) => {
+            const c = delays[i % delays.length];
+            console.log({ c });
+            return (
+              <div key={`TrendingPageLoader-${i}`}>
+                <div
+                  className={`aspect-video w-full animate-pulse rounded-md bg-gray-800 ${
+                    c ?? "delay-100"
+                  }`}
+                >
+                  <p className="absolute bottom-1 right-1 rounded-md bg-black/80 p-1 text-xs">
+                    lma
+                  </p>
+                </div>
+
+                <p
+                  className="mt-2 line-clamp-2 h-6 rounded bg-gray-700 font-semibold"
+                  style={{ width: `${25 + Math.floor(Math.random() * 50)}%` }}
+                />
+                <p
+                  className="mt-1 h-4 rounded bg-gray-800 text-sm text-gray-400"
+                  style={{ width: `${25 + Math.floor(Math.random() * 50)}%` }}
+                />
+              </div>
+            );
+          })}
+      </div>
+    </>
+  );
+};
+
 export const TrendingPage = () => {
   const trending = trpc.list.getTopConclusions.useQuery();
 
   return (
     <div className="mt-10">
-      {trending.isLoading ? <p>Loading...</p> : null}
+      {trending.isLoading ? <TrendingPageLoader /> : null}
       {trending.data ? (
         <>
           <h2 className="text-xl font-semibold">Trending</h2>
