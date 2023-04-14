@@ -2,14 +2,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { useUser, UserButton, SignedIn, SignedOut } from "@clerk/nextjs";
 import Container from "./container";
-import { trpc } from "~/utils/api";
+import { api } from "~/utils/api";
 
-const Navbar = ({ token }: { token: string }) => {
+const Navbar = () => {
   const { isLoaded, isSignedIn } = useUser();
-  const me = trpc.user.me.useQuery(
-    { token },
-    { enabled: Boolean(isSignedIn && token) }
-  );
+  const me = api.user.me.useQuery(undefined, {
+    enabled: Boolean(isSignedIn && isLoaded),
+  });
 
   return (
     <nav className="">

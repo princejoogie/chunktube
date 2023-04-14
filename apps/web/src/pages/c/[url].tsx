@@ -1,12 +1,11 @@
 import Link from "next/link";
-import { getAuth } from "@clerk/nextjs/server";
 import { useRouter } from "next/router";
 
 import Container from "~/components/container";
 import ExpandingLoader from "~/components/icons/loading/expand";
 import Layout from "~/components/layout";
 import { ReadNextPage } from "~/components/read-next";
-import { trpc } from "~/utils/api";
+import { api } from "~/utils/api";
 
 const Timestamp = ({ time }: { time: string }) => {
   return (
@@ -25,18 +24,17 @@ const hmsToSec = (hms: string) => {
   return 0;
 };
 
-const ConclusionPage = ({ token }: { token: string }) => {
+const ConclusionPage = () => {
   const router = useRouter();
   const { url } = router.query as { url: string };
   const vidUrl = decodeURIComponent(url);
-  const conclusion = trpc.conclusion.get.useQuery(
+  const conclusion = api.conclusion.get.useQuery(
     { url: vidUrl },
     { enabled: !!url, retry: false }
   );
 
   return (
     <Layout
-      token={token}
       seo={conclusion.data ? { title: conclusion.data?.title } : undefined}
     >
       <Container>
@@ -107,15 +105,6 @@ const ConclusionPage = ({ token }: { token: string }) => {
       </Container>
     </Layout>
   );
-};
-
-export const getServerSideProps = async (ctx: any) => {
-  const token = await getAuth(ctx.req).getToken();
-  return {
-    props: {
-      token,
-    },
-  };
 };
 
 export default ConclusionPage;

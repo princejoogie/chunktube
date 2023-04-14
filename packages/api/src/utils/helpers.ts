@@ -1,3 +1,4 @@
+import { z } from "zod";
 import { exec } from "child_process";
 
 export const execAsync = async (command: string, errMessage?: string) => {
@@ -21,3 +22,13 @@ export const secToHMS = (sec: number) => {
 
   return hms;
 };
+
+export const sessionSchema = z.object({
+  exp: z.number(),
+  iat: z.number(),
+  iss: z.string(),
+  sid: z.string(),
+  sub: z.string(),
+});
+
+export type JwtPayload = z.infer<typeof sessionSchema>;

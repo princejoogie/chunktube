@@ -1,7 +1,8 @@
+!process.env.SKIP_ENV_VALIDATION && (await import("./src/env.mjs"));
+
 /** @type {import('next').NextConfig} */
-module.exports = {
+const config = {
   reactStrictMode: true,
-  transpilePackages: [],
   images: {
     formats: ["image/avif", "image/webp"],
     remotePatterns: [
@@ -14,3 +15,5 @@ module.exports = {
     ],
   },
 };
+
+export default config;

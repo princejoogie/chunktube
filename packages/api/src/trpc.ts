@@ -1,7 +1,9 @@
+import Cookie from "cookies";
+import jwt from "jsonwebtoken";
 import superjson from "superjson";
-import { type JwtPayload } from "./router/common";
 import { type inferAsyncReturnType, initTRPC, TRPCError } from "@trpc/server";
-import { type CreateExpressContextOptions } from "@trpc/server/adapters/express";
+import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
+import { sessionSchema, type JwtPayload } from "./utils/helpers";
 import { ZodError } from "zod";
 import { prisma } from "db";
 
@@ -16,15 +18,31 @@ const createInnerTRPCContext = (opts: CreateContextOptions) => {
   };
 };
 
-export const createTRPCContext = async (_: CreateExpressContextOptions) => {
-  /* const cookies = new Cookie(req, res); */
-  /* const session = cookies.get("__session"); */
-  /**/
-  /* if (!session) return createInnerTRPCContext({ payload: null }); */
-  /**/
-  /* const raw = jwtDecode(session); */
-  /* const payload = sessionSchema.parse(raw); */
-  return createInnerTRPCContext({ payload: null });
+export const createTRPCContext = async ({
+  req,
+  res,
+}: CreateNextContextOptions) => {
+  if (
+    !process.env.CLERK_JWT_VERIFICATION_KEY ||
+    typeof process.env.CLERK_JWT_VERIFICATION_KEY !== "string"
+  ) {
+    throw new Error("Missing Clerk JWT verification key");
+  }
+
+  const publicKey = process.env.CLERK_JWT_VERIFICATION_KEY.replace(
+    /\\n/g,
+    "\n"
+  );
+  const cookies = new Cookie(req, res);
+  const sessionToken = cookies.get("__session");
+
+  if (!sessionToken) {
+    return createInnerTRPCContext({ payload: null });
+  }
+
+  const decoded = jwt.verify(sessionToken, publicKey);
+  const payload = sessionSchema.parse(decoded);
+  return createInnerTRPCContext({ payload });
 };
 
 export type Context = inferAsyncReturnType<typeof createTRPCContext>;

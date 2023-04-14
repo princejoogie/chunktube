@@ -1,43 +1,42 @@
 import superjson from "superjson";
-import { createTRPCProxyClient, httpBatchLink } from "@trpc/client";
+import { createTRPCProxyClient, httpBatchLink, loggerLink } from "@trpc/client";
 import { createTRPCNext } from "@trpc/next";
 import type { AppRouter } from "api";
 
 export const getBaseUrl = () => {
-  if (process.env.NEXT_PUBLIC_API_URL) {
-    return process.env.NEXT_PUBLIC_API_URL;
-  }
-
-  return `http://localhost:${process.env.PORT ?? 3000}`;
+  if (typeof window !== "undefined") return ""; // browser should use relative url
+  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`; // SSR should use vercel url
+  return `http://localhost:${process.env.PORT ?? 3000}`; // dev SSR should use localhost
 };
 
-export const getWsUrl = () => {
-  if (process.env.NEXT_PUBLIC_WS_API_URL) {
-    return process.env.NEXT_PUBLIC_WS_API_URL;
-  }
-
-  return `ws://localhost:${process.env.PORT ?? 3000}`;
-};
-
-export const trpc = createTRPCNext<AppRouter>({
-  config: ({ ctx }) => {
+export const api = createTRPCNext<AppRouter>({
+  config: () => {
     return {
       links: [
+        loggerLink({
+          enabled: (opts) =>
+            process.env.NODE_ENV === "development" ||
+            (opts.direction === "down" && opts.result instanceof Error),
+        }),
         httpBatchLink({
-          url: `${getBaseUrl()}/trpc`,
-          headers: { ...ctx?.req?.headers },
+          url: `${getBaseUrl()}/api/trpc`,
         }),
       ],
       transformer: superjson,
     };
   },
-  ssr: false,
+  ssr: true,
 });
 
 export const httpApi = createTRPCProxyClient<AppRouter>({
   links: [
+    loggerLink({
+      enabled: (opts) =>
+        process.env.NODE_ENV === "development" ||
+        (opts.direction === "down" && opts.result instanceof Error),
+    }),
     httpBatchLink({
-      url: `${getBaseUrl()}/trpc`,
+      url: `${getBaseUrl()}/api/trpc`,
     }),
   ],
   transformer: superjson,
