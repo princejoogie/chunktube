@@ -10,7 +10,7 @@ export const getBaseUrl = () => {
 };
 
 export const api = createTRPCNext<AppRouter>({
-  config: ({ ctx }) => {
+  config: () => {
     return {
       links: [
         loggerLink({
@@ -20,13 +20,12 @@ export const api = createTRPCNext<AppRouter>({
         }),
         httpBatchLink({
           url: `${getBaseUrl()}/api/trpc`,
-          headers: { ...ctx?.req?.headers },
         }),
       ],
       transformer: superjson,
     };
   },
-  ssr: false,
+  ssr: true,
 });
 
 export const httpApi = createTRPCProxyClient<AppRouter>({

@@ -18,7 +18,7 @@
     "build": "turbo run build",
     "dev": "turbo run dev",
     "clean": "turbo run clean && rm -rf node_modules/.cache/turbo",
-    "lint": "turbo run lint",
+    "lint": "SKIP_ENV_VALIDATION=false turbo run lint",
     "db:generate": "turbo run db:generate",
     "db:push": "turbo run db:push",
     "db:studio": "turbo run db:studio",
@@ -28,7 +28,7 @@
     "dotenv-cli": "^7.1.0",
     "eslint-config-custom": "*",
     "prettier": "latest",
-    "rimraf": "^4.4.1",
+    "rimraf": "^5.0.0",
     "tsconfig": "*",
     "turbo": "^1.8.8"
   },
