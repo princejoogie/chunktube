@@ -1,8 +1,7 @@
 {
-  "manifest_version": 2,
-  "version": "1.0.0",
   "name": "ChunkTube",
   "short_name": "ChunkTube",
+  "description": "It's just YouTube.. but text!",
   "icons": [
     {
       "src": "/android-chrome-192x192.png",
@@ -15,6 +14,7 @@
       "type": "image/png"
     }
   ],
+  "id": "/",
   "start_url": "/",
   "orientation": "portrait",
   "theme_color": "#ffffff",

@@ -16,7 +16,9 @@ const Layout = ({ children, token, seo }: LayoutProps) => {
     <>
       <Head>
         <title>{seo?.title ?? "ChunkTube"}</title>
-        <meta name="description" content={seo?.description} />
+        {seo?.description ? (
+          <meta name="description" content={seo.description} />
+        ) : null}
       </Head>
 
       <div>

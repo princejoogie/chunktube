@@ -13,28 +13,14 @@ export const TrendingPageLoader = () => {
         {Array(8)
           .fill(null)
           .map((_, i) => {
-            const c = delays[i % delays.length];
-            console.log({ c });
+            const c = delays[i % delays.length] ?? "delay-0";
             return (
               <div key={`TrendingPageLoader-${i}`}>
                 <div
-                  className={`aspect-video w-full animate-pulse rounded-md bg-gray-800 ${
-                    c ?? "delay-100"
-                  }`}
-                >
-                  <p className="absolute bottom-1 right-1 rounded-md bg-black/80 p-1 text-xs">
-                    lma
-                  </p>
-                </div>
-
-                <p
-                  className="mt-2 line-clamp-2 h-6 rounded bg-gray-700 font-semibold"
-                  style={{ width: `${25 + Math.floor(Math.random() * 50)}%` }}
+                  className={`aspect-video w-full animate-pulse rounded-md bg-gray-800 ${c}`}
                 />
-                <p
-                  className="mt-1 h-4 rounded bg-gray-800 text-sm text-gray-400"
-                  style={{ width: `${25 + Math.floor(Math.random() * 50)}%` }}
-                />
+                <p className="mt-2 line-clamp-2 h-6 w-[70%] rounded bg-gray-700 font-semibold" />
+                <p className="mt-1 h-4 w-[45%] rounded bg-gray-800 text-sm text-gray-400" />
               </div>
             );
           })}
