@@ -11,6 +11,9 @@ export default function Document() {
           crossOrigin="use-credentials"
           href="/manifest.json"
         />
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="theme-color" content="#FFFFFF" />
 
         <meta name="description" content="It's just YouTube.. but text!" />
         <meta property="og:title" content="ChunkTube" />
