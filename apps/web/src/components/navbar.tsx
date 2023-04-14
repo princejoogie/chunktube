@@ -6,10 +6,9 @@ import { trpc } from "~/utils/api";
 
 const Navbar = ({ token }: { token: string }) => {
   const { isLoaded, isSignedIn } = useUser();
-
   const me = trpc.user.me.useQuery(
     { token },
-    { enabled: isSignedIn && !!token }
+    { enabled: Boolean(isSignedIn && token) }
   );
 
   return (

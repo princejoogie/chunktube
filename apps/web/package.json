@@ -25,6 +25,7 @@
     "api": "*",
     "class-variance-authority": "^0.5.2",
     "clsx": "^1.2.1",
+    "cors": "^2.8.5",
     "date-fns": "^2.29.3",
     "db": "*",
     "lucide-react": "^0.139.0",
