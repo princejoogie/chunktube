@@ -246,7 +246,7 @@ interface ReadNextPageProps {
 
 export const ReadNextPage = ({ currentId }: ReadNextPageProps) => {
   const e = api.list.getTopChunks.useInfiniteQuery(
-    { filter: "trending", limit: 15 },
+    { filter: "trending", limit: 8 },
     { getNextPageParam: (lastPage) => lastPage.cursor }
   );
 
