@@ -8,6 +8,7 @@ const Navbar = () => {
   const { isLoaded, isSignedIn } = useUser();
   const me = api.user.me.useQuery(undefined, {
     enabled: Boolean(isSignedIn && isLoaded),
+    refetchOnWindowFocus: true,
   });
 
   return (

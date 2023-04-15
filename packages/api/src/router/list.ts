@@ -33,9 +33,9 @@ const getFilterOrderBy = (
     case "mine":
       return [{ createdAt: "desc" }];
     case "trending":
-      return [{ timesConcluded: "desc" }, { createdAt: "asc" }];
+      return [{ timesConcluded: "desc" }, { createdAt: "desc" }];
     default:
-      return [{ timesConcluded: "desc" }, { createdAt: "asc" }];
+      return [{ timesConcluded: "desc" }, { createdAt: "desc" }];
   }
 };
 
