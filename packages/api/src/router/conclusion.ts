@@ -76,7 +76,9 @@ export const conclusionRouter = createTRPCRouter({
         data: {
           url,
           videoId,
+          userId: user.id,
           title: details.title,
+          channelId: details.channelId,
           thumbnail: { create: details.thumbnail },
           timesConcluded: 1,
           segments: {
@@ -84,7 +86,6 @@ export const conclusionRouter = createTRPCRouter({
               data: conclusions.map((e) => e),
             },
           },
-          user: { connect: { id: user.id } },
         },
         select: conclusionSelect,
       });
