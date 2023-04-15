@@ -4,7 +4,7 @@ import { useState } from "react";
 
 import Container from "~/components/container";
 import Layout from "~/components/layout";
-import { TrendingPage } from "~/components/trending";
+import { MyChunks, RecentChunks, TrendingChunks } from "~/components/chunks";
 import { LoadingScreen } from "~/components/loading-screen";
 import { api } from "~/utils/api";
 import { useToast } from "~/hooks/use-toast";
@@ -73,7 +73,10 @@ const Home = () => {
           </form>
         </fieldset>
 
-        <TrendingPage />
+        <MyChunks />
+        <TrendingChunks />
+        <RecentChunks />
+        <div className="h-48 w-full" />
       </Container>
     </Layout>
   );

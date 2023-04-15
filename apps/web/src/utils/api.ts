@@ -12,6 +12,14 @@ export const getBaseUrl = () => {
 export const api = createTRPCNext<AppRouter>({
   config: () => {
     return {
+      queryClientConfig: {
+        defaultOptions: {
+          queries: {
+            refetchOnWindowFocus: false,
+            refetchOnMount: false,
+          },
+        },
+      },
       links: [
         loggerLink({
           enabled: (opts) =>
@@ -25,7 +33,7 @@ export const api = createTRPCNext<AppRouter>({
       transformer: superjson,
     };
   },
-  ssr: true,
+  ssr: false,
 });
 
 export const httpApi = createTRPCProxyClient<AppRouter>({

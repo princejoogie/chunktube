@@ -22,7 +22,8 @@
     "db:generate": "turbo run db:generate",
     "db:push": "turbo run db:push",
     "db:studio": "turbo run db:studio",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "with-env": "dotenv -e .env --"
   },
   "devDependencies": {
     "dotenv-cli": "^7.1.0",

@@ -10,10 +10,9 @@
     "build": "tsup",
     "dev": "tsup --watch",
     "db:generate": "prisma generate",
-    "db:studio": "yarn with-env prisma studio",
-    "db:push": "yarn with-env prisma db push --skip-generate",
-    "clean": "rimraf .turbo/ dist/",
-    "with-env": "dotenv -e ../../.env --"
+    "db:studio": "yarn prisma studio",
+    "db:push": "yarn prisma db push --skip-generate",
+    "clean": "rimraf .turbo/ dist/"
   },
   "devDependencies": {
     "@types/node": "^18.15.11",
