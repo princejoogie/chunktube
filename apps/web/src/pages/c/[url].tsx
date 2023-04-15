@@ -53,10 +53,7 @@ const ConclusionPage = () => {
                 {conclusion.data.segments.map((segment, idx) => {
                   const before = conclusion.data.segments[idx - 1];
                   const start = before ? before.time : "00:00:00";
-                  const end = segment.time;
-
                   const secStart = hmsToSec(start);
-                  const secEnd = hmsToSec(end);
 
                   return (
                     <div key={segment.id} className="mt-6">
@@ -67,16 +64,6 @@ const ConclusionPage = () => {
                           href={`${conclusion.data.url}&t=${secStart}s`}
                         >
                           <Timestamp time={start} />
-                        </Link>
-
-                        <span className="p-1 text-xs">{">"}</span>
-
-                        <Link
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          href={`${conclusion.data.url}&t=${secEnd}s`}
-                        >
-                          <Timestamp time={end} />
                         </Link>
                       </div>
                       <p className="text-gray-200">{segment.content}</p>
@@ -100,8 +87,6 @@ const ConclusionPage = () => {
             <ReadNextPage currentId={conclusion.data?.id} />
           </div>
         </div>
-
-        <div className="h-20 w-full" />
       </Container>
     </Layout>
   );

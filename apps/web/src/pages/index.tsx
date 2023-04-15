@@ -79,7 +79,6 @@ const Home = () => {
         <MyChunks />
         <TrendingChunks />
         <RecentChunks />
-        <div className="h-48 w-full" />
       </Container>
     </Layout>
   );
