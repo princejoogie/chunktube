@@ -2,16 +2,16 @@ import Link from "next/link";
 import { useAuth } from "@clerk/nextjs";
 import { useRouter } from "next/router";
 import { Heart, Share2, Eye, ExternalLink } from "lucide-react";
-import { type RouterOutputs, getVideoId } from "api";
-import { type GetServerSidePropsContext } from "next";
+import { type RouterOutputs } from "api";
 import toNow from "date-fns/formatDistanceToNow";
 
 import Container from "~/components/container";
 import ExpandingLoader from "~/components/icons/loading/expand";
 import Layout from "~/components/layout";
 import { ReadNextPage } from "~/components/chunks";
-import { api, httpApi } from "~/utils/api";
-import { bigNumber } from "~/utils/helpers";
+import { api } from "~/utils/api";
+import { bigNumber, getVideoId } from "~/utils/helpers";
+import { useEffect } from "react";
 
 const Timestamp = ({ time }: { time: string }) => {
   return (
@@ -74,6 +74,7 @@ const ConclusionPage = () => {
   const { isSignedIn } = useAuth();
   const { url } = router.query as { url: string };
   const vidUrl = decodeURIComponent(url);
+  const addView = api.conclusion.addView.useMutation();
   const conclusion = api.conclusion.get.useQuery(
     { url: vidUrl },
     { enabled: !!url, retry: false }
@@ -84,6 +85,16 @@ const ConclusionPage = () => {
   );
   const isLiked = Boolean(isLikedQuery.data);
   const toggleLike = api.conclusion.toggleLike.useMutation();
+
+  useEffect(() => {
+    if (vidUrl) {
+      try {
+        const videoId = getVideoId(vidUrl);
+        addView.mutate({ videoId });
+      } catch {}
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [vidUrl]);
 
   return (
     <Layout
@@ -201,16 +212,6 @@ const ConclusionPage = () => {
       </Container>
     </Layout>
   );
-};
-
-export const getServerSideProps = async (
-  ctx: GetServerSidePropsContext<{ url: string }>
-) => {
-  const url = ctx.params?.url;
-  const vidUrl = decodeURIComponent(url ?? "");
-  const videoId = getVideoId(vidUrl);
-  httpApi.conclusion.addView.mutate({ videoId });
-  return { props: {} };
 };
 
 export default ConclusionPage;
