@@ -9,6 +9,7 @@ export const conclusionSelect = {
   thumbnail: true,
   createdAt: true,
   timesConcluded: true,
+  timesViewed: true,
   segments: {
     take: 1,
     orderBy: { order: "desc" },
@@ -33,9 +34,17 @@ const getFilterOrderBy = (
     case "mine":
       return [{ createdAt: "desc" }];
     case "trending":
-      return [{ timesConcluded: "desc" }, { createdAt: "desc" }];
+      return [
+        { timesViewed: "desc" },
+        { timesConcluded: "desc" },
+        { createdAt: "desc" },
+      ];
     default:
-      return [{ timesConcluded: "desc" }, { createdAt: "desc" }];
+      return [
+        { timesViewed: "desc" },
+        { timesConcluded: "desc" },
+        { createdAt: "desc" },
+      ];
   }
 };
 

@@ -73,30 +73,36 @@ export const getVideoDetails = async (videoId: string) => {
     });
   }
 
-  const title = details.data.items[0].snippet.title;
-  const thumbnail = details.data.items[0].snippet.thumbnails?.high;
-  const duration = details.data.items[0].contentDetails.duration;
+  const deets = details.data.items[0];
+
+  if (!deets.snippet || !deets.contentDetails) {
+    throw new TRPCError({
+      code: "NOT_FOUND",
+      message: "No video snippet or content details found",
+    });
+  }
+
+  const { title, thumbnails, channelId } = deets.snippet;
+  const { duration } = deets.contentDetails;
+  const thumbnail = thumbnails?.default;
 
   if (
     !title ||
     !duration ||
     !thumbnail?.url ||
     !thumbnail.width ||
-    !thumbnail.height
+    !thumbnail.height ||
+    !channelId
   ) {
-    return {
-      title: title ?? "No video title",
-      thumbnail: {
-        url: "https://i.imgur.com/removed.png",
-        width: 640,
-        height: 480,
-      },
-      duration: parseDuration("PT0H0M0S"),
-    };
+    throw new TRPCError({
+      code: "NOT_FOUND",
+      message: "Invalid video details",
+    });
   }
 
   return {
     title,
+    channelId,
     thumbnail: {
       url: thumbnail.url,
       width: thumbnail.width,
@@ -105,6 +111,65 @@ export const getVideoDetails = async (videoId: string) => {
     duration: parseDuration(duration),
   };
 };
+
+export const getChannelDetails = async (channelId: string) => {
+  const apiKey = process.env.YOUTUBE_API_KEY;
+  if (!apiKey || typeof apiKey !== "string") {
+    throw new TRPCError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "No Youtube API key provided",
+    });
+  }
+
+  const details = await youtube.channels.list({
+    key: apiKey,
+    id: [channelId],
+    part: ["snippet", "statistics"],
+  });
+
+  const snippet = details.data.items?.[0]?.snippet;
+  const stats = details.data.items?.[0]?.statistics;
+
+  if (!snippet || !stats) {
+    throw new TRPCError({
+      code: "NOT_FOUND",
+      message: `No channel with id ${channelId} found`,
+    });
+  }
+
+  const { title, thumbnails, customUrl } = snippet;
+  const { hiddenSubscriberCount, subscriberCount } = stats;
+  const thumbnail = thumbnails?.default;
+
+  if (
+    !title ||
+    !thumbnail ||
+    !thumbnail.url ||
+    !thumbnail.width ||
+    !thumbnail.height ||
+    !customUrl ||
+    !subscriberCount
+  ) {
+    throw new TRPCError({
+      code: "NOT_FOUND",
+      message: "Invalid channel details",
+    });
+  }
+
+  return {
+    channelName: title,
+    thumbnail: {
+      url: thumbnail.url,
+      width: thumbnail.width,
+      height: thumbnail.height,
+    },
+    username: customUrl,
+    hiddenSubscriberCount: Boolean(hiddenSubscriberCount),
+    subscriberCount,
+  };
+};
+
+export type ChannelDetails = Awaited<ReturnType<typeof getChannelDetails>>;
 
 export const searchVideo = async (query: string, pageToken?: string) => {
   const apiKey = process.env.YOUTUBE_API_KEY;

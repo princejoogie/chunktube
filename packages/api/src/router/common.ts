@@ -3,6 +3,10 @@ export const conclusionSelect = {
   url: true,
   title: true,
   thumbnail: true,
+  createdAt: true,
+  channelId: true,
+  timesConcluded: true,
+  timesViewed: true,
   segments: {
     orderBy: {
       order: "asc",
@@ -14,5 +18,4 @@ export const conclusionSelect = {
       order: true,
     },
   },
-  createdAt: true,
 } as const;

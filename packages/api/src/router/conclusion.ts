@@ -1,7 +1,11 @@
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
-import { getVideoId } from "../utils/youtube/details";
+import {
+  type ChannelDetails,
+  getChannelDetails,
+  getVideoId,
+} from "../utils/youtube/details";
 import { conclude } from "../gpt/conclude";
 import { conclusionSelect } from "./common";
 
@@ -101,11 +105,19 @@ export const conclusionRouter = createTRPCRouter({
 
       if (!existing) throw new TRPCError({ code: "NOT_FOUND" });
 
+      let channelDetails: ChannelDetails | null;
+
+      try {
+        channelDetails = await getChannelDetails(existing.channelId);
+      } catch {
+        channelDetails = null;
+      }
+
       const likes = await ctx.prisma.likes.aggregate({
         where: { conclusionId: existing.id },
         _count: true,
       });
-      return { ...existing, likeCount: likes._count };
+      return { ...existing, likeCount: likes._count, channelDetails };
     }),
   isLiked: protectedProcedure
     .input(
@@ -124,6 +136,14 @@ export const conclusionRouter = createTRPCRouter({
       });
 
       return Boolean(existing);
+    }),
+  addView: publicProcedure
+    .input(z.object({ videoId: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      await ctx.prisma.conclusion.update({
+        where: { videoId: input.videoId },
+        data: { timesViewed: { increment: 1 } },
+      });
     }),
   toggleLike: protectedProcedure
     .input(
