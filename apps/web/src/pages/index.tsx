@@ -10,6 +10,7 @@ import { api } from "~/utils/api";
 import { useToast } from "~/hooks/use-toast";
 
 const Home = () => {
+  const ctx = api.useContext();
   const { toast } = useToast();
   const router = useRouter();
   const { isLoaded, isSignedIn } = useUser();
@@ -17,6 +18,8 @@ const Home = () => {
 
   const conclude = api.conclusion.create.useMutation({
     onSuccess: (data) => {
+      ctx.list.invalidate();
+      ctx.user.me.invalidate();
       router.push(`/c/${encodeURIComponent(data.url)}`);
     },
     onError: (err) => {
@@ -76,7 +79,6 @@ const Home = () => {
         <MyChunks />
         <TrendingChunks />
         <RecentChunks />
-        <div className="h-48 w-full" />
       </Container>
     </Layout>
   );

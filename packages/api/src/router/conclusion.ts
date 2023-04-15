@@ -1,7 +1,11 @@
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
-import { getVideoId } from "../utils/youtube/details";
+import {
+  type ChannelDetails,
+  getChannelDetails,
+  getVideoId,
+} from "../utils/youtube/details";
 import { conclude } from "../gpt/conclude";
 import { conclusionSelect } from "./common";
 
@@ -100,6 +104,81 @@ export const conclusionRouter = createTRPCRouter({
       });
 
       if (!existing) throw new TRPCError({ code: "NOT_FOUND" });
-      return existing;
+
+      let channelDetails: ChannelDetails | null;
+
+      try {
+        channelDetails = await getChannelDetails(existing.channelId);
+      } catch {
+        channelDetails = null;
+      }
+
+      const likes = await ctx.prisma.likes.aggregate({
+        where: { conclusionId: existing.id },
+        _count: true,
+      });
+      return { ...existing, likeCount: likes._count, channelDetails };
+    }),
+  isLiked: protectedProcedure
+    .input(
+      z.object({
+        conclusionId: z.string().cuid(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const existing = await ctx.prisma.likes.findUnique({
+        where: {
+          conclusionId_userId: {
+            conclusionId: input.conclusionId,
+            userId: ctx.payload.sub,
+          },
+        },
+      });
+
+      return Boolean(existing);
+    }),
+  addView: publicProcedure
+    .input(z.object({ videoId: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      await ctx.prisma.conclusion.update({
+        where: { videoId: input.videoId },
+        data: { timesViewed: { increment: 1 } },
+      });
+    }),
+  toggleLike: protectedProcedure
+    .input(
+      z.object({
+        conclusionId: z.string().cuid(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const like = await ctx.prisma.likes.findUnique({
+        where: {
+          conclusionId_userId: {
+            conclusionId: input.conclusionId,
+            userId: ctx.payload.sub,
+          },
+        },
+      });
+
+      if (like) {
+        await ctx.prisma.likes.delete({
+          where: {
+            conclusionId_userId: {
+              userId: ctx.payload.sub,
+              conclusionId: input.conclusionId,
+            },
+          },
+        });
+        return { isLiked: false };
+      } else {
+        await ctx.prisma.likes.create({
+          data: {
+            userId: ctx.payload.sub,
+            conclusionId: input.conclusionId,
+          },
+        });
+        return { isLiked: true };
+      }
     }),
 });

@@ -19,6 +19,7 @@ const App = ({ Component, pageProps }: AppProps) => {
       }}
     >
       <Component {...pageProps} />
+      <div className="h-48 w-full" />
       <Toaster />
     </ClerkProvider>
   );

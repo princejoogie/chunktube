@@ -8,6 +8,7 @@ const Navbar = () => {
   const { isLoaded, isSignedIn } = useUser();
   const me = api.user.me.useQuery(undefined, {
     enabled: Boolean(isSignedIn && isLoaded),
+    refetchOnWindowFocus: true,
   });
 
   return (
@@ -36,7 +37,7 @@ const Navbar = () => {
                 <SignedIn>
                   <div className="flex items-center gap-2">
                     <Link href="/account">
-                      <div className="rounded-md bg-gray-700 px-4 py-1 transition-all hover:bg-gray-800 active:opacity-70 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-gray-700">
+                      <div className="rounded-full bg-gray-700 px-4 py-1 transition-all hover:bg-gray-800 active:opacity-70 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:bg-gray-700">
                         {me.data?.credits ?? "0"}{" "}
                         {me.data?.credits === 1 ? "Credit" : "Credits"}
                       </div>

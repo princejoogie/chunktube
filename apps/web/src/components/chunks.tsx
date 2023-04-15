@@ -2,9 +2,11 @@ import { useCallback, useMemo } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import toNow from "date-fns/formatDistanceToNow";
+import { Eye } from "lucide-react";
 import type { RouterOutputs } from "api";
 
 import { api } from "~/utils/api";
+import { bigNumber } from "~/utils/helpers";
 
 const delays = ["delay-100", "delay-200", "delay-300", "delay-500"];
 
@@ -62,10 +64,14 @@ export const ChunkCard = ({ chunk }: ChunkCardProps) => {
       )}
 
       <p className="mt-2 line-clamp-2 font-semibold">{chunk.title}</p>
-      <span className="text-sm text-gray-400">
-        {chunk.timesConcluded} concludes •{" "}
+      <span className="block text-sm text-gray-400">
+        {bigNumber(chunk.timesConcluded)} concludes •{" "}
         {toNow(chunk.createdAt, { addSuffix: true })}
       </span>
+      <div className="flex items-center space-x-1 text-sm text-gray-400">
+        <Eye className="h-4 w-4" />
+        <span>{bigNumber(chunk.timesViewed)} views</span>
+      </div>
     </Link>
   );
 };
@@ -106,9 +112,13 @@ export const SideChunkCard = ({ chunk }: SideChunkCardProps) => {
       <div className="flex-1">
         <p className="mt-2 line-clamp-2 text-sm font-semibold">{chunk.title}</p>
         <span className="text-xs text-gray-400">
-          {chunk.timesConcluded} concs •{" "}
+          {bigNumber(chunk.timesConcluded)} concs •{" "}
           {toNow(chunk.createdAt, { addSuffix: true })}
         </span>
+        <div className="flex items-center space-x-1 text-xs text-gray-400">
+          <Eye className="h-4 w-4" />
+          <span>{bigNumber(chunk.timesViewed)} views</span>
+        </div>
       </div>
     </Link>
   );
@@ -263,8 +273,6 @@ export const ReadNextPage = ({ currentId }: ReadNextPageProps) => {
 
   return (
     <div className="mt-10">
-      {e.isLoading ? <p>Loading...</p> : null}
-
       <h2 className="text-xl font-semibold">Read Next</h2>
 
       <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-1">

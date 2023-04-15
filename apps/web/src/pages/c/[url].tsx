@@ -1,11 +1,17 @@
 import Link from "next/link";
+import { useAuth } from "@clerk/nextjs";
 import { useRouter } from "next/router";
+import { Heart, Share2, Eye, ExternalLink } from "lucide-react";
+import { type RouterOutputs, getVideoId } from "api";
+import { type GetServerSidePropsContext } from "next";
+import toNow from "date-fns/formatDistanceToNow";
 
 import Container from "~/components/container";
 import ExpandingLoader from "~/components/icons/loading/expand";
 import Layout from "~/components/layout";
 import { ReadNextPage } from "~/components/chunks";
-import { api } from "~/utils/api";
+import { api, httpApi } from "~/utils/api";
+import { bigNumber } from "~/utils/helpers";
 
 const Timestamp = ({ time }: { time: string }) => {
   return (
@@ -24,14 +30,60 @@ const hmsToSec = (hms: string) => {
   return 0;
 };
 
+type ChannelDetailsProps = {
+  details: RouterOutputs["conclusion"]["get"]["channelDetails"];
+};
+
+const ChannelDetails = ({ details }: ChannelDetailsProps) => {
+  return details ? (
+    <Link
+      href={`https://youtube.com/${details.username}`}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="flex"
+    >
+      <div className="flex space-x-3 self-start rounded-full">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={details.thumbnail.url}
+          alt={details.channelName}
+          className="h-14 w-14 rounded-full"
+        />
+
+        <div className="flex flex-col justify-center">
+          <div className="flex items-center">
+            <p className="mr-2 font-semibold text-white">
+              {details.channelName}
+            </p>
+            <ExternalLink className="h-4 w-4" />
+          </div>
+          {!details.hiddenSubscriberCount && (
+            <p className="text-sm text-gray-400">
+              {bigNumber(+details.subscriberCount)} subscribers
+            </p>
+          )}
+        </div>
+      </div>
+    </Link>
+  ) : null;
+};
+
 const ConclusionPage = () => {
+  const ctx = api.useContext();
   const router = useRouter();
+  const { isSignedIn } = useAuth();
   const { url } = router.query as { url: string };
   const vidUrl = decodeURIComponent(url);
   const conclusion = api.conclusion.get.useQuery(
     { url: vidUrl },
     { enabled: !!url, retry: false }
   );
+  const isLikedQuery = api.conclusion.isLiked.useQuery(
+    { conclusionId: conclusion.data?.id ?? "" },
+    { enabled: Boolean(!!conclusion.data?.id && isSignedIn) }
+  );
+  const isLiked = Boolean(isLikedQuery.data);
+  const toggleLike = api.conclusion.toggleLike.useMutation();
 
   return (
     <Layout
@@ -46,17 +98,73 @@ const ConclusionPage = () => {
               </div>
             ) : conclusion.data ? (
               <>
-                <h1 className="w-full text-xl font-semibold">
-                  {conclusion.data.title}
-                </h1>
+                <div className="flex items-start justify-between space-x-4">
+                  <h1 className="line-clamp-2 w-full flex-1 text-2xl font-semibold">
+                    {conclusion.data.title}
+                  </h1>
+
+                  <div className="flex items-center space-x-2 text-gray-300">
+                    {isSignedIn ? (
+                      <button
+                        onClick={() => {
+                          toggleLike.mutate({
+                            conclusionId: conclusion.data.id,
+                          });
+                          ctx.conclusion.isLiked.setData(
+                            { conclusionId: conclusion.data?.id ?? "" },
+                            !isLiked
+                          );
+                          ctx.conclusion.get.setData(
+                            { url: vidUrl },
+                            {
+                              ...conclusion.data,
+                              likeCount: isLiked
+                                ? conclusion.data.likeCount - 1
+                                : conclusion.data.likeCount + 1,
+                            }
+                          );
+                        }}
+                        className="flex items-center rounded-full bg-gray-700 px-3 py-1 transition-all hover:bg-gray-800 active:opacity-60"
+                      >
+                        <Heart
+                          className={`m-0 h-4 w-4 p-0 ${
+                            isLiked ? "fill-gray-300" : "fill-none"
+                          }`}
+                        />
+                        <span className="mb-px ml-1">
+                          {conclusion.data.likeCount}
+                        </span>
+                      </button>
+                    ) : null}
+
+                    <button className="flex items-center rounded-full bg-gray-700 px-3 py-1 transition-all hover:bg-gray-800 active:opacity-60">
+                      <Share2 className="m-0 h-4 w-4 p-0" />
+                      <span className="mb-px ml-1">Share</span>
+                    </button>
+                  </div>
+                </div>
+
+                <div className="mt-6 flex items-center justify-between">
+                  <ChannelDetails details={conclusion.data.channelDetails} />
+
+                  <div className="flex flex-col items-end text-sm text-gray-400">
+                    <div className="flex items-center rounded-full">
+                      <Eye className="m-0 h-5 w-5 p-0" />
+                      <span className="mb-px ml-1">
+                        {bigNumber(conclusion.data.timesViewed)} views
+                      </span>
+                    </div>
+
+                    <p>
+                      {toNow(conclusion.data.createdAt, { addSuffix: true })}
+                    </p>
+                  </div>
+                </div>
 
                 {conclusion.data.segments.map((segment, idx) => {
                   const before = conclusion.data.segments[idx - 1];
                   const start = before ? before.time : "00:00:00";
-                  const end = segment.time;
-
                   const secStart = hmsToSec(start);
-                  const secEnd = hmsToSec(end);
 
                   return (
                     <div key={segment.id} className="mt-6">
@@ -67,16 +175,6 @@ const ConclusionPage = () => {
                           href={`${conclusion.data.url}&t=${secStart}s`}
                         >
                           <Timestamp time={start} />
-                        </Link>
-
-                        <span className="p-1 text-xs">{">"}</span>
-
-                        <Link
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          href={`${conclusion.data.url}&t=${secEnd}s`}
-                        >
-                          <Timestamp time={end} />
                         </Link>
                       </div>
                       <p className="text-gray-200">{segment.content}</p>
@@ -100,11 +198,19 @@ const ConclusionPage = () => {
             <ReadNextPage currentId={conclusion.data?.id} />
           </div>
         </div>
-
-        <div className="h-20 w-full" />
       </Container>
     </Layout>
   );
+};
+
+export const getServerSideProps = async (
+  ctx: GetServerSidePropsContext<{ url: string }>
+) => {
+  const url = ctx.params?.url;
+  const vidUrl = decodeURIComponent(url ?? "");
+  const videoId = getVideoId(vidUrl);
+  httpApi.conclusion.addView.mutate({ videoId });
+  return { props: {} };
 };
 
 export default ConclusionPage;

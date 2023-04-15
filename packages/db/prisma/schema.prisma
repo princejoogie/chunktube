@@ -13,11 +13,11 @@ datasource db {
 }
 
 model User {
-  id        String  @id @default(cuid())
-  clerkId   String  @unique
-  imageUrl  String  @db.Text
-  banned    Boolean @default(false)
-  credits   Int     @default(0)
+  id       String  @id @default(cuid())
+  clerkId  String  @unique
+  imageUrl String  @db.Text
+  banned   Boolean @default(false)
+  credits  Int     @default(0)
 
   conclusions Conclusion[]
   likes       Likes[]
@@ -51,7 +51,7 @@ model Likes {
   conclusion   Conclusion @relation(fields: [conclusionId], references: [id], onDelete: Cascade)
   conclusionId String
 
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [clerkId], onDelete: Cascade)
   userId String
 
   @@id([conclusionId, userId])
@@ -66,7 +66,9 @@ model Conclusion {
   videoId        String   @unique
   url            String
   title          String
-  timesConcluded Int      @default(0)
+  timesConcluded BigInt   @default(0)
+  timesViewed    BigInt   @default(0)
+  channelId      String   @default("")
 
   user      User?      @relation(fields: [userId], references: [id], onDelete: SetNull)
   userId    String?
