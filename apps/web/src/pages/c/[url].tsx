@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import Container from "~/components/container";
 import ExpandingLoader from "~/components/icons/loading/expand";
 import Layout from "~/components/layout";
-import { ReadNextPage } from "~/components/read-next";
+import { ReadNextPage } from "~/components/chunks";
 import { api } from "~/utils/api";
 
 const Timestamp = ({ time }: { time: string }) => {
