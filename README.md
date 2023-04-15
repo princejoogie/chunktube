@@ -2,7 +2,7 @@
 
 It's YouTube.. but text.
 
-https://user-images.githubusercontent.com/47204120/230472750-37b8fbe6-dada-43a5-986a-cb6e3988f993.mp4
+https://user-images.githubusercontent.com/47204120/232245592-4aaabebe-cac8-4e3c-bfd9-195dbac45025.mp4
 
 ## Usage
 
