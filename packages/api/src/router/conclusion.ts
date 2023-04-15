@@ -100,6 +100,65 @@ export const conclusionRouter = createTRPCRouter({
       });
 
       if (!existing) throw new TRPCError({ code: "NOT_FOUND" });
-      return existing;
+
+      const likes = await ctx.prisma.likes.aggregate({
+        where: { conclusionId: existing.id },
+        _count: true,
+      });
+      return { ...existing, likeCount: likes._count };
+    }),
+  isLiked: protectedProcedure
+    .input(
+      z.object({
+        conclusionId: z.string().cuid(),
+      })
+    )
+    .query(async ({ ctx, input }) => {
+      const existing = await ctx.prisma.likes.findUnique({
+        where: {
+          conclusionId_userId: {
+            conclusionId: input.conclusionId,
+            userId: ctx.payload.sub,
+          },
+        },
+      });
+
+      return Boolean(existing);
+    }),
+  toggleLike: protectedProcedure
+    .input(
+      z.object({
+        conclusionId: z.string().cuid(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const like = await ctx.prisma.likes.findUnique({
+        where: {
+          conclusionId_userId: {
+            conclusionId: input.conclusionId,
+            userId: ctx.payload.sub,
+          },
+        },
+      });
+
+      if (like) {
+        await ctx.prisma.likes.delete({
+          where: {
+            conclusionId_userId: {
+              userId: ctx.payload.sub,
+              conclusionId: input.conclusionId,
+            },
+          },
+        });
+        return { isLiked: false };
+      } else {
+        await ctx.prisma.likes.create({
+          data: {
+            userId: ctx.payload.sub,
+            conclusionId: input.conclusionId,
+          },
+        });
+        return { isLiked: true };
+      }
     }),
 });

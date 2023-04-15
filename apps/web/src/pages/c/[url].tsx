@@ -1,11 +1,13 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { Heart, Share2 } from "lucide-react";
 
 import Container from "~/components/container";
 import ExpandingLoader from "~/components/icons/loading/expand";
 import Layout from "~/components/layout";
 import { ReadNextPage } from "~/components/chunks";
 import { api } from "~/utils/api";
+import { useAuth } from "@clerk/nextjs";
 
 const Timestamp = ({ time }: { time: string }) => {
   return (
@@ -25,13 +27,21 @@ const hmsToSec = (hms: string) => {
 };
 
 const ConclusionPage = () => {
+  const ctx = api.useContext();
   const router = useRouter();
+  const { isSignedIn } = useAuth();
   const { url } = router.query as { url: string };
   const vidUrl = decodeURIComponent(url);
   const conclusion = api.conclusion.get.useQuery(
     { url: vidUrl },
     { enabled: !!url, retry: false }
   );
+  const isLikedQuery = api.conclusion.isLiked.useQuery(
+    { conclusionId: conclusion.data?.id ?? "" },
+    { enabled: Boolean(!!conclusion.data?.id && isSignedIn) }
+  );
+  const isLiked = Boolean(isLikedQuery.data);
+  const toggleLike = api.conclusion.toggleLike.useMutation();
 
   return (
     <Layout
@@ -46,9 +56,50 @@ const ConclusionPage = () => {
               </div>
             ) : conclusion.data ? (
               <>
-                <h1 className="w-full text-xl font-semibold">
-                  {conclusion.data.title}
-                </h1>
+                <div className="flex items-start justify-between space-x-4">
+                  <h1 className="line-clamp-2 w-full flex-1 text-xl font-semibold">
+                    {conclusion.data.title}
+                  </h1>
+
+                  <div className="flex items-center space-x-2">
+                    {isSignedIn ? (
+                      <button
+                        onClick={() => {
+                          toggleLike.mutate({
+                            conclusionId: conclusion.data.id,
+                          });
+                          ctx.conclusion.isLiked.setData(
+                            { conclusionId: conclusion.data?.id ?? "" },
+                            !isLiked
+                          );
+                          ctx.conclusion.get.setData(
+                            { url: vidUrl },
+                            {
+                              ...conclusion.data,
+                              likeCount: isLiked
+                                ? conclusion.data.likeCount - 1
+                                : conclusion.data.likeCount + 1,
+                            }
+                          );
+                        }}
+                        className="flex items-center rounded-full bg-gray-700 px-3 py-1 transition-all hover:bg-gray-800 active:opacity-60"
+                      >
+                        <Heart
+                          fill={isLiked ? "#ffffff" : "none"}
+                          className="m-0 h-4 w-4 p-0"
+                        />
+                        <span className="mb-px ml-1">
+                          {conclusion.data.likeCount}
+                        </span>
+                      </button>
+                    ) : null}
+
+                    <button className="flex items-center rounded-full bg-gray-700 px-3 py-1 transition-all hover:bg-gray-800 active:opacity-60">
+                      <Share2 className="m-0 h-4 w-4 p-0" />
+                      <span className="mb-px ml-1">Share</span>
+                    </button>
+                  </div>
+                </div>
 
                 {conclusion.data.segments.map((segment, idx) => {
                   const before = conclusion.data.segments[idx - 1];
