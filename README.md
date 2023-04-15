@@ -19,7 +19,7 @@ docker compose up database
 
 # start web and server
 # open another terminal and run
-yarn with-end yarn dev
+yarn with-env yarn dev
 
 # this mirrors your localhost so clerk can access it
 # copy ngrok url to your clerk webhooks
