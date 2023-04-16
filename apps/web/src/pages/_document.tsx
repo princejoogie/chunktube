@@ -58,8 +58,11 @@ class MyDocument extends Document {
           <NextScript />
           <Script
             async
+            data-ad-client="ca-pub-5644238710712581"
             src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5644238710712581"
             crossOrigin="anonymous"
+            strategy="beforeInteractive"
+            onError={console.error}
           ></Script>
         </body>
       </Html>

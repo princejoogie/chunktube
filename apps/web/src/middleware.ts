@@ -10,6 +10,7 @@ const assets = [
   "/favicon-32x32.png*",
   "/favicon.ico*",
   "/manifest.json*",
+  "/ads.txt*",
   "/assets*",
 ];
 
