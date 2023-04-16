@@ -5,6 +5,7 @@ import { Heart, Share2, Eye, ExternalLink } from "lucide-react";
 import { type RouterOutputs } from "api";
 import toNow from "date-fns/formatDistanceToNow";
 
+import * as gtag from "~/lib/gtm";
 import Container from "~/components/container";
 import ExpandingLoader from "~/components/icons/loading/expand";
 import Layout from "~/components/layout";
@@ -84,7 +85,11 @@ const ConclusionPage = () => {
     { enabled: Boolean(!!conclusion.data?.id && isSignedIn) }
   );
   const isLiked = Boolean(isLikedQuery.data);
-  const toggleLike = api.conclusion.toggleLike.useMutation();
+  const toggleLike = api.conclusion.toggleLike.useMutation({
+    onSuccess: () => {
+      gtag.event({ action: "like", label: url });
+    },
+  });
 
   useEffect(() => {
     if (vidUrl) {

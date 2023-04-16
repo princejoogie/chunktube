@@ -2,6 +2,7 @@ import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
+import * as gtag from "~/lib/gtm";
 import Container from "~/components/container";
 import Layout from "~/components/layout";
 import { MyChunks, RecentChunks, TrendingChunks } from "~/components/chunks";
@@ -18,6 +19,7 @@ const Home = () => {
 
   const conclude = api.conclusion.create.useMutation({
     onSuccess: (data) => {
+      gtag.event({ action: "conclude", label: data.url });
       ctx.list.invalidate();
       ctx.user.me.invalidate();
       router.push(`/c/${encodeURIComponent(data.url)}`);

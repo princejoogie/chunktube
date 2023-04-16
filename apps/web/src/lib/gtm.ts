@@ -14,13 +14,13 @@ export const pageView = (url: string) => {
 };
 
 interface EventProps {
-  action: "conclude" | "view" | "like" | "share";
-  category: string;
+  action: "conclude" | "like" | "share";
   label: string;
+  category?: string;
 }
 
 // https://developers.google.com/analytics/devguides/collection/gtagjs/events
-export const event = ({ action, category, label }: EventProps) => {
+export const event = ({ action, category = "general", label }: EventProps) => {
   window.gtag("event", action, {
     event_category: category,
     event_label: label,
