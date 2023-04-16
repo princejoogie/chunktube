@@ -19,7 +19,7 @@ export const conclusionSelect = {
 
 const getTopChunksFilter = z.object({
   filter: z.enum(["trending", "newest", "mine"]).default("trending"),
-  limit: z.number().min(1).max(100).default(8),
+  limit: z.number().min(1).max(1000).default(8),
   cursor: z.string().nullish(),
 });
 
