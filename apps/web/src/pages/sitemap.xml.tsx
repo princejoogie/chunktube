@@ -42,7 +42,6 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   const baseUrl = `${req.headers["x-forwarded-proto"]}://${req.headers.host}`;
 
   const posts = await httpApi.list.getTopChunks.query({
-    limit: 1000,
     filter: "newest",
   });
 

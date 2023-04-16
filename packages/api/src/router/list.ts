@@ -19,7 +19,7 @@ export const conclusionSelect = {
 
 const getTopChunksFilter = z.object({
   filter: z.enum(["trending", "newest", "mine"]).default("trending"),
-  limit: z.number().min(1).max(1000).default(8),
+  limit: z.number().min(1).nullish(),
   cursor: z.string().nullish(),
 });
 
@@ -54,7 +54,7 @@ export const listRouter = createTRPCRouter({
     .query(async ({ ctx, input }) => {
       const chunks = await ctx.prisma.conclusion.findMany({
         skip: input.cursor ? 1 : 0,
-        take: input.limit,
+        take: input.limit ?? undefined,
         cursor: input?.cursor ? { id: input.cursor } : undefined,
         orderBy: getFilterOrderBy(input),
         where:
