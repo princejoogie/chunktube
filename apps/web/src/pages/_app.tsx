@@ -39,10 +39,7 @@ const App = ({ Component, pageProps }: AppProps) => {
         dangerouslySetInnerHTML={{
           __html: `
               window.dataLayer = window.dataLayer || [];
-              function gtag(){
-console.log("args:", arguments);
-dataLayer.push(arguments);
-}
+              function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
               gtag('config', '${gtag.GA_TRACKING_ID}', {
                 page_path: window.location.pathname,

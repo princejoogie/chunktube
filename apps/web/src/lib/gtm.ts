@@ -1,3 +1,5 @@
+import { env } from "~/env.mjs";
+
 export const GA_TRACKING_ID = "G-D18G5DQL6Z";
 
 declare global {
@@ -8,8 +10,8 @@ declare global {
 
 // https://developers.google.com/analytics/devguides/collection/gtagjs/pages
 export const pageView = (url: string) => {
-  if (process.env.NODE_ENV !== "production") {
-    /* return; */
+  if (env.NODE_ENV !== "production") {
+    return;
   }
 
   window.gtag("config", GA_TRACKING_ID, {
@@ -25,8 +27,8 @@ interface EventProps {
 
 // https://developers.google.com/analytics/devguides/collection/gtagjs/events
 export const event = ({ action, category, label }: EventProps) => {
-  if (process.env.NODE_ENV !== "production") {
-    /* return; */
+  if (env.NODE_ENV !== "production") {
+    return;
   }
 
   window.gtag("event", action, {
