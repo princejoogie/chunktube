@@ -104,7 +104,11 @@ export const conclusionRouter = createTRPCRouter({
         select: conclusionSelect,
       });
 
-      if (!existing) throw new TRPCError({ code: "NOT_FOUND" });
+      if (!existing)
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: `Chunk with id ${input.url} not found`,
+        });
 
       let channelDetails: ChannelDetails | null;
 
