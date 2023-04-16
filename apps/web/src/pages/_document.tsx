@@ -6,6 +6,7 @@ import Document, {
   Main,
   NextScript,
 } from "next/document";
+import Script from "next/script";
 
 class MyDocument extends Document {
   static async getInitialProps(
@@ -55,6 +56,11 @@ class MyDocument extends Document {
         <body>
           <Main />
           <NextScript />
+          <Script
+            async
+            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5644238710712581"
+            crossOrigin="anonymous"
+          ></Script>
         </body>
       </Html>
     );
