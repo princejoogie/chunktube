@@ -84,7 +84,7 @@ export const getVideoDetails = async (videoId: string) => {
 
   const { title, thumbnails, channelId } = deets.snippet;
   const { duration } = deets.contentDetails;
-  const thumbnail = thumbnails?.default;
+  const thumbnail = thumbnails?.high;
 
   if (
     !title ||
@@ -139,7 +139,7 @@ export const getChannelDetails = async (channelId: string) => {
 
   const { title, thumbnails, customUrl } = snippet;
   const { hiddenSubscriberCount, subscriberCount } = stats;
-  const thumbnail = thumbnails?.default;
+  const thumbnail = thumbnails?.high;
 
   if (
     !title ||
