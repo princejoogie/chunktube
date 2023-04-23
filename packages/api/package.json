@@ -15,11 +15,11 @@
     "@types/he": "^1.2.0",
     "@types/jsonwebtoken": "^9.0.1",
     "@types/lodash": "^4.14.194",
-    "@types/node": "^18.15.11",
+    "@types/node": "^18.15.13",
     "eslint-config-custom": "*",
     "tsconfig": "*",
     "tsup": "^6.7.0",
-    "typescript": "*"
+    "typescript": ">4.5.0"
   },
   "dependencies": {
     "@googleapis/youtube": "^9.0.0",

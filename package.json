@@ -28,7 +28,7 @@
   "devDependencies": {
     "dotenv-cli": "^7.1.0",
     "eslint-config-custom": "*",
-    "prettier": "latest",
+    "prettier": "^2.8.7",
     "rimraf": "^5.0.0",
     "tsconfig": "*",
     "turbo": "^1.8.8"
