@@ -29,20 +29,24 @@ export const createTRPCContext = async ({
     throw new Error("Missing Clerk JWT verification key");
   }
 
-  const publicKey = process.env.CLERK_JWT_VERIFICATION_KEY.replace(
-    /\\n/g,
-    "\n"
-  );
-  const cookies = new Cookie(req, res);
-  const sessionToken = cookies.get("__session");
+  try {
+    const publicKey = process.env.CLERK_JWT_VERIFICATION_KEY.replace(
+      /\\n/g,
+      "\n"
+    );
+    const cookies = new Cookie(req, res);
+    const sessionToken = cookies.get("__session");
 
-  if (!sessionToken) {
+    if (!sessionToken) {
+      return createInnerTRPCContext({ payload: null });
+    }
+
+    const decoded = jwt.verify(sessionToken, publicKey);
+    const payload = sessionSchema.parse(decoded);
+    return createInnerTRPCContext({ payload });
+  } catch (error) {
     return createInnerTRPCContext({ payload: null });
   }
-
-  const decoded = jwt.verify(sessionToken, publicKey);
-  const payload = sessionSchema.parse(decoded);
-  return createInnerTRPCContext({ payload });
 };
 
 export type Context = inferAsyncReturnType<typeof createTRPCContext>;
