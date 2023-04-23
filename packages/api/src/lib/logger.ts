@@ -1,5 +1,5 @@
 /* eslint-disable no-extra-boolean-cast */
-import { log } from "next-axiom";
+/* import { log } from "next-axiom"; */
 
 export const createLogger = () => {
   const isProd = process.env.NODE_ENV === "production";
@@ -15,7 +15,8 @@ export const createLogger = () => {
       }
 
       if (isProd) {
-        log.error(m);
+        /* log.error(m); */
+        console.error(m);
         return;
       }
 
@@ -28,7 +29,8 @@ export const createLogger = () => {
       }
 
       if (isProd) {
-        log.warn(m);
+        /* log.warn(m); */
+        console.warn(m);
         return;
       }
 
