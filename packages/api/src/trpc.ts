@@ -6,6 +6,7 @@ import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
 import { sessionSchema, type JwtPayload } from "./utils/helpers";
 import { ZodError } from "zod";
 import { prisma } from "db";
+import { logger } from "./lib/logger";
 
 type CreateContextOptions = {
   payload: null | JwtPayload;
@@ -44,7 +45,8 @@ export const createTRPCContext = async ({
     const decoded = jwt.verify(sessionToken, publicKey);
     const payload = sessionSchema.parse(decoded);
     return createInnerTRPCContext({ payload });
-  } catch (error) {
+  } catch (e) {
+    logger.error("createTRPCContext", "Failed to create TRPC context", e);
     return createInnerTRPCContext({ payload: null });
   }
 };

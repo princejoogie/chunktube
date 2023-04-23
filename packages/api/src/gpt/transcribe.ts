@@ -4,6 +4,7 @@ import path from "path";
 import { openai } from "./config";
 import { hasBin, fileExists } from "../utils/has-bin";
 import { execAsync } from "../utils/helpers";
+import { logger } from "../lib/logger";
 
 const getAudioLength = async (audioPath: string) => {
   if (!hasBin("ffprobe")) throw new Error("ERROR: ffprobe not found");
@@ -59,6 +60,7 @@ const downloadAudio = async (url: string, tmpDir: string) => {
 
     return audioPath;
   } catch {
+    logger.error("f(downloadAudio)", `Failed to download audio from ${url}`);
     throw new Error("ERROR: Failed to download audio");
   }
 };
@@ -79,7 +81,8 @@ const chopAudio = async (audioPath: string, tmpDir: string) => {
     return files
       .sort()
       .map((file) => ({ path: path.join(chopDir, file), fileName: file }));
-  } catch {
+  } catch (e) {
+    logger.error("f(chopAudio)", `Failed to chop audio`, e);
     throw new Error("ERROR: Failed to chop audio");
   }
 };
@@ -105,6 +108,7 @@ const getTranscriptions = async (
 
         res({ filePath, time });
       } catch (e) {
+        logger.error("f(getTranscriptions)", `Failed to get transcription`, e);
         rej(e);
       }
     });

@@ -844,10 +844,10 @@
     "@tanstack/query-core" "4.29.1"
     use-sync-external-store "^1.2.0"
 
-"@trpc/client@^10.20.0":
-  version "10.20.0"
-  resolved "https://registry.yarnpkg.com/@trpc/client/-/client-10.20.0.tgz#92519c772eb3804acd0ddd313b65e5ad8f5d1619"
-  integrity sha512-DER42PjIURSl1fwVnBzMWMgo4oxbyA72nIVpOliIpNArDYkZkr7kMfXmap2J7gwaKJNMC/V5xhYc06zG9r/8pQ==
+"@trpc/client@^10.21.1":
+  version "10.21.1"
+  resolved "https://registry.yarnpkg.com/@trpc/client/-/client-10.21.1.tgz#1cc86ffddaabd7368b43b50070f2ca98bbfc460d"
+  integrity sha512-oZgPbghs9y2frTCA9mZPSAlVknV9stCTKYO5nsvRr0aX+oaA0URoXJTKZTSpLZxLfuwWgxBj4iTiCWWWmaVelw==
 
 "@trpc/next@^10.20.0":
   version "10.20.0"
@@ -861,10 +861,10 @@
   resolved "https://registry.yarnpkg.com/@trpc/react-query/-/react-query-10.20.0.tgz#0270b0bba0ec7fadb0a74e2f870a4666a0c083fc"
   integrity sha512-8Qkmhe0fwKJIdONHu6wHd4onNbt10MO422mqCindV8AK2ommRDFERaz6sqdPevHVu7ggLEDMJ+aWRqR2VX+yYw==
 
-"@trpc/server@^10.20.0":
-  version "10.20.0"
-  resolved "https://registry.yarnpkg.com/@trpc/server/-/server-10.20.0.tgz#40e5083ddef474288b61f9e6678c22b2b9b2581c"
-  integrity sha512-pbrdgw2mO8lWygyZjGLbOq/EoWFWEJvLaxp8JmGsivMIh/IZR5mksPJdywAGQ4TBrbcqssKhuoJ/8OE9mhaveg==
+"@trpc/server@^10.21.1":
+  version "10.21.1"
+  resolved "https://registry.yarnpkg.com/@trpc/server/-/server-10.21.1.tgz#42a321d8199b4ad800b9e786b4249a9b6df45d6c"
+  integrity sha512-4E4upTD2/Aq0Dm9HW4nbKSoIlqbV/ajRqNl1MCFBd9FjTv47qq2ncmAWMbb0AIVh2UV87PJlTjpPNNecRm6g9Q==
 
 "@types/body-parser@*":
   version "1.19.2"
@@ -1357,10 +1357,10 @@ axios@^0.26.0:
   dependencies:
     follow-redirects "^1.14.8"
 
-axios@^1.3.5:
-  version "1.3.5"
-  resolved "https://registry.yarnpkg.com/axios/-/axios-1.3.5.tgz#e07209b39a0d11848e3e341fa087acd71dadc542"
-  integrity sha512-glL/PvG/E+xCWwV8S6nCHcrfg1exGx7vxyUIivIA1iL7BIh6bePylCfVHwp6k13ao7SATxB6imau2kqY+I67kw==
+axios@^1.3.6:
+  version "1.3.6"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-1.3.6.tgz#1ace9a9fb994314b5f6327960918406fa92c6646"
+  integrity sha512-PEcdkk7JcdPiMDkvM4K6ZBRYq9keuVJsToxm2zQIM70Qqo2WHTdJZMXcG9X+RmRp2VPNUQC8W1RAGbgt6b1yMg==
   dependencies:
     follow-redirects "^1.15.0"
     form-data "^4.0.0"
@@ -2702,10 +2702,10 @@ googleapis-common@^6.0.0, googleapis-common@^6.0.3:
     url-template "^2.0.8"
     uuid "^9.0.0"
 
-googleapis@^117.0.0:
-  version "117.0.0"
-  resolved "https://registry.yarnpkg.com/googleapis/-/googleapis-117.0.0.tgz#1be7b3997c510754489863c03035029a8a532321"
-  integrity sha512-F6l7uK5BpPuMoWZQJ07yPgd1o42R5ke1CbxfejPJtCffd9UyWdSvsr7Ah97u9co9Qk1HkNSoCX749rxQmpVj8g==
+googleapis@^118.0.0:
+  version "118.0.0"
+  resolved "https://registry.yarnpkg.com/googleapis/-/googleapis-118.0.0.tgz#a8b9f84d283544b85927abeb989252cb2f3ec490"
+  integrity sha512-Ny6zJOGn5P/YDT6GQbJU6K0lSzEu4Yuxnsn45ZgBIeSQ1RM0FolEjUToLXquZd89DU9wUfqA5XYHPEctk1TFWg==
   dependencies:
     google-auth-library "^8.0.2"
     googleapis-common "^6.0.0"
@@ -3401,6 +3401,13 @@ natural-compare@^1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/natural-compare/-/natural-compare-1.4.0.tgz#4abebfeed7541f2c27acfb29bdbbd15c8d5ba4f7"
   integrity sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==
+
+next-axiom@^0.17.0:
+  version "0.17.0"
+  resolved "https://registry.yarnpkg.com/next-axiom/-/next-axiom-0.17.0.tgz#07c7c1d42c3d70c80b009f699844af48ae24d825"
+  integrity sha512-qFdnH50SvRjJUAmNjGIYLcRc4tO/U4R1h9WUuniiwaucXAH5KhL06m7TT3WWD2U1HbulwSfC0R+NlPASOx1XlQ==
+  dependencies:
+    whatwg-fetch "^3.6.2"
 
 next@^13.2.4:
   version "13.3.0"
@@ -4294,10 +4301,10 @@ sucrase@^3.20.3, sucrase@^3.29.0:
     pirates "^4.0.1"
     ts-interface-checker "^0.1.9"
 
-superjson@^1.12.2:
-  version "1.12.2"
-  resolved "https://registry.yarnpkg.com/superjson/-/superjson-1.12.2.tgz#072471f1e6add2d95a38b77fef8c7a199d82103a"
-  integrity sha512-ugvUo9/WmvWOjstornQhsN/sR9mnGtWGYeTxFuqLb4AiT4QdUavjGFRALCPKWWnAiUJ4HTpytj5e0t5HoMRkXg==
+superjson@^1.12.3:
+  version "1.12.3"
+  resolved "https://registry.yarnpkg.com/superjson/-/superjson-1.12.3.tgz#383aacfd795c6eef24c383c70154c6cbbcbfb31a"
+  integrity sha512-0j+U70KUtP8+roVPbwfqkyQI7lBt7ETnuA7KXbTDX3mCKiD/4fXs2ldKSMdt0MCfpTwiMxo20yFU3vu6ewETpQ==
   dependencies:
     copy-anything "^3.0.2"
 
@@ -4709,6 +4716,11 @@ webidl-conversions@^4.0.2:
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/webidl-conversions/-/webidl-conversions-4.0.2.tgz#a855980b1f0b6b359ba1d5d9fb39ae941faa63ad"
   integrity sha512-YQ+BmxuTgd6UXZW3+ICGfyqRyHXVlD5GtQr5+qjiNW7bF0cqrzX500HVXPBOvgXb5YnzDd+h0zqyv61KUD7+Sg==
+
+whatwg-fetch@^3.6.2:
+  version "3.6.2"
+  resolved "https://registry.yarnpkg.com/whatwg-fetch/-/whatwg-fetch-3.6.2.tgz#dced24f37f2624ed0281725d51d0e2e3fe677f8c"
+  integrity sha512-bJlen0FcuU/0EMLrdbJ7zOnW6ITZLrZMIarMUVmdKtsGvZna8vxKYaexICWPfZ8qwf9fzNq+UEIZrnSaApt6RA==
 
 whatwg-url@^5.0.0:
   version "5.0.0"

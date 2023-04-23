@@ -1,3 +1,5 @@
+import { withAxiom } from "next-axiom";
+
 !process.env.SKIP_ENV_VALIDATION && (await import("./src/env.mjs"));
 
 /** @type {import('next').NextConfig} */
@@ -16,4 +18,4 @@ const config = {
   },
 };
 
-export default config;
+export default withAxiom(config);
