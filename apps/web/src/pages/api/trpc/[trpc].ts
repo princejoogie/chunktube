@@ -1,7 +1,8 @@
 import { createNextApiHandler } from "@trpc/server/adapters/next";
+import {} from "next-axiom";
 
 import { env } from "~/env.mjs";
-import { createTRPCContext, appRouter } from "api";
+import { createTRPCContext, appRouter, logger } from "api";
 
 // export API handler
 export default createNextApiHandler({
@@ -14,5 +15,7 @@ export default createNextApiHandler({
             `❌ tRPC failed on ${path ?? "<no-path>"}: ${error.message}`
           );
         }
-      : undefined,
+      : ({ path, error }) => {
+          logger.error(path ?? "/api/trpc/", error.message, error);
+        },
 });

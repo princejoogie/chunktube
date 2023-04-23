@@ -8,6 +8,7 @@ import {
 } from "../utils/youtube/details";
 import { conclude } from "../gpt/conclude";
 import { conclusionSelect } from "./common";
+import { logger } from "../lib/logger";
 
 const cleanUrl = (_url: string) => {
   const url = new URL(_url);
@@ -115,6 +116,11 @@ export const conclusionRouter = createTRPCRouter({
       try {
         channelDetails = await getChannelDetails(existing.channelId);
       } catch {
+        logger.error(
+          "r(conclusion.get)",
+          `Failed to get channel details for ${input.url}`
+        );
+
         channelDetails = null;
       }
 

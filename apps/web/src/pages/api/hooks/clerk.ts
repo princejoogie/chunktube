@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { httpApi } from "../../../utils/api";
+import { logger } from "api";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
@@ -26,6 +27,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     return res.status(400).json({ code: 400, message: "Bad request" });
   } catch (e) {
+    logger.error("/api/hooks/clerk", "Clerk webhook", e);
     return res.status(500).json({ code: 500, message: JSON.stringify(e) });
   }
 };
