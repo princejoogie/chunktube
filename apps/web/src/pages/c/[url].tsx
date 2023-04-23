@@ -98,7 +98,8 @@ const ConclusionPage = () => {
         addView.mutate({ videoId });
       } catch {}
     }
-  }, [vidUrl, addView]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [vidUrl]);
 
   return (
     <Layout
