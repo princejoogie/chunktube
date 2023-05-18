@@ -58,6 +58,7 @@ const App = ({ Component, pageProps }: AppProps) => {
         crossOrigin="anonymous"
         onError={console.error}
       />
+      {/* @ts-expect-error - types  */}
       <Component {...pageProps} />
       <div className="h-48 w-full" />
       <Toaster />
