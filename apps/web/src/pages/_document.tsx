@@ -53,16 +53,7 @@ class MyDocument extends Document {
             content="It's just YouTube.. but text!"
           />
           <meta name="twitter:image" content="/api/og" />
-        </Head>
-        <body>
-          <iframe
-            src={`https://www.googletagmanager.com/ns.html?id=${gtag.GTM_TRACKING_ID}`}
-            height="0"
-            width="0"
-            style={{ display: "none", visibility: "hidden" }}
-          />
-          <Main />
-          <NextScript />
+
           <Script
             id="gtm-head"
             strategy="beforeInteractive"
@@ -76,6 +67,34 @@ class MyDocument extends Document {
             `,
             }}
           />
+          <Script
+            id="google-analytics"
+            strategy="beforeInteractive"
+            dangerouslySetInnerHTML={{
+              __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', '${gtag.GTM_TRACKING_ID}', {
+                page_path: window.location.pathname,
+              });
+            `,
+            }}
+          />
+          <Script
+            strategy="beforeInteractive"
+            src={`https://www.googletagmanager.com/gtag/js?id=${gtag.GTM_TRACKING_ID}`}
+          />
+        </Head>
+        <body>
+          <iframe
+            src={`https://www.googletagmanager.com/ns.html?id=${gtag.GTM_TRACKING_ID}`}
+            height="0"
+            width="0"
+            style={{ display: "none", visibility: "hidden" }}
+          />
+          <Main />
+          <NextScript />
         </body>
       </Html>
     );

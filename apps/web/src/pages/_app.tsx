@@ -35,23 +35,6 @@ const App = ({ Component, pageProps }: AppProps) => {
       }}
     >
       <Script
-        id="google-analytics"
-        dangerouslySetInnerHTML={{
-          __html: `
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', '${gtag.GTM_TRACKING_ID}', {
-                page_path: window.location.pathname,
-              });
-            `,
-        }}
-      />
-      <Script
-        strategy="afterInteractive"
-        src={`https://www.googletagmanager.com/gtag/js?id=${gtag.GTM_TRACKING_ID}`}
-      />
-      <Script
         async
         data-ad-client="ca-pub-5644238710712581"
         src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5644238710712581"
