@@ -41,7 +41,7 @@ const App = ({ Component, pageProps }: AppProps) => {
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
-              gtag('config', '${gtag.GA_TRACKING_ID}', {
+              gtag('config', '${gtag.GTM_TRACKING_ID}', {
                 page_path: window.location.pathname,
               });
             `,
@@ -49,7 +49,7 @@ const App = ({ Component, pageProps }: AppProps) => {
       />
       <Script
         strategy="afterInteractive"
-        src={`https://www.googletagmanager.com/gtag/js?id=${gtag.GA_TRACKING_ID}`}
+        src={`https://www.googletagmanager.com/gtag/js?id=${gtag.GTM_TRACKING_ID}`}
       />
       <Script
         async

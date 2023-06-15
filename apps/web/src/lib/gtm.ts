@@ -1,4 +1,5 @@
-export const GA_TRACKING_ID = "G-D18G5DQL6Z";
+/* export const GA_TRACKING_ID = "G-D18G5DQL6Z"; */
+export const GTM_TRACKING_ID = "GTM-WPRQ3X6";
 
 declare global {
   interface Window {
@@ -8,7 +9,7 @@ declare global {
 
 // https://developers.google.com/analytics/devguides/collection/gtagjs/pages
 export const pageView = (url: string) => {
-  window.gtag("config", GA_TRACKING_ID, {
+  window.gtag("config", GTM_TRACKING_ID, {
     page_path: url,
   });
 };
