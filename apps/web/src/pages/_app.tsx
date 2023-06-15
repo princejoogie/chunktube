@@ -70,14 +70,6 @@ const App = ({ Component, pageProps }: AppProps) => {
             `,
         }}
       />
-      <noscript>
-        <iframe
-          src="https://www.googletagmanager.com/ns.html?id=GTM-WPRQ3X6"
-          height="0"
-          width="0"
-          style={{ display: "none", visibility: "hidden" }}
-        />
-      </noscript>
 
       {/* @ts-expect-error - types  */}
       <Component {...pageProps} />
