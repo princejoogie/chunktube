@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
 import he from "he";
 import axios from "axios";
 import { find } from "lodash";
@@ -11,7 +13,9 @@ export const getSubtitles = async (
   lang: "en" | "de" | "fr" = "en"
 ) => {
   const details = await getVideoDetails(videoId);
-  const { data } = await axios.get(`https://youtube.com/watch?v=${videoId}`);
+  const { data } = await axios.get<string>(
+    `https://youtube.com/watch?v=${videoId}`
+  );
 
   // * ensure we have access to captions data
   if (!data.includes("captionTracks"))
@@ -21,22 +25,27 @@ export const getSubtitles = async (
   // @ts-expect-error - we know this will match
   const [match] = regex.exec(data);
 
-  const { captionTracks } = JSON.parse(`${match}}`);
+  const { captionTracks } = JSON.parse(`${match}}`) as {
+    captionTracks: Record<string, unknown>;
+  };
 
-  const subtitle =
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const subtitle: any =
     find(captionTracks, {
       vssId: `.${lang}`,
     }) ||
     find(captionTracks, {
       vssId: `a.${lang}`,
     }) ||
-    find(captionTracks, ({ vssId }) => vssId?.match(`.${lang}`));
+    find(captionTracks, ({ vssId }: { vssId: string }) =>
+      vssId?.match(`.${lang}`)
+    );
 
   // * ensure we have found the correct subtitle lang
   if (!subtitle || (subtitle && !subtitle.baseUrl))
     throw new Error(`Could not find ${lang} captions for ${videoId}`);
 
-  const { data: transcript } = await axios.get(subtitle.baseUrl);
+  const { data: transcript } = await axios.get<string>(subtitle.baseUrl);
   const lines: { start: number; dur: number; text: string }[] = transcript
     .replace('<?xml version="1.0" encoding="utf-8" ?><transcript>', "")
     .replace("</transcript>", "")
@@ -62,11 +71,9 @@ export const getSubtitles = async (
       };
     });
 
-  const captionsPer5Minutes: {
-    content: string;
-    time: string;
-    order: number;
-  }[] = Array(Math.ceil(details.duration.totalSeconds / 300));
+  const captionsPer5Minutes = Array(
+    Math.ceil(details.duration.totalSeconds / 300)
+  ) as { content: string; time: string; order: number }[];
 
   lines.forEach((line) => {
     const index = Math.floor(line.start / 300);

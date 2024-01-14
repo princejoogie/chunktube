@@ -21,13 +21,16 @@ importers:
         specifier: ^8.2.2
         version: 8.2.2
       prettier:
-        specifier: ^3.1.0
+        specifier: ^3.2.2
         version: 3.2.2
+      rimraf:
+        specifier: ^5.0.5
+        version: 5.0.5
       turbo:
         specifier: ^1.10.15
         version: 1.11.3
       typescript:
-        specifier: ^5.3.2
+        specifier: ^5.3.3
         version: 5.3.3
 
   apps/web:
@@ -136,22 +139,22 @@ importers:
         specifier: ^18.2.4
         version: 18.2.18
       autoprefixer:
-        specifier: ^10.4.14
+        specifier: ^10.4.16
         version: 10.4.16(postcss@8.4.33)
       eslint:
         specifier: ^8.51.0
         version: 8.56.0
       postcss:
-        specifier: ^8.4.23
+        specifier: ^8.4.31
         version: 8.4.33
       prettier:
-        specifier: ^3.1.0
+        specifier: ^3.2.2
         version: 3.2.2
       tailwindcss:
-        specifier: ^3.3.2
+        specifier: ^3.3.3
         version: 3.4.1
       typescript:
-        specifier: ^5.3.2
+        specifier: ^5.3.3
         version: 5.3.3
 
   packages/api:
@@ -227,13 +230,13 @@ importers:
         specifier: ^1.1.1
         version: 1.1.1(next@14.0.4)(react@18.2.0)
       prettier:
-        specifier: ^3.1.0
+        specifier: ^3.2.2
         version: 3.2.2
       prisma:
         specifier: ^4.14.0
         version: 4.16.2
       typescript:
-        specifier: ^5.3.2
+        specifier: ^5.3.3
         version: 5.3.3
 
   tooling/eslint:
@@ -288,7 +291,7 @@ importers:
   tooling/prettier:
     dependencies:
       prettier:
-        specifier: ^3.1.1
+        specifier: ^3.2.2
         version: 3.2.2
       prettier-plugin-tailwindcss:
         specifier: ^0.5.6
@@ -329,7 +332,7 @@ importers:
         specifier: ^8.51.0
         version: 8.56.0
       prettier:
-        specifier: ^3.1.1
+        specifier: ^3.2.2
         version: 3.2.2
       typescript:
         specifier: ^5.3.3
@@ -5596,6 +5599,14 @@ packages:
     hasBin: true
     dependencies:
       glob: 7.2.3
+
+  /rimraf@5.0.5:
+    resolution: {integrity: sha512-CqDakW+hMe/Bz202FPEymy68P+G50RfMQK+Qo5YUqc9SPipvbGjCGKd0RSKEelbsfQuw3g5NZDSrlZZAJurH1A==}
+    engines: {node: '>=14'}
+    hasBin: true
+    dependencies:
+      glob: 10.3.10
+    dev: false
 
   /run-async@2.4.1:
     resolution: {integrity: sha512-tvVnVv01b8c1RrA6Ep7JkStj85Guv/YrMcwqYQnwjsAS2cTmmPGBBjAjpCW7RrSodNSoE2/qg9O4bceNvUuDgQ==}
