@@ -7,7 +7,10 @@
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "scripts": {
-    "clean": "rimraf .turbo/ dist/"
+    "clean": "rimraf .turbo/ dist/",
+    "format": "prettier --write ./src",
+    "lint": "eslint --fix ./src",
+    "typecheck": "tsc --noEmit"
   },
   "peerDependencies": {
     "next-axiom": ">0.15.0"

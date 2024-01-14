@@ -8,6 +8,8 @@
     "build": "yarn next build",
     "start": "yarn next start",
     "lint": "next lint",
+    "format": "prettier --write ./src",
+    "typecheck": "tsc --noEmit",
     "clean": "rimraf .next/ .turbo/"
   },
   "dependencies": {

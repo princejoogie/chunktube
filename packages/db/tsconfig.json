@@ -1,5 +1,5 @@
 {
-  "extends": "@fgi/tsconfig/base.json",
+  "extends": "@joogie/tsconfig/base.json",
   "compilerOptions": {
     "plugins": [
       {

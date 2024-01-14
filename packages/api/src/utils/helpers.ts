@@ -1,5 +1,6 @@
-import { z } from "zod";
 import { exec } from "child_process";
+
+import { z } from "zod";
 
 export const execAsync = async (command: string, errMessage?: string) => {
   return await new Promise<string>((res, rej) => {

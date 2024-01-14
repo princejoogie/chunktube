@@ -1,6 +1,8 @@
 import { z } from "zod";
-import type { Prisma } from "db";
+
 import { createTRPCRouter, publicProcedure } from "../trpc";
+
+import type { Prisma } from "db";
 
 export const conclusionSelect = {
   id: true,
