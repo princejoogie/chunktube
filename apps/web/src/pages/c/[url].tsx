@@ -2,7 +2,7 @@ import Link from "next/link";
 import { useAuth } from "@clerk/nextjs";
 import { useRouter } from "next/router";
 import { Heart, Share2, Eye, ExternalLink } from "lucide-react";
-import toNow from "date-fns/formatDistanceToNow";
+import { formatDistanceToNow } from "date-fns/formatDistanceToNow";
 import { useEffect } from "react";
 
 import type { RouterOutputs } from "@ct/api";
@@ -175,7 +175,9 @@ const ConclusionPage = () => {
                     </div>
 
                     <p>
-                      {toNow(conclusion.data.createdAt, { addSuffix: true })}
+                      {formatDistanceToNow(conclusion.data.createdAt, {
+                        addSuffix: true,
+                      })}
                     </p>
                   </div>
                 </div>

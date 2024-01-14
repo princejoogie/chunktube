@@ -43,7 +43,6 @@ const App = ({ Component, pageProps }: AppProps) => {
         onError={console.error}
       />
 
-      {/* @ts-expect-error - types  */}
       <Component {...pageProps} />
       <div className="h-48 w-full" />
       <Toaster />

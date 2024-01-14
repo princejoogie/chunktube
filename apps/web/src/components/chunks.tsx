@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import toNow from "date-fns/formatDistanceToNow";
+import { formatDistanceToNow } from "date-fns/formatDistanceToNow";
 import { Eye } from "lucide-react";
 
 import type { RouterOutputs } from "@ct/api";
@@ -67,7 +67,7 @@ export const ChunkCard = ({ chunk }: ChunkCardProps) => {
       <p className="mt-2 line-clamp-2 font-semibold">{chunk.title}</p>
       <span className="block text-sm text-gray-400">
         {bigNumber(chunk.timesConcluded)} concludes •{" "}
-        {toNow(chunk.createdAt, { addSuffix: true })}
+        {formatDistanceToNow(chunk.createdAt, { addSuffix: true })}
       </span>
       <div className="flex items-center space-x-1 text-sm text-gray-400">
         <Eye className="h-4 w-4" />
@@ -114,7 +114,7 @@ export const SideChunkCard = ({ chunk }: SideChunkCardProps) => {
         <p className="mt-2 line-clamp-2 text-sm font-semibold">{chunk.title}</p>
         <span className="text-xs text-gray-400">
           {bigNumber(chunk.timesConcluded)} concs •{" "}
-          {toNow(chunk.createdAt, { addSuffix: true })}
+          {formatDistanceToNow(chunk.createdAt, { addSuffix: true })}
         </span>
         <div className="flex items-center space-x-1 text-xs text-gray-400">
           <Eye className="h-4 w-4" />
