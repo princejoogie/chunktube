@@ -1,6 +1,10 @@
-import type { NextApiRequest, NextApiResponse } from "next";
-import { httpApi } from "../../../utils/api";
+/* eslint-disable @typescript-eslint/no-unsafe-argument */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { logger } from "@ct/api";
+
+import { httpApi } from "../../../utils/api";
+
+import type { NextApiRequest, NextApiResponse } from "next";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {

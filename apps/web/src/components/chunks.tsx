@@ -3,6 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import toNow from "date-fns/formatDistanceToNow";
 import { Eye } from "lucide-react";
+
 import type { RouterOutputs } from "@ct/api";
 
 import { api } from "@/utils/api";
@@ -31,15 +32,15 @@ export const ChunkCardLoader = () => {
   );
 };
 
-export interface ChunkCardProps {
+export type ChunkCardProps = {
   chunk: RouterOutputs["list"]["getTopChunks"]["chunks"][number];
-}
+};
 
 export const ChunkCard = ({ chunk }: ChunkCardProps) => {
   return (
     <Link
-      href={`/c/${encodeURIComponent(chunk.url)}`}
       className="transition-opacity active:opacity-50"
+      href={`/c/${encodeURIComponent(chunk.url)}`}
     >
       {!chunk.thumbnail ? (
         <div className="relative aspect-video w-full animate-pulse rounded-md bg-gray-800">
@@ -51,11 +52,11 @@ export const ChunkCard = ({ chunk }: ChunkCardProps) => {
         <div className="relative aspect-video w-full">
           <Image
             priority
-            width={chunk.thumbnail.width}
-            height={chunk.thumbnail.height}
-            src={chunk.thumbnail.url}
             alt={`Thumbnail for ${chunk.title}`}
             className="h-full w-full select-none rounded-md object-cover transition-all hover:scale-[1.02]"
+            height={chunk.thumbnail.height}
+            src={chunk.thumbnail.url}
+            width={chunk.thumbnail.width}
           />
           <p className="absolute bottom-1 right-1 rounded-md bg-black/80 p-1 text-xs">
             {chunk.segments[chunk.segments.length - 1]?.time}
@@ -76,16 +77,16 @@ export const ChunkCard = ({ chunk }: ChunkCardProps) => {
   );
 };
 
-interface SideChunkCardProps {
+type SideChunkCardProps = {
   chunk: RouterOutputs["list"]["getTopChunks"]["chunks"][number];
-}
+};
 
 export const SideChunkCard = ({ chunk }: SideChunkCardProps) => {
   return (
     <Link
-      key={chunk.id}
-      href={`/c/${encodeURIComponent(chunk.url)}`}
       className="flex space-x-2 transition-opacity active:opacity-50"
+      href={`/c/${encodeURIComponent(chunk.url)}`}
+      key={chunk.id}
     >
       {!chunk.thumbnail ? (
         <div className="relative aspect-video flex-1 flex-shrink-0 animate-pulse rounded-md bg-gray-800">
@@ -97,11 +98,11 @@ export const SideChunkCard = ({ chunk }: SideChunkCardProps) => {
         <div className="relative aspect-video flex-1 flex-shrink-0">
           <Image
             priority
-            width={chunk.thumbnail.width}
-            height={chunk.thumbnail.height}
-            src={chunk.thumbnail.url}
             alt={`Thumbnail for ${chunk.title}`}
             className="h-full w-full select-none rounded-md object-cover transition-all hover:scale-[1.02]"
+            height={chunk.thumbnail.height}
+            src={chunk.thumbnail.url}
+            width={chunk.thumbnail.width}
           />
           <p className="absolute bottom-1 right-1 rounded-md bg-black/80 p-1 text-xs">
             {chunk.segments[chunk.segments.length - 1]?.time}
@@ -142,7 +143,7 @@ export const TrendingChunks = () => {
       <h2 className="text-xl font-semibold">Trending</h2>
       <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
         {chunks().map((c) => (
-          <ChunkCard key={c.id} chunk={c} />
+          <ChunkCard chunk={c} key={c.id} />
         ))}
       </div>
 
@@ -151,8 +152,8 @@ export const TrendingChunks = () => {
       {e.hasNextPage ? (
         <div className="mt-4 flex w-full items-center justify-center">
           <button
-            onClick={() => e.fetchNextPage()}
             className="text-blue-600 active:opacity-60"
+            onClick={() => e.fetchNextPage()}
           >
             See more
           </button>
@@ -184,7 +185,7 @@ export const RecentChunks = () => {
       <h2 className="text-xl font-semibold">Most Recent</h2>
       <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
         {chunks().map((c) => (
-          <ChunkCard key={c.id} chunk={c} />
+          <ChunkCard chunk={c} key={c.id} />
         ))}
       </div>
 
@@ -193,8 +194,8 @@ export const RecentChunks = () => {
       {e.hasNextPage ? (
         <div className="mt-4 flex w-full items-center justify-center">
           <button
-            onClick={() => e.fetchNextPage()}
             className="text-blue-600 active:opacity-60"
+            onClick={() => e.fetchNextPage()}
           >
             See more
           </button>
@@ -226,7 +227,7 @@ export const MyChunks = () => {
       <h2 className="text-xl font-semibold">Your Chunks</h2>
       <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
         {chunks().map((c) => (
-          <ChunkCard key={c.id} chunk={c} />
+          <ChunkCard chunk={c} key={c.id} />
         ))}
       </div>
 
@@ -235,8 +236,8 @@ export const MyChunks = () => {
       {e.hasNextPage ? (
         <div className="mt-4 flex w-full items-center justify-center">
           <button
-            onClick={() => e.fetchNextPage()}
             className="text-blue-600 active:opacity-60"
+            onClick={() => e.fetchNextPage()}
           >
             See more
           </button>
@@ -250,9 +251,9 @@ export const MyChunks = () => {
   );
 };
 
-interface ReadNextPageProps {
+type ReadNextPageProps = {
   currentId: string | undefined;
-}
+};
 
 export const ReadNextPage = ({ currentId }: ReadNextPageProps) => {
   const e = api.list.getTopChunks.useInfiniteQuery(
@@ -277,15 +278,15 @@ export const ReadNextPage = ({ currentId }: ReadNextPageProps) => {
 
       <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-1">
         {filtered.map((e) => (
-          <SideChunkCard key={e.id} chunk={e} />
+          <SideChunkCard chunk={e} key={e.id} />
         ))}
       </div>
 
       {e.hasNextPage ? (
         <div className="mt-4 flex w-full items-center justify-center">
           <button
-            onClick={() => e.fetchNextPage()}
             className="text-blue-600 active:opacity-60"
+            onClick={() => e.fetchNextPage()}
           >
             See more
           </button>

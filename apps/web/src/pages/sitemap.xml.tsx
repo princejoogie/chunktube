@@ -1,5 +1,6 @@
 import type { RouterOutputs } from "@ct/api";
 import type { GetServerSideProps } from "next";
+
 import { httpApi } from "@/utils/api";
 
 type Post = RouterOutputs["list"]["getTopChunks"]["chunks"];

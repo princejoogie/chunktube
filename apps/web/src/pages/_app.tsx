@@ -2,9 +2,10 @@ import "@/styles/globals.css";
 import Script from "next/script";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
-import { type AppProps } from "next/app";
 import { ClerkProvider } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
+
+import type { AppProps } from "next/app";
 
 import * as gtag from "@/lib/gtm";
 import { api } from "@/utils/api";
@@ -36,9 +37,9 @@ const App = ({ Component, pageProps }: AppProps) => {
     >
       <Script
         async
+        crossOrigin="anonymous"
         data-ad-client="ca-pub-5644238710712581"
         src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5644238710712581"
-        crossOrigin="anonymous"
         onError={console.error}
       />
 

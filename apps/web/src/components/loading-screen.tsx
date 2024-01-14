@@ -1,4 +1,7 @@
 import { useEffect, useState } from "react";
+
+import ExpandingLoader from "./icons/loading/expand";
+
 import {
   AlertDialog,
   AlertDialogContent,
@@ -6,7 +9,6 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import ExpandingLoader from "./icons/loading/expand";
 
 const texts = [
   "Please wait while we conclude your video, this may take a while.",

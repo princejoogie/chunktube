@@ -2,8 +2,10 @@ import Link from "next/link";
 import { useAuth } from "@clerk/nextjs";
 import { useRouter } from "next/router";
 import { Heart, Share2, Eye, ExternalLink } from "lucide-react";
-import { type RouterOutputs } from "@ct/api";
 import toNow from "date-fns/formatDistanceToNow";
+import { useEffect } from "react";
+
+import type { RouterOutputs } from "@ct/api";
 
 import * as gtag from "@/lib/gtm";
 import Container from "@/components/container";
@@ -12,7 +14,6 @@ import Layout from "@/components/layout";
 import { ReadNextPage } from "@/components/chunks";
 import { api } from "@/utils/api";
 import { bigNumber, getVideoId } from "@/utils/helpers";
-import { useEffect } from "react";
 
 const Timestamp = ({ time }: { time: string }) => {
   return (
@@ -38,17 +39,17 @@ type ChannelDetailsProps = {
 const ChannelDetails = ({ details }: ChannelDetailsProps) => {
   return details ? (
     <Link
-      href={`https://youtube.com/${details.username}`}
-      target="_blank"
-      rel="noopener noreferrer"
       className="flex"
+      href={`https://youtube.com/${details.username}`}
+      rel="noopener noreferrer"
+      target="_blank"
     >
       <div className="flex space-x-3 self-start rounded-full">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src={details.thumbnail.url}
           alt={details.channelName}
           className="h-14 w-14 rounded-full"
+          src={details.thumbnail.url}
         />
 
         <div className="flex flex-col justify-center">
@@ -122,6 +123,7 @@ const ConclusionPage = () => {
                   <div className="flex items-center space-x-2 text-gray-300">
                     {isSignedIn ? (
                       <button
+                        className="flex items-center rounded-full bg-gray-700 px-3 py-1 transition-all hover:bg-gray-800 active:opacity-60"
                         onClick={() => {
                           toggleLike.mutate({
                             conclusionId: conclusion.data.id,
@@ -140,7 +142,6 @@ const ConclusionPage = () => {
                             }
                           );
                         }}
-                        className="flex items-center rounded-full bg-gray-700 px-3 py-1 transition-all hover:bg-gray-800 active:opacity-60"
                       >
                         <Heart
                           className={`m-0 h-4 w-4 p-0 ${
@@ -183,12 +184,12 @@ const ConclusionPage = () => {
                   const secStart = hmsToSec(start);
 
                   return (
-                    <div key={segment.id} className="mt-6">
+                    <div className="mt-6" key={segment.id}>
                       <div className="flex">
                         <Link
-                          target="_blank"
-                          rel="noopener noreferrer"
                           href={`${conclusion.data.url}&t=${secStart}s`}
+                          rel="noopener noreferrer"
+                          target="_blank"
                         >
                           <Timestamp time={start} />
                         </Link>
@@ -201,7 +202,7 @@ const ConclusionPage = () => {
             ) : (
               <p className="w-full text-center">
                 No data found for{" "}
-                <Link target="_blank" rel="noopener noreferrer" href={vidUrl}>
+                <Link href={vidUrl} rel="noopener noreferrer" target="_blank">
                   <span className="text-blue-600">{vidUrl}</span>
                 </Link>
               </p>

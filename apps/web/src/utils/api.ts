@@ -1,6 +1,7 @@
 import superjson from "superjson";
 import { createTRPCProxyClient, httpBatchLink, loggerLink } from "@trpc/client";
 import { createTRPCNext } from "@trpc/next";
+
 import type { AppRouter } from "@ct/api";
 
 export const getBaseUrl = () => {
