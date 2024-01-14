@@ -1,7 +1,19 @@
 {
-  "extends": "tsconfig/nodejs.json",
-  "include": ["index.ts"],
+  "extends": "@fgi/tsconfig/base.json",
   "compilerOptions": {
-    "isolatedModules": false
-  }
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "tsBuildInfoFile": "node_modules/.cache/tsbuildinfo.json"
+  },
+  "include": [
+    "./index.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
 }
+

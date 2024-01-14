@@ -1,40 +1,32 @@
 {
   "name": "chunktube",
-  "version": "0.0.0",
   "private": true,
-  "author": "princejoogie",
-  "description": "cron job scheduler",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/princejoogie/chunktube.git"
-  },
-  "workspaces": [
-    "apps/*",
-    "packages/*",
-    "packages/config/*"
-  ],
-  "scripts": {
-    "build": "turbo run build",
-    "dev": "turbo run dev",
-    "clean": "turbo run clean && rm -rf node_modules/.cache/turbo",
-    "lint": "SKIP_ENV_VALIDATION=false turbo run lint",
-    "db:generate": "turbo run db:generate",
-    "db:push": "turbo run db:push",
-    "db:studio": "turbo run db:studio",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "with-env": "dotenv -e .env --"
-  },
-  "devDependencies": {
-    "dotenv-cli": "^7.1.0",
-    "eslint-config-custom": "*",
-    "prettier": "^2.8.7",
-    "rimraf": "^5.0.0",
-    "tsconfig": "*",
-    "turbo": "^1.8.8"
-  },
   "engines": {
-    "node": ">=14.0.0"
+    "node": ">=18.16.0"
   },
-  "packageManager": "yarn@1.22.19"
+  "packageManager": "pnpm@8.9.2",
+  "scripts": {
+    "e2e": "node e2e.js",
+    "start": "turbo start",
+    "build": "turbo build",
+    "clean": "git clean -xdf node_modules .turbo",
+    "clean:workspaces": "turbo clean",
+    "dev": "turbo dev --parallel",
+    "format": "turbo format --continue -- --cache --cache-location='node_modules/.cache/.prettiercache'",
+    "format:fix": "turbo format --continue -- --write --cache --cache-location='node_modules/.cache/.prettiercache'",
+    "lint": "turbo lint --continue -- --cache --cache-location 'node_modules/.cache/.eslintcache' && manypkg check",
+    "lint:fix": "turbo lint --continue -- --fix --cache --cache-location 'node_modules/.cache/.eslintcache' && manypkg fix",
+    "typecheck": "turbo typecheck"
+  },
+  "dependencies": {
+    "@joogie/prettier-config": "^0.1.0",
+    "@manypkg/cli": "^0.21.1",
+    "@turbo/gen": "^1.10.15",
+    "concurrently": "^8.2.2",
+    "prettier": "^3.1.0",
+    "turbo": "^1.10.15",
+    "typescript": "^5.3.2"
+  },
+  "prettier": "@joogie/prettier-config"
 }
+

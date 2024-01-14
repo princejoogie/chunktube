@@ -1,7 +1,21 @@
 {
-  "extends": "tsconfig/nodejs.json",
-  "include": ["src", "index.ts"],
+  "extends": "@fgi/tsconfig/base.json",
   "compilerOptions": {
-    "isolatedModules": false
-  }
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "tsBuildInfoFile": "node_modules/.cache/tsbuildinfo.json"
+  },
+  "include": [
+    "./src/**/*.ts",
+    "./fixes/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
 }
+
+
