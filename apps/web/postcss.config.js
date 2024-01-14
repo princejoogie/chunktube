@@ -1,2 +1,4 @@
-// @ts-expect-error - No types for tw-config
-module.exports = require("tw-config/postcss");
+// @ts-ignore
+module.exports = require("@joogie/tailwind-config/postcss");
+
+

@@ -19,20 +19,6 @@
   "peerDependencies": {
     "next-axiom": ">0.15.0"
   },
-  "devDependencies": {
-    "@joogie/eslint-config": "^0.1.0",
-    "@joogie/prettier-config": "^0.1.0",
-    "@joogie/tsconfig": "^0.1.0",
-    "@types/he": "^1.2.0",
-    "@types/jsonwebtoken": "^9.0.2",
-    "@types/lodash": "^4.14.194",
-    "@types/node": "^20.1.7",
-    "eslint": "^8.51.0",
-    "next-axiom": "^0.17.0",
-    "prettier": "^3.1.0",
-    "prisma": "^4.14.0",
-    "typescript": "^5.3.2"
-  },
   "dependencies": {
     "@googleapis/youtube": "^9.0.0",
     "@prisma/client": "^4.14.0",
@@ -48,6 +34,20 @@
     "striptags": "^3.2.0",
     "superjson": "^1.12.3",
     "zod": "^3.21.4"
+  },
+  "devDependencies": {
+    "@joogie/eslint-config": "^0.1.0",
+    "@joogie/prettier-config": "^0.1.0",
+    "@joogie/tsconfig": "^0.1.0",
+    "@types/he": "^1.2.0",
+    "@types/jsonwebtoken": "^9.0.2",
+    "@types/lodash": "^4.14.194",
+    "@types/node": "^20.1.7",
+    "eslint": "^8.51.0",
+    "next-axiom": "^0.17.0",
+    "prettier": "^3.1.0",
+    "prisma": "^4.14.0",
+    "typescript": "^5.3.2"
   },
   "eslintConfig": {
     "root": true,

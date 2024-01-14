@@ -2,12 +2,12 @@ version: "3.9"
 
 services:
   database:
-    container_name: conclusion-mysql
+    image: mysql
+    container_name: chunktube-db
     environment:
-      MYSQL_DATABASE: "conclusion-db"
+      MYSQL_DATABASE: "chunktube-db"
       MYSQL_ROOT_PASSWORD: "mysql"
     hostname: mysql
-    image: mysql
     ports:
       - "6033:3306"
     restart: unless-stopped
