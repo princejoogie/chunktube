@@ -95,23 +95,30 @@ const getTranscriptions = async (
   await execAsync(`mkdir ${txPath}`);
 
   const promises = chops.map((chop, offset) => {
-    return new Promise<{ filePath: string; time: string }>(async (res, rej) => {
-      try {
-        const filePath = path.join(
-          txPath,
-          chop.fileName.replace(".mp3", ".txt")
-        );
-        const txt = await getText(chop.path);
-        const length = await getAudioLength(chop.path);
-        const time = getTimeOffset(length, offset);
-        fs.writeFileSync(filePath, txt);
+    return new Promise<{ filePath: string; time: string }>(
+      // eslint-disable-next-line no-async-promise-executor, @typescript-eslint/no-misused-promises
+      async (res, rej) => {
+        try {
+          const filePath = path.join(
+            txPath,
+            chop.fileName.replace(".mp3", ".txt")
+          );
+          const txt = await getText(chop.path);
+          const length = await getAudioLength(chop.path);
+          const time = getTimeOffset(length, offset);
+          fs.writeFileSync(filePath, txt);
 
-        res({ filePath, time });
-      } catch (e) {
-        logger.error("f(getTranscriptions)", `Failed to get transcription`, e);
-        rej(e);
+          res({ filePath, time });
+        } catch (e) {
+          logger.error(
+            "f(getTranscriptions)",
+            `Failed to get transcription`,
+            e
+          );
+          rej(e);
+        }
       }
-    });
+    );
   });
 
   return await Promise.all(promises);

@@ -1,5 +1,4 @@
-import { prisma } from "@ct/db";
-
+import { prisma } from "../src/lib/prisma";
 import { getVideoDetails } from "../src/utils/youtube/details";
 
 const updateConclusion = async (id: string, videoId: string) => {

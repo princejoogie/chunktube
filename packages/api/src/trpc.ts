@@ -3,8 +3,8 @@ import jwt from "jsonwebtoken";
 import superjson from "superjson";
 import { initTRPC, TRPCError } from "@trpc/server";
 import { ZodError } from "zod";
-import { prisma } from "@ct/db";
 
+import { prisma } from "./lib/prisma";
 import { sessionSchema } from "./utils/helpers";
 import { logger } from "./lib/logger";
 
@@ -23,10 +23,7 @@ const createInnerTRPCContext = (opts: CreateContextOptions) => {
   };
 };
 
-export const createTRPCContext = async ({
-  req,
-  res,
-}: CreateNextContextOptions) => {
+export const createTRPCContext = ({ req, res }: CreateNextContextOptions) => {
   if (
     !process.env.CLERK_JWT_VERIFICATION_KEY ||
     typeof process.env.CLERK_JWT_VERIFICATION_KEY !== "string"

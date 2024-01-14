@@ -41,9 +41,6 @@ importers:
       '@ct/api':
         specifier: ^0.1.0
         version: link:../../packages/api
-      '@ct/db':
-        specifier: ^0.1.0
-        version: link:../../packages/db
       '@radix-ui/react-alert-dialog':
         specifier: ^1.0.3
         version: 1.0.5(@types/react-dom@18.2.18)(@types/react@18.2.47)(react-dom@18.2.0)(react@18.2.0)
@@ -159,12 +156,12 @@ importers:
 
   packages/api:
     dependencies:
-      '@ct/db':
-        specifier: ^0.1.0
-        version: link:../db
       '@googleapis/youtube':
         specifier: ^9.0.0
         version: 9.0.0
+      '@prisma/client':
+        specifier: ^4.14.0
+        version: 4.16.2(prisma@4.16.2)
       '@trpc/client':
         specifier: ^10.26.0
         version: 10.45.0(@trpc/server@10.45.0)
@@ -232,42 +229,11 @@ importers:
       prettier:
         specifier: ^3.1.0
         version: 3.2.2
-      typescript:
-        specifier: ^5.3.2
-        version: 5.3.3
-
-  packages/db:
-    dependencies:
-      '@prisma/client':
-        specifier: ^4.14.0
-        version: 4.16.2(prisma@4.16.2)
-    devDependencies:
-      '@joogie/eslint-config':
-        specifier: ^0.1.0
-        version: link:../../tooling/eslint
-      '@joogie/prettier-config':
-        specifier: ^0.1.0
-        version: link:../../tooling/prettier
-      '@joogie/tailwind-config':
-        specifier: ^0.1.0
-        version: link:../../tooling/tailwind
-      '@joogie/tsconfig':
-        specifier: ^0.1.0
-        version: link:../../tooling/typescript
-      '@types/node':
-        specifier: ^20.1.7
-        version: 20.11.0
-      eslint:
-        specifier: ^8.51.0
-        version: 8.56.0
-      prettier:
-        specifier: ^3.1.0
-        version: 3.2.2
       prisma:
         specifier: ^4.14.0
         version: 4.16.2
       typescript:
-        specifier: ^5.3.3
+        specifier: ^5.3.2
         version: 5.3.3
 
   tooling/eslint:

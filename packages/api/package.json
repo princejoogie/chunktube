@@ -7,10 +7,14 @@
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "scripts": {
+    "db:generate": "prisma generate",
+    "db:studio": "prisma studio",
+    "db:push": "prisma db push --skip-generate",
     "clean": "rimraf .turbo/ dist/ ./node_modules/",
     "format": "prettier --write ./src",
     "lint": "eslint --fix ./src",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "postinstall": "prisma generate"
   },
   "peerDependencies": {
     "next-axiom": ">0.15.0"
@@ -26,11 +30,12 @@
     "eslint": "^8.51.0",
     "next-axiom": "^0.17.0",
     "prettier": "^3.1.0",
+    "prisma": "^4.14.0",
     "typescript": "^5.3.2"
   },
   "dependencies": {
-    "@ct/db": "^0.1.0",
     "@googleapis/youtube": "^9.0.0",
+    "@prisma/client": "^4.14.0",
     "@trpc/client": "^10.26.0",
     "@trpc/server": "^10.26.0",
     "axios": "^1.4.0",
