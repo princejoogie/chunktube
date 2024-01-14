@@ -1,20 +1,7 @@
-import { withClerkMiddleware } from "@clerk/nextjs/server";
-import { NextResponse } from "next/server";
+import { authMiddleware } from "@clerk/nextjs";
 
-/* const assets = [ */
-/*   "/android-chrome-192x192.png*", */
-/*   "/android-chrome-512x512.png*", */
-/*   "/apple-touch-icon.png*", */
-/*   "/favicon-16x16.png*", */
-/*   "/favicon-32x32.png*", */
-/*   "/favicon.ico*", */
-/*   "/manifest.json*", */
-/*   "/ads.txt*", */
-/*   "/assets*", */
-/* ]; */
-
-export default withClerkMiddleware(() => {
-  return NextResponse.next();
+export default authMiddleware({
+  publicRoutes: ["/", "/c(.*)", "/api(.*)"],
 });
 
 export const config = {

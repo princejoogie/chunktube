@@ -1,12 +1,16 @@
 import Cookie from "cookies";
 import jwt from "jsonwebtoken";
 import superjson from "superjson";
-import { type inferAsyncReturnType, initTRPC, TRPCError } from "@trpc/server";
-import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
-import { sessionSchema, type JwtPayload } from "./utils/helpers";
+import { initTRPC, TRPCError } from "@trpc/server";
 import { ZodError } from "zod";
-import { prisma } from "db";
+
+import { prisma } from "./lib/prisma";
+import { sessionSchema } from "./utils/helpers";
 import { logger } from "./lib/logger";
+
+import type { JwtPayload } from "./utils/helpers";
+import type { CreateNextContextOptions } from "@trpc/server/adapters/next";
+import type { inferAsyncReturnType } from "@trpc/server";
 
 type CreateContextOptions = {
   payload: null | JwtPayload;
@@ -19,10 +23,7 @@ const createInnerTRPCContext = (opts: CreateContextOptions) => {
   };
 };
 
-export const createTRPCContext = async ({
-  req,
-  res,
-}: CreateNextContextOptions) => {
+export const createTRPCContext = ({ req, res }: CreateNextContextOptions) => {
   if (
     !process.env.CLERK_JWT_VERIFICATION_KEY ||
     typeof process.env.CLERK_JWT_VERIFICATION_KEY !== "string"

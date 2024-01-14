@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { ImageResponse } from "@vercel/og";
 
 export const config = {
@@ -9,6 +11,7 @@ const getStats = async (username: string, repo: string) => {
     await fetch(`https://api.github.com/repos/${username}/${repo}`)
   ).json();
 
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
   return stats;
 };
 
@@ -79,9 +82,9 @@ export default async function handler() {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               alt="avatar"
-              width="48"
               src={`https://github.com/${username}.png`}
               style={{ borderRadius: 48 }}
+              width="48"
             />
 
             <p style={{ marginLeft: 10 }}>

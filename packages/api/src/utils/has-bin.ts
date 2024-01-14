@@ -10,8 +10,8 @@ export const fileExists = (filePath: string) => {
 };
 
 export const getPaths = (bin: string) => {
-  const envPath = process.env.PATH || "";
-  const envExt = process.env.PATHEXT || "";
+  const envPath = process.env.PATH ?? "";
+  const envExt = process.env.PATHEXT ?? "";
 
   return envPath
     .replace(/["]+/g, "")

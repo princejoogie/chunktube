@@ -1,0 +1,20 @@
+{
+  "name": "@joogie/prettier-config",
+  "private": true,
+  "version": "0.1.0",
+  "main": "index.mjs",
+  "scripts": {
+    "clean": "rm -rf .turbo node_modules",
+    "format": "prettier --check \"**/*.{mjs,ts,md,json}\"",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "prettier": "^3.2.2",
+    "prettier-plugin-tailwindcss": "^0.5.6"
+  },
+  "devDependencies": {
+    "@joogie/tsconfig": "^0.1.0",
+    "typescript": "^5.3.3"
+  },
+  "prettier": "@joogie/prettier-config"
+}

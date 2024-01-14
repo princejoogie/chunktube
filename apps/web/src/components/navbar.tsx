@@ -1,8 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useUser, UserButton, SignedIn, SignedOut } from "@clerk/nextjs";
+
 import Container from "./container";
-import { api } from "~/utils/api";
+
+import { api } from "@/utils/api";
 
 const Navbar = () => {
   const { isLoaded, isSignedIn } = useUser();
@@ -19,10 +21,10 @@ const Navbar = () => {
             <div className="flex items-center space-x-2">
               <div className="h-10 w-10">
                 <Image
+                  alt="ChunkTube logo"
+                  height={1024}
                   src="/assets/logo.svg"
                   width={1024}
-                  height={1024}
-                  alt="ChunkTube logo"
                 />
               </div>
               <h3 className="font-mono text-xl font-bold">ChunkTube</h3>

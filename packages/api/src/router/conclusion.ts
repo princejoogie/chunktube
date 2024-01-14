@@ -1,14 +1,13 @@
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
+
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../trpc";
-import {
-  type ChannelDetails,
-  getChannelDetails,
-  getVideoId,
-} from "../utils/youtube/details";
+import { getChannelDetails, getVideoId } from "../utils/youtube/details";
 import { conclude } from "../gpt/conclude";
 import { conclusionSelect } from "./common";
 import { logger } from "../lib/logger";
+
+import type { ChannelDetails } from "../utils/youtube/details";
 
 const cleanUrl = (_url: string) => {
   const url = new URL(_url);

@@ -1,7 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 /* export const GA_TRACKING_ID = "G-D18G5DQL6Z"; */
 export const GTM_TRACKING_ID = "GTM-WPRQ3X6";
 
 declare global {
+  // eslint-disable-next-line @typescript-eslint/consistent-type-definitions
   interface Window {
     gtag: any;
   }
@@ -14,11 +17,11 @@ export const pageView = (url: string) => {
   });
 };
 
-interface EventProps {
+type EventProps = {
   action: "conclude" | "like" | "share";
   label: string;
   category?: string;
-}
+};
 
 // https://developers.google.com/analytics/devguides/collection/gtagjs/events
 export const event = ({ action, category = "general", label }: EventProps) => {

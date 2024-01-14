@@ -143,8 +143,7 @@ export const getChannelDetails = async (channelId: string) => {
 
   if (
     !title ||
-    !thumbnail ||
-    !thumbnail.url ||
+    !thumbnail?.url ||
     !thumbnail.width ||
     !thumbnail.height ||
     !customUrl ||

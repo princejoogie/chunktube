@@ -1,7 +1,0 @@
-{
-  "extends": "tsconfig/nodejs.json",
-  "include": ["index.ts"],
-  "compilerOptions": {
-    "isolatedModules": false
-  }
-}

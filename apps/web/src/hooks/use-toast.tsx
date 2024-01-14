@@ -1,5 +1,6 @@
 import * as React from "react";
-import type { ToastActionElement, ToastProps } from "~/components/ui/toast";
+
+import type { ToastActionElement, ToastProps } from "@/components/ui/toast";
 
 const TOAST_LIMIT = 1;
 const TOAST_REMOVE_DELAY = 1000;
@@ -45,9 +46,9 @@ type Action =
       toastId?: ToasterToast["id"];
     };
 
-interface State {
+type State = {
   toasts: ToasterToast[];
-}
+};
 
 const toastTimeouts = new Map<string, ReturnType<typeof setTimeout>>();
 
@@ -118,7 +119,7 @@ export const reducer = (state: State, action: Action): State => {
   }
 };
 
-const listeners: Array<(state: State) => void> = [];
+const listeners: ((state: State) => void)[] = [];
 
 let memoryState: State = { toasts: [] };
 
@@ -129,7 +130,7 @@ function dispatch(action: Action) {
   });
 }
 
-interface Toast extends Omit<ToasterToast, "id"> {}
+type Toast = {} & Omit<ToasterToast, "id">;
 
 function toast({ ...props }: Toast) {
   const id = genId();

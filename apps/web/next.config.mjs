@@ -16,6 +16,7 @@ const config = {
       },
     ],
   },
+  transpilePackages: ["@ct/api"],
 };
 
 export default withAxiom(config);

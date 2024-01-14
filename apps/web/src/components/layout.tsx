@@ -1,15 +1,17 @@
 import Head from "next/head";
-import type { ReactNode } from "react";
+
 import Navbar from "./navbar";
 import Footer from "./footer";
 
-interface LayoutProps {
+import type { ReactNode } from "react";
+
+type LayoutProps = {
   children: ReactNode;
   seo?: {
     title?: string;
     description?: string;
   };
-}
+};
 
 const Layout = ({ children, seo }: LayoutProps) => {
   return (
@@ -17,7 +19,7 @@ const Layout = ({ children, seo }: LayoutProps) => {
       <Head>
         <title>{seo?.title ?? "ChunkTube"}</title>
         {seo?.description ? (
-          <meta name="description" content={seo.description} />
+          <meta content={seo.description} name="description" />
         ) : null}
       </Head>
 

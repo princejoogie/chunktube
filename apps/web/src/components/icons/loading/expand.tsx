@@ -1,77 +1,77 @@
 const ExpandingLoader = () => {
   return (
     <svg
-      xmlns="http://www.w3.org/2000/svg"
-      xmlnsXlink="http://www.w3.org/1999/xlink"
+      height="100px"
+      preserveAspectRatio="xMidYMid"
       style={{
         margin: "auto",
         background: "transparent",
         display: "block",
         shapeRendering: "auto",
       }}
-      width="100px"
-      height="100px"
       viewBox="0 0 100 100"
-      preserveAspectRatio="xMidYMid"
+      width="100px"
+      xmlns="http://www.w3.org/2000/svg"
+      xmlnsXlink="http://www.w3.org/1999/xlink"
     >
       <circle
         cx="50"
         cy="50"
-        r="0"
         fill="none"
+        r="0"
         stroke="#16a34a"
         strokeWidth="2"
       >
         <animate
           attributeName="r"
-          repeatCount="indefinite"
-          dur="1s"
-          values="0;40"
-          keyTimes="0;1"
-          keySplines="0 0.2 0.8 1"
-          calcMode="spline"
           begin="0s"
+          calcMode="spline"
+          dur="1s"
+          keySplines="0 0.2 0.8 1"
+          keyTimes="0;1"
+          repeatCount="indefinite"
+          values="0;40"
         ></animate>
 
         <animate
           attributeName="opacity"
-          repeatCount="indefinite"
-          dur="1s"
-          values="1;0"
-          keyTimes="0;1"
-          keySplines="0.2 0 0.8 1"
-          calcMode="spline"
           begin="0s"
+          calcMode="spline"
+          dur="1s"
+          keySplines="0.2 0 0.8 1"
+          keyTimes="0;1"
+          repeatCount="indefinite"
+          values="1;0"
         ></animate>
       </circle>
       <circle
         cx="50"
         cy="50"
-        r="0"
         fill="none"
+        r="0"
         stroke="#46dff0"
         strokeWidth="2"
       >
         <animate
           attributeName="r"
-          repeatCount="indefinite"
-          dur="1s"
-          values="0;40"
-          keyTimes="0;1"
-          keySplines="0 0.2 0.8 1"
-          calcMode="spline"
           begin="-0.5s"
+          calcMode="spline"
+          dur="1s"
+          keySplines="0 0.2 0.8 1"
+          keyTimes="0;1"
+          repeatCount="indefinite"
+          values="0;40"
         ></animate>
 
         <animate
           attributeName="opacity"
-          repeatCount="indefinite"
-          dur="1s"
-          values="1;0"
-          keyTimes="0;1"
-          keySplines="0.2 0 0.8 1"
-          calcMode="spline"
           begin="-0.5s"
+          calcMode="spline"
+          dur="1s"
+          keySplines="0.2 0 0.8 1"
+          keyTimes="0;1"
+          repeatCount="indefinite"
+          values="1;0"
         ></animate>
       </circle>{" "}
     </svg>
