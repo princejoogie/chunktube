@@ -8,7 +8,6 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "lint:fix": "eslint --fix ./src",
     "format": "prettier --write ./src",
     "typecheck": "tsc --noEmit",
     "clean": "rimraf .next/ .turbo/ ./node_modules/"

@@ -97,7 +97,9 @@ const ConclusionPage = () => {
       try {
         const videoId = getVideoId(vidUrl);
         addView.mutate({ videoId });
-      } catch {}
+      } catch {
+        console.error("No video id");
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [vidUrl]);
