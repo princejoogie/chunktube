@@ -25,7 +25,7 @@ const getTimeOffset = (length: number, offset: number) => {
 
 const getText = async (audioPath: string) => {
   const response = await openai.createTranscription(
-    fs.createReadStream(audioPath),
+    fs.createReadStream(audioPath) as unknown as File,
     "whisper-1",
     undefined,
     "text"
