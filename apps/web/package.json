@@ -10,9 +10,11 @@
     "lint": "next lint",
     "format": "prettier --write ./src",
     "typecheck": "tsc --noEmit",
-    "clean": "rimraf .next/ .turbo/"
+    "clean": "rimraf .next/ .turbo/ ./node_modules/"
   },
   "dependencies": {
+    "@ct/db": "^0.1.0",
+    "@ct/api": "^0.1.0",
     "@clerk/nextjs": "^4.18.1",
     "@clerk/themes": "^1.6.1",
     "@radix-ui/react-alert-dialog": "^1.0.3",

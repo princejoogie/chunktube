@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import superjson from "superjson";
 import { initTRPC, TRPCError } from "@trpc/server";
 import { ZodError } from "zod";
-import { prisma } from "db";
+import { prisma } from "@ct/db";
 
 import { sessionSchema } from "./utils/helpers";
 import { logger } from "./lib/logger";

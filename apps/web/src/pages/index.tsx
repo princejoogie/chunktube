@@ -2,13 +2,13 @@ import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
-import * as gtag from "~/lib/gtm";
-import Container from "~/components/container";
-import Layout from "~/components/layout";
-import { MyChunks, RecentChunks, TrendingChunks } from "~/components/chunks";
-import { LoadingScreen } from "~/components/loading-screen";
-import { api } from "~/utils/api";
-import { useToast } from "~/hooks/use-toast";
+import * as gtag from "@/lib/gtm";
+import Container from "@/components/container";
+import Layout from "@/components/layout";
+import { MyChunks, RecentChunks, TrendingChunks } from "@/components/chunks";
+import { LoadingScreen } from "@/components/loading-screen";
+import { api } from "@/utils/api";
+import { useToast } from "@/hooks/use-toast";
 
 const Home = () => {
   const ctx = api.useContext();

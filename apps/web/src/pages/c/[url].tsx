@@ -2,16 +2,16 @@ import Link from "next/link";
 import { useAuth } from "@clerk/nextjs";
 import { useRouter } from "next/router";
 import { Heart, Share2, Eye, ExternalLink } from "lucide-react";
-import { type RouterOutputs } from "api";
+import { type RouterOutputs } from "@ct/api";
 import toNow from "date-fns/formatDistanceToNow";
 
-import * as gtag from "~/lib/gtm";
-import Container from "~/components/container";
-import ExpandingLoader from "~/components/icons/loading/expand";
-import Layout from "~/components/layout";
-import { ReadNextPage } from "~/components/chunks";
-import { api } from "~/utils/api";
-import { bigNumber, getVideoId } from "~/utils/helpers";
+import * as gtag from "@/lib/gtm";
+import Container from "@/components/container";
+import ExpandingLoader from "@/components/icons/loading/expand";
+import Layout from "@/components/layout";
+import { ReadNextPage } from "@/components/chunks";
+import { api } from "@/utils/api";
+import { bigNumber, getVideoId } from "@/utils/helpers";
 import { useEffect } from "react";
 
 const Timestamp = ({ time }: { time: string }) => {

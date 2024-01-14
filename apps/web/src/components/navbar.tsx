@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useUser, UserButton, SignedIn, SignedOut } from "@clerk/nextjs";
 import Container from "./container";
-import { api } from "~/utils/api";
+import { api } from "@/utils/api";
 
 const Navbar = () => {
   const { isLoaded, isSignedIn } = useUser();

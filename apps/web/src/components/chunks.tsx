@@ -3,10 +3,10 @@ import Link from "next/link";
 import Image from "next/image";
 import toNow from "date-fns/formatDistanceToNow";
 import { Eye } from "lucide-react";
-import type { RouterOutputs } from "api";
+import type { RouterOutputs } from "@ct/api";
 
-import { api } from "~/utils/api";
-import { bigNumber } from "~/utils/helpers";
+import { api } from "@/utils/api";
+import { bigNumber } from "@/utils/helpers";
 
 const delays = ["delay-100", "delay-200", "delay-300", "delay-500"];
 

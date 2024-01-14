@@ -1,13 +1,13 @@
 {
-  "name": "api",
-  "version": "0.0.0",
+  "name": "@ct/api",
+  "version": "0.1.0",
   "license": "MIT",
   "private": true,
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "scripts": {
-    "clean": "rimraf .turbo/ dist/",
+    "clean": "rimraf .turbo/ dist/ ./node_modules/",
     "format": "prettier --write ./src",
     "lint": "eslint --fix ./src",
     "typecheck": "tsc --noEmit"
@@ -27,6 +27,7 @@
     "typescript": ">4.5.0"
   },
   "dependencies": {
+    "@ct/db": "^0.1.0",
     "@googleapis/youtube": "^9.0.0",
     "@trpc/client": "^10.26.0",
     "@trpc/server": "^10.26.0",

@@ -38,6 +38,12 @@ importers:
       '@clerk/themes':
         specifier: ^1.6.1
         version: 1.7.9(react@18.2.0)
+      '@ct/api':
+        specifier: ^0.1.0
+        version: link:../../packages/api
+      '@ct/db':
+        specifier: ^0.1.0
+        version: link:../../packages/db
       '@radix-ui/react-alert-dialog':
         specifier: ^1.0.3
         version: 1.0.5(@types/react-dom@18.2.18)(@types/react@18.2.47)(react-dom@18.2.0)(react@18.2.0)
@@ -150,6 +156,9 @@ importers:
 
   packages/api:
     dependencies:
+      '@ct/db':
+        specifier: ^0.1.0
+        version: link:../db
       '@googleapis/youtube':
         specifier: ^9.0.0
         version: 9.0.0

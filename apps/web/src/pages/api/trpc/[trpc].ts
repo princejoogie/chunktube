@@ -1,8 +1,8 @@
 import { createNextApiHandler } from "@trpc/server/adapters/next";
 import {} from "next-axiom";
 
-import { env } from "~/env.mjs";
-import { createTRPCContext, appRouter, logger } from "api";
+import { env } from "@/env.mjs";
+import { createTRPCContext, appRouter, logger } from "@ct/api";
 
 // export API handler
 export default createNextApiHandler({

@@ -7,7 +7,7 @@ import Document, {
   NextScript,
 } from "next/document";
 import Script from "next/script";
-import * as gtag from "~/lib/gtm";
+import * as gtag from "@/lib/gtm";
 
 class MyDocument extends Document {
   static async getInitialProps(

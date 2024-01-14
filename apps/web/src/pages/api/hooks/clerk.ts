@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { httpApi } from "../../../utils/api";
-import { logger } from "api";
+import { logger } from "@ct/api";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {

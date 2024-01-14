@@ -5,7 +5,7 @@ import {
   AlertDialogDescription,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "~/components/ui/alert-dialog";
+} from "@/components/ui/alert-dialog";
 import ExpandingLoader from "./icons/loading/expand";
 
 const texts = [

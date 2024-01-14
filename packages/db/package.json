@@ -1,6 +1,6 @@
 {
-  "name": "db",
-  "version": "0.0.0",
+  "name": "@ct/db",
+  "version": "0.1.0",
   "license": "MIT",
   "private": true,
   "main": "dist/index.js",
@@ -13,7 +13,7 @@
     "db:generate": "prisma generate",
     "db:studio": "yarn prisma studio",
     "db:push": "yarn prisma db push --skip-generate",
-    "clean": "rimraf .turbo/ dist/"
+    "clean": "rimraf .turbo/ dist/ ./node_modules/"
   },
   "devDependencies": {
     "@joogie/eslint-config": "^0.1.0",

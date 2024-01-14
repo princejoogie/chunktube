@@ -1,4 +1,4 @@
-import "~/styles/globals.css";
+import "@/styles/globals.css";
 import Script from "next/script";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
@@ -6,9 +6,9 @@ import { type AppProps } from "next/app";
 import { ClerkProvider } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
 
-import * as gtag from "~/lib/gtm";
-import { api } from "~/utils/api";
-import { Toaster } from "~/components/toaster";
+import * as gtag from "@/lib/gtm";
+import { api } from "@/utils/api";
+import { Toaster } from "@/components/toaster";
 
 /* export const queryClient = new QueryClient(); */
 
