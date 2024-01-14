@@ -29,7 +29,7 @@
     "lodash": "^4.17.21",
     "openai": "^3.2.1",
     "striptags": "^3.2.0",
-    "superjson": "^2.2.1",
+    "superjson": "^1.13.3",
     "zod": "^3.22.4"
   },
   "devDependencies": {

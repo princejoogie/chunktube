@@ -1,9 +1,8 @@
-/* eslint-disable @typescript-eslint/no-unsafe-argument */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { logger } from "@ct/api";
 
 import { httpApi } from "../../../utils/api";
 
+import type { WebhookEvent } from "@clerk/clerk-sdk-node";
 import type { NextApiRequest, NextApiResponse } from "next";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -12,19 +11,29 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return res.status(405).json({ code: 405, message: "Method not allowed" });
     }
 
-    if (req.body.type && typeof req.body.type === "string") {
-      if (req.body.type === "user.created") {
-        const data = await httpApi.user.create.mutate(req.body.data);
+    const evt = req.body as WebhookEvent;
+
+    if (evt.type && typeof evt.type === "string") {
+      if (evt.type === "user.created") {
+        const data = await httpApi.user.create.mutate({
+          id: evt.data.id,
+          image_url: evt.data.image_url,
+          banned: false,
+        });
         return res.status(200).json(data);
       }
 
-      if (req.body.type === "user.updated") {
-        const data = await httpApi.user.update.mutate(req.body.data);
+      if (evt.type === "user.updated") {
+        const data = await httpApi.user.update.mutate({
+          id: evt.data.id,
+          image_url: evt.data.image_url,
+          banned: false,
+        });
         return res.status(200).json(data);
       }
 
-      if (req.body.type === "user.deleted") {
-        const data = await httpApi.user.delete.mutate(req.body.data);
+      if (evt.type === "user.deleted" && evt.data.id) {
+        const data = await httpApi.user.delete.mutate({ id: evt.data.id });
         return res.status(200).json(data);
       }
     }
